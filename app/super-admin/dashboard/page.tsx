@@ -162,7 +162,7 @@ export default function SuperAdminDashboardPage() {
                 <h6 className="fw-bold text-navy mb-0">Platform Revenue Trend (₹ Lakhs)</h6>
                 <span className="text-muted-custom small">Consolidated SaaS subscriptions & billing volume</span>
               </div>
-              <div className="btn-group btn-group-sm">
+              <div className="btn-group btn-group-sm flex-wrap">
                 <button
                   type="button"
                   className={`btn btn-sm ${revenuePeriod === 'monthly' ? 'btn-brand fw-semibold' : 'btn-outline-secondary'}`}

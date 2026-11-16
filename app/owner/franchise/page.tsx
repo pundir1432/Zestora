@@ -189,7 +189,7 @@ export default function BusinessOwnerFranchisePage() {
                   />
                 </div>
               </div>
-              <div className="col-12 col-md-6 d-flex justify-content-md-end gap-2">
+              <div className="col-12 col-md-6 d-flex justify-content-md-end gap-2 flex-wrap">
                 {['All', 'Paid', 'Pending', 'Overdue'].map((s) => (
                   <button
                     key={s}

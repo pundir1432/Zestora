@@ -62,7 +62,7 @@ function VerifyEmailContent() {
       <main className="container my-auto py-5">
         <div className="row justify-content-center">
           <div className="col-12 col-md-6 col-lg-5">
-            <div className="app-card p-4 p-md-5 bg-white shadow-lg rounded-4 text-center">
+            <div className="app-card p-3 p-sm-4 p-md-5 bg-white shadow-lg rounded-4 text-center">
               <div className="mx-auto bg-brand bg-opacity-10 text-brand p-3 rounded-circle mb-3 d-inline-flex">
                 <BiEnvelope size={36} />
               </div>
@@ -80,14 +80,15 @@ function VerifyEmailContent() {
                 </div>
               ) : (
                 <form onSubmit={handleVerify}>
-                  <div className="d-flex justify-content-center gap-2 mb-4">
+                  <div className="d-flex justify-content-center gap-1 gap-sm-2 mb-4">
                     {otp.map((digit, idx) => (
                       <input
                         key={idx}
                         type="text"
                         maxLength={1}
-                        className="form-control text-center fs-4 fw-bold border-2 text-navy"
-                        style={{ width: '48px', height: '56px' }}
+                        inputMode="numeric"
+                        className="form-control text-center fs-5 fs-sm-4 fw-bold border-2 text-navy"
+                        style={{ width: 'clamp(36px, 11vw, 48px)', height: 'clamp(44px, 13vw, 56px)', borderRadius: '8px', padding: '0' }}
                         value={digit}
                         onChange={(e) => handleOtpChange(idx, e.target.value)}
                         required

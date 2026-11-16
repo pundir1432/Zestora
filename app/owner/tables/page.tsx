@@ -419,8 +419,8 @@ export default function TablesManagementPage() {
                 </div>
 
                 {/* Search & Status Filters */}
-                <div className="d-flex align-items-center gap-2">
-                  <div className="input-group input-group-sm" style={{ width: '220px' }}>
+                <div className="d-flex align-items-center gap-2 flex-wrap">
+                  <div className="input-group input-group-sm flex-grow-1" style={{ minWidth: '160px' }}>
                     <span className="input-group-text bg-light border-subtle text-muted">
                       <BiSearch size={16} />
                     </span>
@@ -434,8 +434,8 @@ export default function TablesManagementPage() {
                   </div>
 
                   <select
-                    className="form-select form-select-sm border-subtle text-navy"
-                    style={{ width: '140px' }}
+                    className="form-select form-select-sm border-subtle text-navy flex-shrink-0"
+                    style={{ width: 'auto', minWidth: '130px' }}
                     value={selectedStatus}
                     onChange={(e) => setSelectedStatus(e.target.value)}
                   >

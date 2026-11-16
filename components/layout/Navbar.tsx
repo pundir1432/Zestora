@@ -101,11 +101,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMobile, collapsed = fals
 
               {/* Branch Selector */}
               {role !== 'kitchen_staff' && (
-                <div className="d-flex align-items-center bg-surface px-2 py-1 rounded-3 border border-subtle">
+                <div className="d-none d-sm-flex align-items-center bg-surface px-2 py-1 rounded-3 border border-subtle">
                   <BiBuilding className="text-muted-custom me-1" size={18} />
                   <select
                     className="form-select form-select-sm border-0 bg-transparent fw-medium text-navy shadow-none pe-4"
-                    style={{ cursor: 'pointer', maxWidth: '180px' }}
+                    style={{ cursor: 'pointer', maxWidth: '150px' }}
                     value={currentBranch ? currentBranch.id : 'all'}
                     onChange={(e) => switchBranch(e.target.value)}
                     disabled={role === 'branch_manager'} // branch manager is locked to their branch
@@ -188,7 +188,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMobile, collapsed = fals
             {showRoleDropdown && (
               <div 
                 className="dropdown-menu dropdown-menu-end show position-absolute shadow-lg border-subtle p-2 mt-2"
-                style={{ width: '280px', right: 0, zIndex: 1050 }}
+                style={{ width: 'min(280px, calc(100vw - 24px))', maxWidth: 'calc(100vw - 24px)', right: 0, zIndex: 1050 }}
               >
                 <div className="px-2 py-1 mb-1 border-bottom border-subtle">
                   <div className="fw-bold text-navy small">Switch Demo Role</div>
@@ -252,7 +252,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMobile, collapsed = fals
             {showNotifDropdown && (
               <div
                 className="dropdown-menu dropdown-menu-end show position-absolute shadow-lg border-subtle p-0 mt-2"
-                style={{ width: '310px', right: 0, zIndex: 1050 }}
+                style={{ width: 'min(310px, calc(100vw - 24px))', maxWidth: 'calc(100vw - 24px)', right: 0, zIndex: 1050 }}
               >
                 <div className="p-3 border-bottom border-subtle d-flex justify-content-between align-items-center">
                   <span className="fw-bold text-navy small">Live Notifications</span>
@@ -314,7 +314,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMobile, collapsed = fals
             {showProfileDropdown && (
               <div
                 className="dropdown-menu dropdown-menu-end show position-absolute shadow-lg border-subtle p-2 mt-2"
-                style={{ width: '230px', right: 0, zIndex: 1050 }}
+                style={{ width: 'min(240px, calc(100vw - 24px))', maxWidth: 'calc(100vw - 24px)', right: 0, zIndex: 1050 }}
               >
                 <div className="px-2 py-1 border-bottom border-subtle mb-1">
                   <div className="fw-bold text-navy text-truncate">{user?.name}</div>

@@ -4,14 +4,14 @@ import React, { useState } from 'react';
 import { CartItem, OrderType, PaymentMethod, Order, SplitPaymentDetail } from '@/types/order';
 import { Customer } from '@/types/customer';
 import { RestaurantTable, BusinessFeatures } from '@/types/restaurant';
-import { 
-  BiTrash, 
-  BiUserPlus, 
-  BiPrinter, 
-  BiCheck, 
-  BiCreditCard, 
-  BiMoney, 
-  BiQrScan, 
+import {
+  BiTrash,
+  BiUserPlus,
+  BiPrinter,
+  BiCheck,
+  BiCreditCard,
+  BiMoney,
+  BiQrScan,
   BiGlobe,
   BiReceipt,
   BiLayer
@@ -271,7 +271,7 @@ export const PosCart: React.FC<PosCartProps> = ({
                   <span className={`food-type-icon mt-1 flex-shrink-0 ${cartItem.isVeg ? 'veg' : 'non-veg'}`} />
                   <div className="text-truncate">
                     <div className="fw-semibold text-navy small text-truncate">{cartItem.name}</div>
-                    
+
                     {/* Multi-business item indicators */}
                     <div className="text-muted-custom" style={{ fontSize: '11px' }}>
                       {cartItem.weightLabel && <span className="badge badge-soft-brand me-1">{cartItem.weightLabel}</span>}
@@ -350,9 +350,8 @@ export const PosCart: React.FC<PosCartProps> = ({
                 <button
                   key={d}
                   type="button"
-                  className={`btn btn-xs py-0 px-2 ${
-                    discountType === d ? 'btn-brand fw-bold text-white' : 'btn-outline-secondary'
-                  }`}
+                  className={`btn btn-xs py-0 px-2 ${discountType === d ? 'btn-brand fw-bold text-white' : 'btn-outline-secondary'
+                    }`}
                   style={{ fontSize: '10px' }}
                   onClick={() => setDiscountType(d)}
                 >
@@ -443,9 +442,8 @@ export const PosCart: React.FC<PosCartProps> = ({
                 <div key={mode} className="col-3">
                   <button
                     type="button"
-                    className={`btn btn-sm w-100 p-1 d-flex flex-column align-items-center gap-1 rounded-2 ${
-                      paymentMethod === mode ? 'btn-brand text-white fw-bold' : 'btn-outline-secondary'
-                    }`}
+                    className={`btn btn-sm w-100 p-1 d-flex flex-column align-items-center gap-1 rounded-2 ${paymentMethod === mode ? 'btn-brand text-white fw-bold' : 'btn-outline-secondary'
+                      }`}
                     style={{ fontSize: '10px' }}
                     onClick={() => setPaymentMethod(mode)}
                   >
@@ -468,7 +466,7 @@ export const PosCart: React.FC<PosCartProps> = ({
           <div className="d-flex gap-2">
             <button
               type="button"
-              className="btn btn-outline-secondary btn-sm px-2 d-flex align-items-center gap-1"
+              className="btn btn-outline-secondary btn-sm px-2.5 d-flex align-items-center justify-content-center"
               onClick={onPrintPreview}
               title="Print Receipt"
             >
@@ -476,11 +474,11 @@ export const PosCart: React.FC<PosCartProps> = ({
             </button>
             <button
               type="button"
-              className="btn btn-brand flex-grow-1 py-2 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm text-white"
+              className="btn btn-brand flex-grow-1 py-2 fw-bold d-flex align-items-center justify-content-center gap-1 shadow-sm text-white"
               onClick={handleCheckout}
             >
               <BiCheck size={20} />
-              <span>Charge & Send KOT (₹{grandTotal.toFixed(2)})</span>
+              <span className="text-truncate">Charge & KOT (₹{grandTotal.toFixed(2)})</span>
             </button>
           </div>
         </div>

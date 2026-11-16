@@ -90,7 +90,7 @@ export default function BusinessOwnerOnlineOrderingPage() {
                   Share your personalized link on Instagram Bio, Google Maps Business Profile, and WhatsApp to take direct orders without paying 20-30% aggregator commissions.
                 </p>
                 <div className="d-flex flex-wrap align-items-center gap-2">
-                  <div className="bg-white bg-opacity-10 border border-white border-opacity-25 rounded px-3 py-2 text-white font-monospace small">
+                  <div className="bg-white bg-opacity-10 border border-white border-opacity-25 rounded px-3 py-2 text-white font-monospace small text-break">
                     {storefrontUrl}
                   </div>
                   <button

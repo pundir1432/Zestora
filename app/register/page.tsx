@@ -6,14 +6,14 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { BusinessType } from '@/types/restaurant';
 import { BUSINESS_TYPES_META } from '@/data/businessTypesData';
-import { 
-  BiStore, 
-  BiUser, 
-  BiEnvelope, 
-  BiPhone, 
-  BiLockAlt, 
-  BiBuilding, 
-  BiMapPin, 
+import {
+  BiStore,
+  BiUser,
+  BiEnvelope,
+  BiPhone,
+  BiLockAlt,
+  BiBuilding,
+  BiMapPin,
   BiRightArrowAlt,
   BiCheckCircle,
   BiLayer
@@ -84,7 +84,7 @@ export default function RegisterPage() {
       <header className="bg-navy py-3 px-4 border-bottom border-secondary border-opacity-25">
         <div className="container d-flex align-items-center justify-content-between">
           <Link href="/" className="d-flex align-items-center gap-2 text-decoration-none">
-            <div 
+            <div
               className="d-flex align-items-center justify-content-center rounded-3 bg-brand text-white fw-bold shadow-sm"
               style={{ width: '38px', height: '38px', fontSize: '20px' }}
             >
@@ -107,7 +107,7 @@ export default function RegisterPage() {
       <main className="container my-auto py-5">
         <div className="row justify-content-center">
           <div className="col-12 col-lg-8 col-xl-7">
-            <div className="app-card p-4 p-md-5 bg-white shadow-lg rounded-4">
+            <div className="app-card p-3 p-sm-4 p-md-5 bg-white shadow-lg rounded-4">
               <div className="text-center mb-4">
                 <span className="badge bg-brand text-white text-uppercase rounded-pill px-3 py-1 mb-2" style={{ fontSize: '11px' }}>
                   14-Day Free SaaS Trial • No Card Required

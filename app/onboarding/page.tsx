@@ -310,7 +310,7 @@ export default function OnboardingPage() {
         {/* Wizard Step Card */}
         <div className="row justify-content-center">
           <div className="col-12 col-lg-9 col-xl-8">
-            <div className="app-card p-4 p-md-5 bg-white shadow-lg rounded-4">
+            <div className="app-card p-3 p-sm-4 p-md-5 bg-white shadow-lg rounded-4">
               {/* STEP 1: Owner Information */}
               {currentStep === 1 && (
                 <div>
@@ -870,7 +870,7 @@ export default function OnboardingPage() {
               )}
 
               {/* Wizard Navigation Footer */}
-              <div className="d-flex align-items-center justify-content-between pt-4 mt-4 border-top">
+              <div className="d-flex align-items-center justify-content-between pt-4 mt-4 border-top flex-wrap gap-2">
                 <button
                   type="button"
                   className="btn btn-outline-secondary d-flex align-items-center gap-1"

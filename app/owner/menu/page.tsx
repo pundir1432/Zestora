@@ -221,7 +221,7 @@ export default function MenuManagementPage() {
           </p>
         </div>
 
-        <div className="d-flex align-items-center gap-2">
+        <div className="d-flex align-items-center gap-2 flex-wrap">
           <button
             type="button"
             className="btn btn-outline-secondary d-flex align-items-center gap-1 shadow-sm"
@@ -281,7 +281,7 @@ export default function MenuManagementPage() {
 
           {/* Pure Veg / Non-Veg filter */}
           <div className="col-12 col-md-3">
-            <div className="d-flex align-items-center gap-2">
+            <div className="d-flex align-items-center gap-2 flex-wrap">
               <span className="small text-muted-custom fw-semibold">Diet:</span>
               <div className="btn-group btn-group-sm" role="group">
                 <button
@@ -512,7 +512,7 @@ export default function MenuManagementPage() {
                 {filteredItems.map((item) => (
                   <tr key={item.id}>
                     <td>
-                      <div className="d-flex align-items-center gap-2">
+                      <div className="d-flex align-items-center gap-2 flex-wrap">
                         <img
                           src={item.image}
                           alt={item.name}

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect, useLayoutEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
@@ -41,6 +41,7 @@ import {
   BiPlug,
   BiShoppingBag,
   BiPurchaseTag,
+  BiX,
 } from 'react-icons/bi';
 import { MdOutlinePointOfSale, MdTableRestaurant } from 'react-icons/md';
 import { TbToolsKitchen2, TbFileInvoice } from 'react-icons/tb';
@@ -66,6 +67,12 @@ interface SidebarProps {
   onCloseMobile: () => void;
 }
 
+// Module-level persistent scroll state across Next.js client-side page transitions
+let cachedOwnerScroll = 0;
+let cachedAdminScroll = 0;
+
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
 export const Sidebar: React.FC<SidebarProps> = ({
   collapsed,
   onToggleCollapse,
@@ -76,6 +83,79 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const { role, user, logout, isFeatureEnabled, currentRestaurant } = useAuth();
 
   const isSuperAdmin = role === 'super_admin';
+
+  const navScrollRef = useRef<HTMLDivElement>(null);
+  const activeLinkRef = useRef<HTMLAnchorElement>(null);
+
+  // Restore and maintain sidebar scroll position on navigation
+  useIsomorphicLayoutEffect(() => {
+    const container = navScrollRef.current;
+    if (!container) return;
+
+    const storageKey = isSuperAdmin ? 'zestora_sidebar_scroll_admin' : 'zestora_sidebar_scroll_owner';
+
+    // 1. Restore scroll position from in-memory module cache or sessionStorage
+    let targetScroll = isSuperAdmin ? cachedAdminScroll : cachedOwnerScroll;
+    if (targetScroll <= 0 && typeof window !== 'undefined') {
+      const saved = sessionStorage.getItem(storageKey);
+      if (saved !== null) {
+        targetScroll = Number(saved);
+      }
+    }
+
+    if (targetScroll > 0) {
+      container.scrollTop = targetScroll;
+    }
+
+    // 2. Ensure the active link is visible in the container
+    // If the active item is out of view (e.g. initial load or direct navigation),
+    // scroll the active link into view so top links don't hide the active bottom link
+    const rafId = requestAnimationFrame(() => {
+      if (activeLinkRef.current && container) {
+        const containerRect = container.getBoundingClientRect();
+        const itemRect = activeLinkRef.current.getBoundingClientRect();
+        const isAbove = itemRect.top < containerRect.top;
+        const isBelow = itemRect.bottom > containerRect.bottom;
+
+        if (isAbove || isBelow) {
+          activeLinkRef.current.scrollIntoView({ block: 'nearest' });
+          const newPos = container.scrollTop;
+          if (isSuperAdmin) cachedAdminScroll = newPos;
+          else cachedOwnerScroll = newPos;
+          if (typeof window !== 'undefined') {
+            sessionStorage.setItem(storageKey, newPos.toString());
+          }
+        }
+      }
+    });
+
+    return () => cancelAnimationFrame(rafId);
+  }, [pathname, isSuperAdmin]);
+
+  const handleNavScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const currentScroll = e.currentTarget.scrollTop;
+    if (isSuperAdmin) {
+      cachedAdminScroll = currentScroll;
+    } else {
+      cachedOwnerScroll = currentScroll;
+    }
+  };
+
+  const handleLinkClick = () => {
+    if (navScrollRef.current) {
+      const currentScroll = navScrollRef.current.scrollTop;
+      if (isSuperAdmin) {
+        cachedAdminScroll = currentScroll;
+      } else {
+        cachedOwnerScroll = currentScroll;
+      }
+      if (typeof window !== 'undefined') {
+        const storageKey = isSuperAdmin ? 'zestora_sidebar_scroll_admin' : 'zestora_sidebar_scroll_owner';
+        sessionStorage.setItem(storageKey, currentScroll.toString());
+      }
+    }
+    onCloseMobile();
+  };
 
   const superAdminLinks: NavItem[] = [
     { section: 'Core Platform', label: 'Platform Dashboard', href: '/super-admin/dashboard', icon: BiSolidDashboard },
@@ -178,26 +258,33 @@ export const Sidebar: React.FC<SidebarProps> = ({
           bottom: 0,
           zIndex: 1045,
           boxShadow: '2px 0 10px rgba(0, 0, 0, 0.15)',
+          border: 'none',
+          borderRight: 'none',
+          borderBottom: 'none',
         }}
       >
         {/* Brand Header */}
-        <div className="d-flex align-items-center justify-content-between p-3 border-bottom border-secondary border-opacity-25" style={{ height: '70px' }}>
-          <Link href={isSuperAdmin ? '/super-admin/dashboard' : '/owner/dashboard'} className="d-flex align-items-center text-decoration-none text-white overflow-hidden">
+        <div 
+          className={`d-flex align-items-center ${collapsed ? 'justify-content-center' : 'justify-content-between'} px-3`} 
+          style={{ height: '70px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}
+        >
+          <Link 
+            href={isSuperAdmin ? '/super-admin/dashboard' : '/owner/dashboard'} 
+            className="d-flex align-items-center text-decoration-none text-white overflow-hidden gap-2"
+          >
             <div 
-              className="d-flex align-items-center justify-content-center rounded-3 bg-brand text-white fw-bold me-2 flex-shrink-0"
-              style={{ width: '38px', height: '38px', fontSize: '20px' }}
+              className="d-flex align-items-center justify-content-center rounded-3 bg-brand text-white fw-bold flex-shrink-0 shadow-sm"
+              style={{ width: '38px', height: '38px', fontSize: '20px', lineHeight: 1 }}
             >
               Z
             </div>
             {!collapsed && (
-              <div className="d-flex flex-column text-nowrap">
-                <span className="fw-bold fs-5 lh-1 text-white tracking-wide">
-                  ZEST<span className="text-brand">ORA</span>
-                </span>
-                <span className="text-muted text-uppercase fw-semibold" style={{ fontSize: '10px', letterSpacing: '1px' }}>
-                  {isSuperAdmin ? 'Super Admin HQ' : 'Restaurant SaaS'}
-                </span>
-              </div>
+              <span 
+                className="fw-bold fs-4 text-white tracking-wide d-inline-flex align-items-center" 
+                style={{ letterSpacing: '0.8px', lineHeight: 1, height: '38px' }}
+              >
+                ZEST<span className="text-brand">ORA</span>
+              </span>
             )}
           </Link>
 
@@ -205,16 +292,31 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <button 
             type="button" 
             onClick={onToggleCollapse} 
-            className="btn btn-sm btn-link text-white-50 p-1 d-none d-lg-block text-decoration-none"
+            className="btn btn-sm btn-link text-white-50 p-1 d-none d-lg-flex align-items-center justify-content-center text-decoration-none hover-light"
+            style={{ width: '32px', height: '32px' }}
             title={collapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
           >
-            {collapsed ? <BiChevronRight size={22} /> : <BiChevronLeft size={22} />}
+            {collapsed ? <BiChevronRight size={20} /> : <BiChevronLeft size={20} />}
+          </button>
+
+          {/* Mobile close button */}
+          <button
+            type="button"
+            onClick={onCloseMobile}
+            className="btn btn-sm btn-link text-white-50 p-1 d-lg-none text-decoration-none"
+            title="Close Navigation"
+            aria-label="Close navigation"
+          >
+            <BiX size={26} />
           </button>
         </div>
 
         {/* Role & Business Type Tag */}
         {!collapsed && (
-          <div className="px-3 py-2 bg-black bg-opacity-25 border-bottom border-secondary border-opacity-10 d-flex flex-column gap-1">
+          <div 
+            className="px-3 py-2 bg-black bg-opacity-25 d-flex flex-column gap-1"
+            style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}
+          >
             <div className="d-flex align-items-center justify-content-between">
               <span className="text-white-50 small" style={{ fontSize: '11px' }}>Role:</span>
               <span className="badge rounded-pill bg-brand text-uppercase" style={{ fontSize: '10px' }}>
@@ -233,7 +335,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
         )}
 
         {/* Navigation Menu */}
-        <div className="flex-grow-1 overflow-y-auto py-2 px-2">
+        <div 
+          ref={navScrollRef}
+          onScroll={handleNavScroll}
+          className="sidebar-scroll flex-grow-1 overflow-y-auto py-2 px-2"
+          style={{ borderRight: 'none' }}
+        >
           <ul className="nav nav-pills flex-column gap-1 mb-auto">
             {activeLinks.map((item, idx) => {
               const Icon = item.icon;
@@ -254,7 +361,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   <li className="nav-item">
                     <Link
                       href={item.href}
-                      onClick={() => onCloseMobile()}
+                      scroll={false}
+                      ref={isActive ? activeLinkRef : undefined}
+                      onClick={handleLinkClick}
                       className={`nav-link d-flex align-items-center px-3 py-2 rounded-3 text-nowrap transition-all ${
                         isActive
                           ? 'bg-brand text-white fw-semibold shadow-sm'
@@ -288,7 +397,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* User Footer & Logout */}
-        <div className="p-3 border-top border-secondary border-opacity-25 bg-black bg-opacity-20">
+        <div 
+          className="p-3 bg-black bg-opacity-20 border-0" 
+          style={{ border: 'none', borderTop: 'none', borderBottom: 'none' }}
+        >
           <div className="d-flex align-items-center justify-content-between">
             <div className="d-flex align-items-center overflow-hidden">
               <img

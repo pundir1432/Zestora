@@ -438,61 +438,65 @@ export default function BusinessOwnerRecipesPage() {
                         </button>
                       </div>
 
-                      {recipeIngredients.map((it, idx) => (
-                        <div key={idx} className="row g-2 align-items-center mb-2">
-                          <div className="col-5">
-                            <input
-                              type="text"
-                              className="form-control form-control-sm"
-                              placeholder="Ingredient (e.g. Urad Dal)"
-                              required
-                              value={it.name}
-                              onChange={(e) => handleUpdateIngRow(idx, 'name', e.target.value)}
-                            />
-                          </div>
-                          <div className="col-2">
-                            <input
-                              type="number"
-                              step="0.001"
-                              className="form-control form-control-sm"
-                              placeholder="Qty"
-                              required
-                              value={it.quantity}
-                              onChange={(e) => handleUpdateIngRow(idx, 'quantity', e.target.value)}
-                            />
-                          </div>
-                          <div className="col-2">
-                            <select
-                              className="form-select form-select-sm"
-                              value={it.unit}
-                              onChange={(e) => handleUpdateIngRow(idx, 'unit', e.target.value)}
-                            >
-                              <option value="kg">kg</option>
-                              <option value="litres">litres</option>
-                              <option value="pcs">pcs</option>
-                            </select>
-                          </div>
-                          <div className="col-2">
-                            <input
-                              type="number"
-                              className="form-control form-control-sm"
-                              placeholder="₹/Unit"
-                              required
-                              value={it.costPerUnit}
-                              onChange={(e) => handleUpdateIngRow(idx, 'costPerUnit', e.target.value)}
-                            />
-                          </div>
-                          <div className="col-1 text-center">
-                            <button
-                              type="button"
-                              className="btn btn-sm text-danger p-0"
-                              onClick={() => handleRemoveIngRow(idx)}
-                            >
-                              <BiTrash size={16} />
-                            </button>
-                          </div>
+                      <div className="table-responsive">
+                        <div style={{ minWidth: '450px' }}>
+                          {recipeIngredients.map((it, idx) => (
+                            <div key={idx} className="row g-2 align-items-center mb-2">
+                              <div className="col-5">
+                                <input
+                                  type="text"
+                                  className="form-control form-control-sm"
+                                  placeholder="Ingredient (e.g. Urad Dal)"
+                                  required
+                                  value={it.name}
+                                  onChange={(e) => handleUpdateIngRow(idx, 'name', e.target.value)}
+                                />
+                              </div>
+                              <div className="col-2">
+                                <input
+                                  type="number"
+                                  step="0.001"
+                                  className="form-control form-control-sm"
+                                  placeholder="Qty"
+                                  required
+                                  value={it.quantity}
+                                  onChange={(e) => handleUpdateIngRow(idx, 'quantity', e.target.value)}
+                                />
+                              </div>
+                              <div className="col-2">
+                                <select
+                                  className="form-select form-select-sm"
+                                  value={it.unit}
+                                  onChange={(e) => handleUpdateIngRow(idx, 'unit', e.target.value)}
+                                >
+                                  <option value="kg">kg</option>
+                                  <option value="litres">litres</option>
+                                  <option value="pcs">pcs</option>
+                                </select>
+                              </div>
+                              <div className="col-2">
+                                <input
+                                  type="number"
+                                  className="form-control form-control-sm"
+                                  placeholder="₹/Unit"
+                                  required
+                                  value={it.costPerUnit}
+                                  onChange={(e) => handleUpdateIngRow(idx, 'costPerUnit', e.target.value)}
+                                />
+                              </div>
+                              <div className="col-1 text-center">
+                                <button
+                                  type="button"
+                                  className="btn btn-sm text-danger p-0"
+                                  onClick={() => handleRemoveIngRow(idx)}
+                                >
+                                  <BiTrash size={16} />
+                                </button>
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                      ))}
+                      </div>
 
                       {/* Live calculation banner */}
                       <div className="bg-light p-3 rounded mt-3 d-flex justify-content-between align-items-center small">

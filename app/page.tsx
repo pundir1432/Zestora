@@ -2,12 +2,12 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { 
-  BiStore, 
-  BiShieldQuarter, 
-  BiReceipt, 
-  BiFoodMenu, 
-  BiBarChartAlt2, 
+import {
+  BiStore,
+  BiShieldQuarter,
+  BiReceipt,
+  BiFoodMenu,
+  BiBarChartAlt2,
   BiRightArrowAlt,
   BiCheckCircle,
   BiGroup
@@ -61,7 +61,7 @@ export default function HomePage() {
       <nav className="bg-navy py-3 px-4 border-bottom border-secondary border-opacity-25 sticky-top">
         <div className="container d-flex align-items-center justify-content-between">
           <div className="d-flex align-items-center gap-2">
-            <div 
+            <div
               className="d-flex align-items-center justify-content-center rounded-3 bg-brand text-white fw-bold"
               style={{ width: '38px', height: '38px', fontSize: '20px' }}
             >
@@ -121,7 +121,7 @@ export default function HomePage() {
                 <div className="app-card p-4 h-100 bg-white border-subtle d-flex flex-column justify-content-between shadow-sm">
                   <div>
                     <div className="d-flex align-items-center justify-content-between mb-3">
-                      <div 
+                      <div
                         className="rounded-3 p-3 d-flex align-items-center justify-content-center"
                         style={{ backgroundColor: `${portal.color}15`, color: portal.color }}
                       >
@@ -145,8 +145,8 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  <Link 
-                    href={portal.href} 
+                  <Link
+                    href={portal.href}
                     className="btn btn-outline-brand w-100 fw-semibold d-flex align-items-center justify-content-center gap-2 mt-auto"
                   >
                     <span>Launch {portal.title}</span>

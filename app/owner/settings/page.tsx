@@ -157,7 +157,7 @@ export default function SettingsPage() {
         {/* Settings Navigation Menu */}
         <div className="col-12 col-md-3">
           <div className="app-card p-2 bg-white shadow-sm">
-            <nav className="nav nav-pills flex-column gap-1">
+            <nav className="nav nav-pills flex-row flex-md-column overflow-x-auto text-nowrap gap-1 pb-1 pb-md-0">
               {[
                 { id: 'business_type', label: 'Business Type & Features', icon: BiLayer },
                 { id: 'profile', label: 'Restaurant Profile', icon: BiStore },

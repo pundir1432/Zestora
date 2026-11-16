@@ -43,7 +43,7 @@ export const Modal: React.FC<ModalProps> = ({
 
   return (
     <div
-      className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center p-3"
+      className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center p-2 p-sm-3"
       style={{
         backgroundColor: 'rgba(24, 38, 59, 0.65)',
         backdropFilter: 'blur(3px)',
@@ -83,7 +83,7 @@ export const Modal: React.FC<ModalProps> = ({
 
         {/* Modal Footer */}
         {footer && (
-          <div className="p-3 border-top border-subtle bg-surface d-flex justify-content-end gap-2">
+          <div className="p-3 border-top border-subtle bg-surface d-flex flex-wrap justify-content-end gap-2">
             {footer}
           </div>
         )}

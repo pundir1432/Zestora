@@ -264,7 +264,7 @@ export default function BusinessOwnerAiAssistantPage() {
                   className="btn btn-primary px-4 d-flex align-items-center gap-2"
                   disabled={!inputQuestion.trim() || isThinking}
                 >
-                  <BiSend size={18} /> Ask AI
+                  <BiSend size={18} /> <span className="d-none d-sm-inline">Ask AI</span>
                 </button>
               </div>
             </form>

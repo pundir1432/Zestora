@@ -257,7 +257,7 @@ export default function CustomerOrderDemoPage() {
               {/* Fulfillment Switcher */}
               <div className="card border-0 shadow-sm rounded-3 p-3 bg-white mb-3">
                 <div className="d-flex flex-wrap justify-content-between align-items-center gap-2">
-                  <div className="btn-group btn-group-sm">
+                  <div className="btn-group btn-group-sm flex-wrap">
                     {(['Dine In', 'Takeaway', 'Delivery'] as const).map((mode) => (
                       <button
                         key={mode}

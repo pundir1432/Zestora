@@ -12,7 +12,7 @@ import { INITIAL_ORDERS } from '@/data/ordersData';
 import { SAMPLE_MENU_ITEMS } from '@/data/menuData';
 import { useAuth } from '@/context/AuthContext';
 import { Order, OrderStatus } from '@/types/order';
-import { formatNumber } from '@/utils/formatters';
+import { formatNumber, formatTime } from '@/utils/formatters';
 import { 
   BiTrendingUp, 
   BiReceipt, 
@@ -262,7 +262,7 @@ export default function OwnerDashboardPage() {
               </div>
 
               {/* View Switcher: Daily / Weekly / Monthly */}
-              <div className="btn-group btn-group-sm" role="group">
+              <div className="btn-group btn-group-sm flex-wrap" role="group">
                 <button
                   type="button"
                   className={`btn btn-sm ${salesView === 'daily' ? 'btn-brand fw-semibold' : 'btn-outline-secondary'}`}
@@ -522,8 +522,8 @@ export default function OwnerDashboardPage() {
                 <tr key={ord.id}>
                   <td>
                     <span className="fw-bold text-navy font-monospace">{ord.orderNumber}</span>
-                    <div className="text-muted-custom" style={{ fontSize: '11px' }}>
-                      {new Date(ord.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    <div className="text-muted-custom" style={{ fontSize: '11px' }} suppressHydrationWarning>
+                      {formatTime(ord.createdAt)}
                     </div>
                   </td>
                   <td>
