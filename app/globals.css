@@ -220,7 +220,8 @@ body {
 
 .dashboard-root {
   display: flex;
-  width: 100vw;
+  width: 100%;
+  max-width: 100vw;
   height: 100vh;
   overflow: hidden;
   position: relative;
@@ -236,7 +237,26 @@ body {
   height: 100vh !important;
   z-index: 1045 !important;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
+  border: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+  outline: none !important;
   transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Hide scrollbar completely inside sidebar navigation to eliminate right-side white line/stripe */
+.dashboard-sidebar .sidebar-scroll {
+  scrollbar-width: none !important;
+  /* Firefox */
+  -ms-overflow-style: none !important;
+  /* IE / Edge */
+}
+
+.dashboard-sidebar .sidebar-scroll::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
 }
 
 /* Fixed Header */
@@ -246,6 +266,7 @@ body {
   right: 0 !important;
   height: var(--dashboard-header-height) !important;
   z-index: 1030 !important;
+  border-left: none !important;
   transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
@@ -255,6 +276,7 @@ body {
   height: calc(100vh - var(--dashboard-header-height)) !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
+  border-left: none !important;
   transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1), width 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
   -webkit-overflow-scrolling: touch;
 }
@@ -263,22 +285,26 @@ body {
 @media (min-width: 992px) {
   .dashboard-header.sidebar-expanded {
     left: var(--dashboard-sidebar-width) !important;
-    width: calc(100vw - var(--dashboard-sidebar-width)) !important;
+    right: 0 !important;
+    width: auto !important;
   }
 
   .dashboard-header.sidebar-collapsed {
     left: var(--dashboard-sidebar-collapsed-width) !important;
-    width: calc(100vw - var(--dashboard-sidebar-collapsed-width)) !important;
+    right: 0 !important;
+    width: auto !important;
   }
 
   .dashboard-main-wrapper.sidebar-expanded {
     margin-left: var(--dashboard-sidebar-width) !important;
-    width: calc(100vw - var(--dashboard-sidebar-width)) !important;
+    width: calc(100% - var(--dashboard-sidebar-width)) !important;
+    max-width: calc(100% - var(--dashboard-sidebar-width)) !important;
   }
 
   .dashboard-main-wrapper.sidebar-collapsed {
     margin-left: var(--dashboard-sidebar-collapsed-width) !important;
-    width: calc(100vw - var(--dashboard-sidebar-collapsed-width)) !important;
+    width: calc(100% - var(--dashboard-sidebar-collapsed-width)) !important;
+    max-width: calc(100% - var(--dashboard-sidebar-collapsed-width)) !important;
   }
 }
 
@@ -286,12 +312,15 @@ body {
 @media (max-width: 991.98px) {
   .dashboard-header {
     left: 0 !important;
-    width: 100vw !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   .dashboard-main-wrapper {
     margin-left: 0 !important;
-    width: 100vw !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   .dashboard-sidebar {
@@ -300,101 +329,114 @@ body {
 }
 
 /* ==========================================================================
-   FIXED DASHBOARD SHELL & SCROLLING ARCHITECTURE
-   - Header is fixed at top across all pages
-   - Sidebar is fixed on left side
-   - Only main content area scrolls vertically
-   - Zero duplicate scrollbars, zero layout shift
+   GLOBAL RESPONSIVENESS & MOBILE POLISH
    ========================================================================== */
 
-:root {
-  --dashboard-header-height: 70px;
-  --dashboard-sidebar-width: 260px;
-  --dashboard-sidebar-collapsed-width: 80px;
+/* Universal image & media responsiveness */
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
 }
 
+/* Ensure no root-level horizontal scrollbar blowout */
 html,
 body {
-  height: 100%;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 .dashboard-root {
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  position: relative;
-  background-color: var(--main-bg);
+  max-width: 100vw;
 }
 
-/* Fixed Sidebar */
-.dashboard-sidebar {
-  position: fixed !important;
-  top: 0 !important;
-  bottom: 0 !important;
-  left: 0 !important;
-  height: 100vh !important;
-  z-index: 1045 !important;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
-  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+/* Responsive tables with smooth touch momentum */
+.table-responsive {
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 0;
 }
 
-/* Fixed Header */
-.dashboard-header {
-  position: fixed !important;
-  top: 0 !important;
-  right: 0 !important;
-  height: var(--dashboard-header-height) !important;
-  z-index: 1030 !important;
-  transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+.table-responsive::-webkit-scrollbar {
+  height: 4px;
 }
 
-/* Scrollable Main Content Area */
-.dashboard-main-wrapper {
-  margin-top: var(--dashboard-header-height) !important;
-  height: calc(100vh - var(--dashboard-header-height)) !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1), width 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+.table-responsive::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+/* Responsive Recharts containers */
+.recharts-responsive-container {
+  min-width: 0 !important;
+}
+
+/* Custom scrollbars for horizontal filter tab bars */
+.overflow-x-auto {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Desktop sizing (lg and up) */
-@media (min-width: 992px) {
-  .dashboard-header.sidebar-expanded {
-    left: var(--dashboard-sidebar-width) !important;
-    width: calc(100vw - var(--dashboard-sidebar-width)) !important;
-  }
-
-  .dashboard-header.sidebar-collapsed {
-    left: var(--dashboard-sidebar-collapsed-width) !important;
-    width: calc(100vw - var(--dashboard-sidebar-collapsed-width)) !important;
-  }
-
-  .dashboard-main-wrapper.sidebar-expanded {
-    margin-left: var(--dashboard-sidebar-width) !important;
-    width: calc(100vw - var(--dashboard-sidebar-width)) !important;
-  }
-
-  .dashboard-main-wrapper.sidebar-collapsed {
-    margin-left: var(--dashboard-sidebar-collapsed-width) !important;
-    width: calc(100vw - var(--dashboard-sidebar-collapsed-width)) !important;
-  }
+.overflow-x-auto::-webkit-scrollbar {
+  height: 4px;
 }
 
-/* Mobile & Tablet sizing (< 992px) */
-@media (max-width: 991.98px) {
-  .dashboard-header {
-    left: 0 !important;
-    width: 100vw !important;
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+/* Touch targets & responsive cards on small mobile (< 576px) */
+@media (max-width: 575.98px) {
+  :root {
+    --dashboard-header-height: 64px;
   }
 
   .dashboard-main-wrapper {
-    margin-left: 0 !important;
-    width: 100vw !important;
+    margin-top: var(--dashboard-header-height) !important;
+    height: calc(100vh - var(--dashboard-header-height)) !important;
   }
 
-  .dashboard-sidebar {
-    width: var(--dashboard-sidebar-width) !important;
+  .dashboard-header {
+    height: var(--dashboard-header-height) !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  /* Card padding reduction on small screens to maximize usable width */
+  .app-card {
+    border-radius: 10px;
+  }
+
+  /* Touch-friendly minimum targets */
+  .btn {
+    min-height: 36px;
+  }
+
+  .btn-sm {
+    min-height: 32px;
+  }
+
+  /* Modals on mobile */
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+}
+
+/* Small device typography fluid scale */
+@media (max-width: 767.98px) {
+
+  h3,
+  .fs-3 {
+    font-size: 1.45rem !important;
+  }
+
+  h4,
+  .fs-4 {
+    font-size: 1.25rem !important;
+  }
+
+  h5,
+  .fs-5 {
+    font-size: 1.1rem !important;
   }
 }

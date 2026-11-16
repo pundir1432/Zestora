@@ -308,7 +308,7 @@ function CheckoutContent() {
             {/* Left Column: Plan Selection & Payment Method */}
             <div className="col-12 col-lg-8">
               {/* STEP 1: Select Plan & Cycle */}
-              <div className="app-card p-4 mb-4">
+              <div className="app-card p-3 p-sm-4 mb-4">
                 <div className="d-flex justify-content-between align-items-center mb-3">
                   <h6 className="fw-bold text-navy mb-0 text-uppercase small" style={{ letterSpacing: '0.5px' }}>
                     1. Select Subscription Tier & Billing Cycle
@@ -375,7 +375,7 @@ function CheckoutContent() {
               </div>
 
               {/* STEP 2: GST & Business Billing Details */}
-              <div className="app-card p-4 mb-4">
+              <div className="app-card p-3 p-sm-4 mb-4">
                 <div className="d-flex justify-content-between align-items-center mb-3">
                   <h6 className="fw-bold text-navy mb-0 text-uppercase small" style={{ letterSpacing: '0.5px' }}>
                     2. Business & GST Invoicing Details
@@ -430,13 +430,13 @@ function CheckoutContent() {
               </div>
 
               {/* STEP 3: Payment Method Tabs */}
-              <div className="app-card p-4">
+              <div className="app-card p-3 p-sm-4">
                 <h6 className="fw-bold text-navy mb-3 text-uppercase small" style={{ letterSpacing: '0.5px' }}>
                   3. Select Payment Gateway Mode
                 </h6>
 
                 {/* Tabs */}
-                <ul className="nav nav-pills nav-fill gap-2 bg-surface p-1.5 rounded-3 mb-4 border">
+                <ul className="nav nav-pills nav-fill flex-column flex-sm-row gap-2 bg-surface p-1.5 rounded-3 mb-4 border">
                   <li className="nav-item">
                     <button
                       type="button"

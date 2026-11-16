@@ -69,7 +69,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({
       }
     >
       <div 
-        className="bg-light p-4 rounded-3 border border-subtle font-monospace text-navy mx-auto"
+        className="bg-light p-3 p-sm-4 rounded-3 border border-subtle font-monospace text-navy mx-auto"
         style={{ maxWidth: '420px', fontSize: '13px', lineHeight: '1.4' }}
       >
         {/* Receipt Header */}

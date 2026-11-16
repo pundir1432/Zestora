@@ -162,7 +162,7 @@ export default function BranchesPage() {
       </div>
 
       {/* Restaurant Profile Summary Card */}
-      <div className="app-card p-4 mb-4 bg-white">
+      <div className="app-card p-3 p-sm-4 mb-4 bg-white">
         <div className="d-flex align-items-center justify-content-between flex-wrap gap-3">
           <div className="d-flex align-items-center gap-3">
             <img

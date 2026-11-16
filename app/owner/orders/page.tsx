@@ -7,6 +7,7 @@ import { Order, OrderStatus, OrderType } from '@/types/order';
 import { StatusBadge } from '@/components/common/StatusBadge';
 import { OrderDrawer } from '@/components/common/OrderDrawer';
 import { ReceiptModal } from '@/components/common/ReceiptModal';
+import { formatDate, formatTime } from '@/utils/formatters';
 import { 
   BiSearch, 
   BiFilterAlt, 
@@ -190,9 +191,8 @@ export default function OrdersPage() {
                       )}
                     </td>
                     <td className="small text-muted-custom">{ord.branchName}</td>
-                    <td className="small text-muted-custom">
-                      {new Date(ord.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric' })}{' '}
-                      {new Date(ord.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    <td className="small text-muted-custom" suppressHydrationWarning>
+                      {formatDate(ord.createdAt)} {formatTime(ord.createdAt)}
                     </td>
                     <td>
                       <div className="d-flex align-items-center gap-1">

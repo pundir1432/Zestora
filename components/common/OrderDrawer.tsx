@@ -4,6 +4,7 @@ import React from 'react';
 import { Modal } from './Modal';
 import { Order, OrderStatus } from '@/types/order';
 import { StatusBadge } from './StatusBadge';
+import { formatTime } from '@/utils/formatters';
 import { 
   BiPrinter, 
   BiPhone, 
@@ -50,7 +51,7 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
       isOpen={isOpen}
       onClose={onClose}
       title={`Order Details #${order.orderNumber}`}
-      subtitle={`${order.branchName} • Placed on ${new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
+      subtitle={`${order.branchName} • Placed on ${formatTime(order.createdAt)}`}
       size="lg"
       footer={
         <div className="d-flex align-items-center justify-content-between w-100 flex-wrap gap-2">

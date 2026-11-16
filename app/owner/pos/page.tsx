@@ -283,7 +283,7 @@ function PosBillingContent() {
           <span className="badge bg-dark font-monospace">TERMINAL #1</span>
           <span className="text-muted small">Cashier: Rohit Verma | Branch: Indiranagar</span>
         </div>
-        <div className="d-flex align-items-center gap-2">
+        <div className="d-flex align-items-center gap-2 flex-wrap">
           <button
             type="button"
             className="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1"
@@ -324,7 +324,7 @@ function PosBillingContent() {
       {/* POS Dual Pane Layout */}
       <div className="row g-3" style={{ minHeight: 'calc(100vh - 120px)' }}>
         {/* LEFT SECTION: Food Categories & Menu Grid */}
-        <div className="col-12 col-xl-8 d-flex flex-column">
+        <div className="col-12 col-lg-7 col-xl-8 d-flex flex-column">
           {/* Top Filter and Search Bar */}
           <div className="app-card p-3 mb-3 bg-white">
             <div className="row g-2 align-items-center">
@@ -435,7 +435,7 @@ function PosBillingContent() {
         </div>
 
         {/* RIGHT SECTION: Active Cart & Billing Terminal */}
-        <div className="col-12 col-xl-4">
+        <div id="pos-cart-panel" className="col-12 col-lg-5 col-xl-4">
           <PosCart
             items={cartItems}
             customers={SAMPLE_CUSTOMERS}
@@ -717,6 +717,26 @@ function PosBillingContent() {
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+      {/* Mobile Floating Cart Jump Bar */}
+      {cartItems.length > 0 && (
+        <div className="d-lg-none position-fixed bottom-0 start-0 end-0 p-3 bg-white border-top shadow-lg" style={{ zIndex: 1025 }}>
+          <div className="d-flex align-items-center justify-content-between gap-2">
+            <div>
+              <span className="badge bg-brand text-white rounded-pill me-1">{cartItems.reduce((s, i) => s + i.quantity, 0)} Items</span>
+              <strong className="text-navy">₹{cartItems.reduce((s, i) => s + i.price * i.quantity, 0).toFixed(2)}</strong>
+            </div>
+            <button
+              type="button"
+              className="btn btn-brand btn-sm text-white fw-bold px-3 py-1.5 shadow-sm"
+              onClick={() => {
+                document.getElementById('pos-cart-panel')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              View Cart & Checkout &darr;
+            </button>
           </div>
         </div>
       )}

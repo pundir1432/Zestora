@@ -90,7 +90,7 @@ export default function LoginPage() {
         <div className="row justify-content-center align-items-center g-4">
           {/* Left Column: Form & Welcome */}
           <div className="col-12 col-lg-5">
-            <div className="app-card p-4 p-md-5 bg-white shadow-lg rounded-4">
+            <div className="app-card p-3 p-sm-4 p-md-5 bg-white shadow-lg rounded-4">
               <div className="mb-4">
                 <span className="badge bg-brand text-white text-uppercase rounded-pill px-3 py-1 mb-2" style={{ fontSize: '11px' }}>
                   Tenant Access Portal
@@ -174,7 +174,7 @@ export default function LoginPage() {
 
           {/* Right Column: 1-Click Role Accounts */}
           <div className="col-12 col-lg-7">
-            <div className="app-card p-4 p-md-5 bg-white shadow-lg rounded-4">
+            <div className="app-card p-3 p-sm-4 p-md-5 bg-white shadow-lg rounded-4">
               <div className="d-flex align-items-center justify-content-between mb-3">
                 <div>
                   <h5 className="fw-bold text-navy mb-1">Interactive 1-Click Role Testing</h5>

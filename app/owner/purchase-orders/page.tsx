@@ -317,7 +317,7 @@ export default function BusinessOwnerPurchaseOrdersPage() {
                   />
                 </div>
               </div>
-              <div className="col-12 col-md-7 d-flex justify-content-md-end gap-2">
+              <div className="col-12 col-md-7 d-flex justify-content-md-end gap-2 flex-wrap">
                 {['All', 'Sent', 'Partially Received', 'Fully Received', 'Draft'].map((status) => (
                   <button
                     key={status}

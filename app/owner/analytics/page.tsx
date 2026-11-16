@@ -62,7 +62,7 @@ export default function BusinessOwnerAnalyticsPage() {
               Detailed sales mix, hourly kitchen rush heatmaps, and dining channel revenue contributions.
             </p>
           </div>
-          <div className="d-flex gap-2">
+          <div className="d-flex gap-2 flex-wrap">
             {['Today', 'Last 7 Days', 'Last 30 Days', 'This Quarter'].map((range) => (
               <button
                 key={range}

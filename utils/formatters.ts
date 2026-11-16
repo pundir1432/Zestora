@@ -45,3 +45,41 @@ export function formatCurrency(val: number | string | undefined | null, decimals
 }
 
 export const formatINR = formatCurrency;
+
+const MONTH_NAMES_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/**
+ * Formats a date string (ISO or timestamp) deterministically as "Nov 14"
+ */
+export function formatDate(dateInput: string | number | Date | undefined | null): string {
+  if (!dateInput) return '';
+  const d = new Date(dateInput);
+  if (isNaN(d.getTime())) return '';
+  return `${MONTH_NAMES_SHORT[d.getMonth()]} ${d.getDate()}`;
+}
+
+/**
+ * Formats time deterministically as "03:32 PM"
+ */
+export function formatTime(dateInput: string | number | Date | undefined | null): string {
+  if (!dateInput) return '';
+  const d = new Date(dateInput);
+  if (isNaN(d.getTime())) return '';
+  let hours = d.getHours();
+  const minutes = d.getMinutes().toString().padStart(2, '0');
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+  const strHours = hours.toString().padStart(2, '0');
+  return `${strHours}:${minutes} ${ampm}`;
+}
+
+/**
+ * Formats date and time deterministically as "Nov 14, 03:32 PM"
+ */
+export function formatDateTime(dateInput: string | number | Date | undefined | null): string {
+  if (!dateInput) return '';
+  const d = new Date(dateInput);
+  if (isNaN(d.getTime())) return '';
+  return `${formatDate(d)}, ${formatTime(d)}`;
+}

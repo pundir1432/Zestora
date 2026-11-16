@@ -29,8 +29,8 @@ import {
 
 export default function OwnerSubscriptionPage() {
   const router = useRouter();
-  const { 
-    currentRestaurant, 
+  const {
+    currentRestaurant,
     updateRestaurant,
     subscriptionStatus,
     subscriptionPlan,
@@ -253,13 +253,12 @@ export default function OwnerSubscriptionPage() {
         <div className="row g-4 align-items-center position-relative" style={{ zIndex: 2 }}>
           <div className="col-12 col-lg-7">
             <div className="d-flex align-items-center gap-2 mb-2">
-              <span className={`badge ${
-                subscriptionStatus === 'Active' ? 'bg-success' :
+              <span className={`badge ${subscriptionStatus === 'Active' ? 'bg-success' :
                 subscriptionStatus === 'Trial' ? 'bg-warning text-dark' :
-                subscriptionStatus === 'Grace Period' ? 'bg-danger' :
-                subscriptionStatus === 'Payment Due' ? 'bg-info text-dark' :
-                'bg-secondary'
-              } text-uppercase px-2.5 py-1`} style={{ fontSize: '11px', letterSpacing: '0.5px' }}>
+                  subscriptionStatus === 'Grace Period' ? 'bg-danger' :
+                    subscriptionStatus === 'Payment Due' ? 'bg-info text-dark' :
+                      'bg-secondary'
+                } text-uppercase px-2.5 py-1`} style={{ fontSize: '11px', letterSpacing: '0.5px' }}>
                 Status: {subscriptionStatus}
               </span>
               <span className="text-white-50 small">
@@ -369,18 +368,16 @@ export default function OwnerSubscriptionPage() {
         <div className="bg-surface p-1 rounded-pill border border-subtle d-flex align-items-center">
           <button
             type="button"
-            className={`btn btn-sm rounded-pill px-3 ${
-              billingCycle === 'Monthly' ? 'bg-white fw-bold shadow-sm text-navy' : 'text-muted-custom'
-            }`}
+            className={`btn btn-sm rounded-pill px-3 ${billingCycle === 'Monthly' ? 'bg-white fw-bold shadow-sm text-navy' : 'text-muted-custom'
+              }`}
             onClick={() => setBillingCycle('Monthly')}
           >
             Monthly
           </button>
           <button
             type="button"
-            className={`btn btn-sm rounded-pill px-3 d-flex align-items-center gap-1 ${
-              billingCycle === 'Yearly' ? 'bg-brand fw-bold shadow-sm text-white' : 'text-muted-custom'
-            }`}
+            className={`btn btn-sm rounded-pill px-3 d-flex align-items-center gap-1 ${billingCycle === 'Yearly' ? 'bg-brand fw-bold shadow-sm text-white' : 'text-muted-custom'
+              }`}
             onClick={() => setBillingCycle('Yearly')}
           >
             <span>Annual</span>
@@ -400,9 +397,8 @@ export default function OwnerSubscriptionPage() {
           return (
             <div key={plan.id} className="col-12 col-md-6 col-xl-3">
               <div
-                className={`app-card p-4 h-100 d-flex flex-column justify-content-between position-relative ${
-                  plan.isPopular ? 'border-brand border-2 shadow' : ''
-                }`}
+                className={`app-card p-4 h-100 d-flex flex-column justify-content-between position-relative ${plan.isPopular ? 'border-brand border-2 shadow' : ''
+                  }`}
               >
                 {plan.isPopular && (
                   <div
@@ -523,9 +519,9 @@ export default function OwnerSubscriptionPage() {
 
       {/* GST INVOICE MODAL */}
       {showInvoiceModal && selectedInvoice && (
-        <div 
-          className="modal fade show d-block" 
-          tabIndex={-1} 
+        <div
+          className="modal fade show d-block"
+          tabIndex={-1}
           style={{ backgroundColor: 'rgba(15, 23, 42, 0.75)', zIndex: 1070 }}
         >
           <div className="modal-dialog modal-dialog-centered modal-lg">
@@ -539,9 +535,9 @@ export default function OwnerSubscriptionPage() {
                 />
               </div>
 
-              <div className="modal-body p-4 p-md-5 bg-white text-navy">
+              <div className="modal-body p-3 p-sm-4 p-md-5 bg-white text-navy">
                 {/* Header */}
-                <div className="d-flex justify-content-between align-items-start border-bottom pb-4 mb-4">
+                <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start border-bottom pb-4 mb-4 gap-3">
                   <div>
                     <div className="d-flex align-items-center gap-2 mb-2">
                       <div className="bg-brand text-white fw-bold px-2 py-1 rounded" style={{ fontSize: '16px' }}>
@@ -558,7 +554,7 @@ export default function OwnerSubscriptionPage() {
                     </p>
                   </div>
 
-                  <div className="text-end">
+                  <div className="text-start text-sm-end">
                     <span className="badge bg-brand text-white px-3 py-1 text-uppercase mb-2">TAX INVOICE</span>
                     <h5 className="fw-bold text-navy mb-0 font-monospace">{selectedInvoice.invoiceNumber}</h5>
                     <span className="small text-muted">Billed Date: {selectedInvoice.date}</span>

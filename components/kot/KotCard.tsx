@@ -3,6 +3,7 @@
 import React from 'react';
 import { Order, OrderStatus } from '@/types/order';
 import { BiTime, BiCheck, BiRightArrowAlt, BiPrinter, BiDish } from 'react-icons/bi';
+import { formatTime } from '@/utils/formatters';
 
 interface KotCardProps {
   order: Order;
@@ -55,8 +56,8 @@ export const KotCard: React.FC<KotCardProps> = ({
           <span className={`badge rounded-pill ${timerColor} d-inline-flex align-items-center gap-1`} style={{ fontSize: '11px' }}>
             <BiTime size={13} /> {elapsed}m ago
           </span>
-          <div className="text-muted-custom small mt-1" style={{ fontSize: '11px' }}>
-            {new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          <div className="text-muted-custom small mt-1" style={{ fontSize: '11px' }} suppressHydrationWarning>
+            {formatTime(order.createdAt)}
           </div>
         </div>
       </div>
