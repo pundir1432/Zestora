@@ -8,9 +8,9 @@ import { useHospitality } from '@/context/HospitalityContext';
 
 export const PlanTierBadge: React.FC<{ tier: PlanTier; compact?: boolean }> = ({ tier, compact = false }) => {
   const styles: Record<PlanTier, string> = {
-    S: 'bg-secondary bg-opacity-15 text-navy border border-secondary border-opacity-25',
-    G: 'bg-primary bg-opacity-15 text-primary border border-primary border-opacity-25',
-    E: 'bg-warning bg-opacity-20 text-dark border border-warning border-opacity-50',
+    S: 'bg-secondary bg-opacity-10 text-navy border border-secondary border-opacity-25',
+    G: 'bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25',
+    E: 'bg-warning bg-opacity-25 text-dark border border-warning border-opacity-50',
   };
   return (
     <span className={`badge rounded-pill fw-semibold d-inline-flex align-items-center gap-1 ${styles[tier]}`} style={{ fontSize: '11px' }}>
@@ -47,7 +47,7 @@ export const PlanGate: React.FC<PlanGateBannerProps> = ({
       <div className="alert alert-warning border border-warning border-opacity-50 rounded-4 p-4 mb-4 bg-white shadow-sm">
         <div className="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
           <div className="d-flex align-items-start gap-3">
-            <div className="rounded-3 bg-warning bg-opacity-20 text-warning p-3 flex-shrink-0">
+            <div className="rounded-3 bg-warning bg-opacity-25 text-warning p-3 flex-shrink-0">
               <BiLockAlt size={26} />
             </div>
             <div>

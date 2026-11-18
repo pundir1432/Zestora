@@ -312,7 +312,7 @@ export default function RegisterPage() {
 
                 <button
                   type="submit"
-                  className="btn btn-brand w-100 py-2.5 fw-semibold d-flex align-items-center justify-content-center gap-2 shadow-sm text-white"
+                  className="btn btn-brand w-100 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2 shadow-sm text-white"
                 >
                   <span>Create Account & Continue to Onboarding</span>
                   <BiRightArrowAlt size={20} />

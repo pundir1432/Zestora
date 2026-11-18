@@ -51,7 +51,7 @@ export default function ApprovalWorkflowsPage() {
                 <span className="fw-bold text-navy">{req.amountOrImpact}</span>
               </div>
               <span
-                className={`badge rounded-pill px-3 py-1.5 d-inline-flex align-items-center gap-1 ${
+                className={`badge rounded-pill px-3 py-1 d-inline-flex align-items-center gap-1 ${
                   req.status === 'Approved'
                     ? 'badge-soft-success'
                     : req.status === 'Rejected'
@@ -67,7 +67,7 @@ export default function ApprovalWorkflowsPage() {
             <div className="small text-muted-custom mb-2">
               Requested by <strong className="text-navy">{req.requestedBy}</strong> ({req.requesterRole}) &bull; {req.propertyOutlet} &bull; {req.requestedAt}
             </div>
-            <div className="p-2.5 rounded-3 bg-surface border border-subtle small text-navy mb-3">
+            <div className="p-3 rounded-3 bg-surface border border-subtle small text-navy mb-3">
               <strong>Reason:</strong> {req.reason}
             </div>
 

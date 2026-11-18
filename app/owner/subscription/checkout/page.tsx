@@ -177,7 +177,7 @@ function CheckoutContent() {
               <BiCheckCircle size={54} />
             </div>
 
-            <span className="badge bg-success text-white px-3 py-1.5 rounded-pill small mb-2">
+            <span className="badge bg-success text-white px-3 py-1 rounded-pill small mb-2">
               Subscription Active & Verified
             </span>
             <h3 className="fw-bold text-navy mb-1">Payment Successful!</h3>
@@ -240,7 +240,7 @@ function CheckoutContent() {
               <BiXCircle size={54} />
             </div>
 
-            <span className="badge bg-danger text-white px-3 py-1.5 rounded-pill small mb-2">
+            <span className="badge bg-danger text-white px-3 py-1 rounded-pill small mb-2">
               Payment Not Completed
             </span>
             <h3 className="fw-bold text-navy mb-1">Transaction Failed</h3>
@@ -286,7 +286,7 @@ function CheckoutContent() {
           <div className="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-4 gap-2">
             <div>
               <div className="d-flex align-items-center gap-2 mb-1">
-                <Link href="/owner/subscription" className="btn btn-sm btn-outline-secondary py-1 px-2.5 d-inline-flex align-items-center gap-1">
+                <Link href="/owner/subscription" className="btn btn-sm btn-outline-secondary py-1 px-3 d-inline-flex align-items-center gap-1">
                   <BiLeftArrowAlt size={16} /> Back
                 </Link>
                 <h4 className="fw-bold text-navy mb-0">Secure SaaS Checkout</h4>
@@ -436,11 +436,11 @@ function CheckoutContent() {
                 </h6>
 
                 {/* Tabs */}
-                <ul className="nav nav-pills nav-fill flex-column flex-sm-row gap-2 bg-surface p-1.5 rounded-3 mb-4 border">
+                <ul className="nav nav-pills nav-fill flex-column flex-sm-row gap-2 bg-surface p-2 rounded-3 mb-4 border">
                   <li className="nav-item">
                     <button
                       type="button"
-                      className={`nav-link py-2 small fw-semibold d-flex align-items-center justify-content-center gap-1.5 ${
+                      className={`nav-link py-2 small fw-semibold d-flex align-items-center justify-content-center gap-2 ${
                         paymentMethodTab === 'upi' ? 'active bg-brand text-white shadow-sm' : 'text-navy'
                       }`}
                       onClick={() => setPaymentMethodTab('upi')}
@@ -452,7 +452,7 @@ function CheckoutContent() {
                   <li className="nav-item">
                     <button
                       type="button"
-                      className={`nav-link py-2 small fw-semibold d-flex align-items-center justify-content-center gap-1.5 ${
+                      className={`nav-link py-2 small fw-semibold d-flex align-items-center justify-content-center gap-2 ${
                         paymentMethodTab === 'card' ? 'active bg-brand text-white shadow-sm' : 'text-navy'
                       }`}
                       onClick={() => setPaymentMethodTab('card')}
@@ -464,7 +464,7 @@ function CheckoutContent() {
                   <li className="nav-item">
                     <button
                       type="button"
-                      className={`nav-link py-2 small fw-semibold d-flex align-items-center justify-content-center gap-1.5 ${
+                      className={`nav-link py-2 small fw-semibold d-flex align-items-center justify-content-center gap-2 ${
                         paymentMethodTab === 'netbanking' ? 'active bg-brand text-white shadow-sm' : 'text-navy'
                       }`}
                       onClick={() => setPaymentMethodTab('netbanking')}
@@ -476,7 +476,7 @@ function CheckoutContent() {
                   <li className="nav-item">
                     <button
                       type="button"
-                      className={`nav-link py-2 small fw-semibold d-flex align-items-center justify-content-center gap-1.5 ${
+                      className={`nav-link py-2 small fw-semibold d-flex align-items-center justify-content-center gap-2 ${
                         paymentMethodTab === 'autopay' ? 'active bg-brand text-white shadow-sm' : 'text-navy'
                       }`}
                       onClick={() => setPaymentMethodTab('autopay')}
@@ -712,9 +712,9 @@ function CheckoutContent() {
                 {/* Coupon Code Section */}
                 <div className="mb-3">
                   {appliedCoupon ? (
-                    <div className="p-2.5 bg-success bg-opacity-10 border border-success border-opacity-25 rounded-3 d-flex align-items-center justify-content-between">
+                    <div className="p-3 bg-success bg-opacity-10 border border-success border-opacity-25 rounded-3 d-flex align-items-center justify-content-between">
                       <div>
-                        <span className="badge bg-success text-white me-1.5">{appliedCoupon.code}</span>
+                        <span className="badge bg-success text-white me-2">{appliedCoupon.code}</span>
                         <span className="small text-success fw-medium">Save ₹{appliedCoupon.discount}</span>
                       </div>
                       <button
@@ -779,7 +779,7 @@ function CheckoutContent() {
                 {/* Pay Button */}
                 <button
                   type="button"
-                  className="btn btn-brand w-100 py-2.5 fw-bold text-white shadow-sm d-flex align-items-center justify-content-center gap-2 mb-3"
+                  className="btn btn-brand w-100 py-2 fw-bold text-white shadow-sm d-flex align-items-center justify-content-center gap-2 mb-3"
                   onClick={handleInitiatePayment}
                   disabled={isProcessing}
                 >
@@ -813,7 +813,7 @@ function CheckoutContent() {
               {/* Gateway Top Navy Brand Header */}
               <div className="bg-navy p-3 text-white d-flex align-items-center justify-content-between">
                 <div className="d-flex align-items-center gap-2">
-                  <div className="bg-brand text-white fw-bold px-2 py-0.5 rounded" style={{ fontSize: '13px' }}>
+                  <div className="bg-brand text-white fw-bold px-2 py-1 rounded" style={{ fontSize: '13px' }}>
                     Z
                   </div>
                   <div>
@@ -855,7 +855,7 @@ function CheckoutContent() {
                 <div className="d-flex flex-column gap-2">
                   <button
                     type="button"
-                    className="btn btn-success py-2.5 fw-semibold d-flex align-items-center justify-content-center gap-2"
+                    className="btn btn-success py-2 fw-semibold d-flex align-items-center justify-content-center gap-2"
                     onClick={handleSimulateGatewaySuccess}
                   >
                     <BiCheckCircle size={18} />

@@ -88,7 +88,7 @@ export default function CampsAdventurePage() {
             const pct = Math.round((slot.bookedCount / slot.capacity) * 100);
             return (
               <div key={slot.id} className="col-12 col-md-6">
-                <div className="app-card p-3.5 h-100">
+                <div className="app-card p-4 h-100">
                   <div className="d-flex justify-content-between align-items-start mb-2">
                     <div>
                       <span className="badge badge-soft-brand mb-1">{slot.category}</span>
@@ -140,7 +140,7 @@ export default function CampsAdventurePage() {
         <div className="row g-3">
           {campPackages.map(pkg => (
             <div key={pkg.id} className="col-12 col-lg-6">
-              <div className="app-card p-3.5 h-100 d-flex flex-column justify-content-between">
+              <div className="app-card p-4 h-100 d-flex flex-column justify-content-between">
                 <div>
                   <div className="d-flex justify-content-between align-items-start mb-2">
                     <div>

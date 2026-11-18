@@ -193,7 +193,7 @@ export default function OwnerPulseAppPage() {
               <Link
                 key={n.id}
                 href={n.actionHref || '/owner/notifications'}
-                className="p-2.5 rounded-3 bg-surface border border-subtle text-decoration-none d-flex align-items-center justify-content-between gap-2"
+                className="p-3 rounded-3 bg-surface border border-subtle text-decoration-none d-flex align-items-center justify-content-between gap-2"
               >
                 <div>
                   <div className="fw-semibold text-navy small">{n.title}</div>

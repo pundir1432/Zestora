@@ -56,7 +56,7 @@ export default function ForgotPasswordPage() {
                 <div className="text-center">
                   <div className="alert alert-success py-3 rounded-3 mb-4 text-start">
                     <div className="d-flex align-items-start gap-2">
-                      <BiCheckCircle size={22} className="text-success flex-shrink-0 mt-0.5" />
+                      <BiCheckCircle size={22} className="text-success flex-shrink-0 mt-1" />
                       <div>
                         <strong>Password Reset Link Dispatched!</strong>
                         <p className="small mb-0 mt-1">
@@ -68,7 +68,7 @@ export default function ForgotPasswordPage() {
 
                   <Link
                     href={`/reset-password?email=${encodeURIComponent(email)}&token=demo-reset-9921`}
-                    className="btn btn-brand w-100 py-2.5 fw-semibold d-flex align-items-center justify-content-center gap-2 shadow-sm text-white mb-3"
+                    className="btn btn-brand w-100 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2 shadow-sm text-white mb-3"
                   >
                     <span>Proceed to Reset Password</span>
                     <BiRightArrowAlt size={20} />
@@ -103,7 +103,7 @@ export default function ForgotPasswordPage() {
 
                   <button
                     type="submit"
-                    className="btn btn-brand w-100 py-2.5 fw-semibold d-flex align-items-center justify-content-center gap-2 shadow-sm text-white mb-3"
+                    className="btn btn-brand w-100 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2 shadow-sm text-white mb-3"
                   >
                     <span>Send Recovery Instructions</span>
                     <BiRightArrowAlt size={20} />

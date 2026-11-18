@@ -444,7 +444,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {/* User Footer & Logout */}
         <div
-          className="p-3 bg-black bg-opacity-20 border-0"
+          className="p-3 bg-black bg-opacity-25 border-0"
           style={{ border: 'none', borderTop: 'none', borderBottom: 'none' }}
         >
           <div className="d-flex align-items-center justify-content-between">

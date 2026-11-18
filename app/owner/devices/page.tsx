@@ -94,7 +94,7 @@ export default function DeviceManagementPage() {
                       {dev.status === 'Active' ? <BiCheckCircle /> : dev.status === 'Offline' ? <BiWifiOff /> : <BiShieldX />}
                       {dev.status}
                     </span>
-                    <div className="text-muted-custom mt-0.5" style={{ fontSize: '10px' }}>{dev.lastActive}</div>
+                    <div className="text-muted-custom mt-1" style={{ fontSize: '10px' }}>{dev.lastActive}</div>
                   </td>
                   <td className="text-end">
                     <button

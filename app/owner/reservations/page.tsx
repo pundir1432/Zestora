@@ -381,7 +381,7 @@ export default function ReservationsPage() {
                       {(r.status === 'Confirmed' || r.status === 'Arrived') && (
                         <button
                           type="button"
-                          className="btn btn-brand btn-sm py-1 px-2.5 d-flex align-items-center gap-1"
+                          className="btn btn-brand btn-sm py-1 px-3 d-flex align-items-center gap-1"
                           title="Seat Guest at Table (Updates Table status to Occupied)"
                           onClick={() => handleSeatGuest(r)}
                         >

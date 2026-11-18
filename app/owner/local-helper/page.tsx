@@ -38,9 +38,9 @@ export default function LocalHelperToolsPage() {
           const Icon = tool.icon;
           return (
             <div key={tool.title} className="col-12 col-md-6">
-              <div className="app-card p-3.5 h-100 d-flex flex-column justify-content-between">
+              <div className="app-card p-4 h-100 d-flex flex-column justify-content-between">
                 <div className="d-flex align-items-start gap-3 mb-3">
-                  <div className="rounded-3 bg-surface p-2.5 text-brand"><Icon size={24} /></div>
+                  <div className="rounded-3 bg-surface p-3 text-brand"><Icon size={24} /></div>
                   <div>
                     <div className="fw-bold text-navy">{tool.title}</div>
                     <div className="text-muted-custom small">{tool.sub}</div>

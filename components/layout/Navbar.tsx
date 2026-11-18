@@ -94,7 +94,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMobile, collapsed = fals
                     closeAllDropdowns();
                     setShowHierarchyDropdown(next);
                   }}
-                  className="btn btn-sm bg-surface border border-subtle rounded-3 px-2.5 py-1.5 d-flex align-items-center gap-2 text-start"
+                  className="btn btn-sm bg-surface border border-subtle rounded-3 px-3 py-1 d-flex align-items-center gap-2 text-start"
                   title="Switch Tenant → Property → Outlet"
                 >
                   <BiBuilding className="text-brand flex-shrink-0" size={18} />
@@ -205,9 +205,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMobile, collapsed = fals
               </div>
 
               {/* Plan Tier Pill */}
-              <div className="d-none d-xxl-flex align-items-center gap-1 bg-surface border border-subtle rounded-pill px-2.5 py-1">
-                <BiCrown size={13} className="text-warning" />
-                <span className="fw-bold text-navy" style={{ fontSize: '11px' }}>
+              <div
+                className="d-none d-xl-flex align-items-center gap-2 bg-surface border border-subtle rounded-pill px-3 py-1"
+                style={{ minHeight: '32px' }}
+              >
+                <BiCrown size={14} className="text-warning flex-shrink-0" />
+                <span className="fw-bold text-navy text-nowrap" style={{ fontSize: '11px' }}>
                   {t('plan_tier')}: {activePlanTier}
                 </span>
               </div>
@@ -233,7 +236,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMobile, collapsed = fals
           <button
             type="button"
             onClick={toggleLanguage}
-            className="btn btn-sm btn-outline-secondary rounded-pill px-2.5 py-1 d-flex align-items-center gap-1 border-subtle bg-surface text-navy fw-semibold"
+            className="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1 d-flex align-items-center gap-1 border-subtle bg-surface text-navy fw-semibold"
             style={{ fontSize: '11px' }}
             title="Switch Interface Language (English / हिंदी)"
           >
@@ -245,7 +248,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMobile, collapsed = fals
           {!isSuperAdmin && role !== 'kitchen_staff' && (
             <Link
               href="/owner/pos"
-              className="btn btn-brand btn-sm d-none d-sm-flex align-items-center gap-1 px-2.5 py-1 shadow-sm text-decoration-none text-white"
+              className="btn btn-brand btn-sm d-none d-sm-flex align-items-center gap-1 px-3 py-1 shadow-sm text-decoration-none text-white"
             >
               <MdOutlinePointOfSale size={16} />
               <span className="d-none d-xl-inline fw-semibold" style={{ fontSize: '12px' }}>POS</span>
@@ -256,7 +259,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleMobile, collapsed = fals
           <div className="position-relative">
             <button
               type="button"
-              className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1 rounded-pill px-2 px-md-2.5 py-1 bg-surface border-subtle"
+              className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1 rounded-pill px-2 px-md-3 py-1 bg-surface border-subtle"
               onClick={() => {
                 const next = !showRoleDropdown;
                 closeAllDropdowns();

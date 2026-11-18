@@ -89,7 +89,7 @@ export default function OfflineSyncCenterPage() {
             : networkStatus === 'syncing'
             ? 'bg-info bg-opacity-10 text-primary'
             : networkStatus === 'sync_failed'
-            ? 'bg-warning bg-opacity-15 text-dark'
+            ? 'bg-warning bg-opacity-10 text-dark'
             : 'bg-success bg-opacity-10 text-success'
         }`}
       >
@@ -106,7 +106,7 @@ export default function OfflineSyncCenterPage() {
             </div>
           </div>
         </div>
-        <span className="badge bg-white text-navy border shadow-2xs px-3 py-2">
+        <span className="badge bg-white text-navy border shadow-sm px-3 py-2">
           Mock Frontend Sync Engine
         </span>
       </div>
@@ -184,7 +184,7 @@ export default function OfflineSyncCenterPage() {
             <p className="text-navy small mb-2">{item.summary}</p>
 
             {item.errorOrConflictDetail && (
-              <div className="alert alert-warning py-2 px-3 small mb-3 border-0 bg-warning bg-opacity-15">
+              <div className="alert alert-warning py-2 px-3 small mb-3 border-0 bg-warning bg-opacity-10">
                 <strong>Detail:</strong> {item.errorOrConflictDetail}
               </div>
             )}
@@ -192,13 +192,13 @@ export default function OfflineSyncCenterPage() {
             {item.status === 'Conflict' && item.localSnapshot && item.serverSnapshot && (
               <div className="row g-2 mb-3">
                 <div className="col-12 col-md-6">
-                  <div className="p-2.5 rounded-3 bg-surface border border-brand border-opacity-50">
+                  <div className="p-3 rounded-3 bg-surface border border-brand border-opacity-50">
                     <div className="fw-bold text-brand small mb-1">Local Device Snapshot</div>
                     <div className="small text-navy">{item.localSnapshot}</div>
                   </div>
                 </div>
                 <div className="col-12 col-md-6">
-                  <div className="p-2.5 rounded-3 bg-surface border border-primary border-opacity-50">
+                  <div className="p-3 rounded-3 bg-surface border border-primary border-opacity-50">
                     <div className="fw-bold text-primary small mb-1">Cloud / Front Desk Snapshot</div>
                     <div className="small text-navy">{item.serverSnapshot}</div>
                   </div>

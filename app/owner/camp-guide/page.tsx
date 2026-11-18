@@ -43,7 +43,7 @@ export default function CampGuideAppPage() {
                   <button
                     type="button"
                     onClick={() => toggleGear(g)}
-                    className={`btn btn-sm w-100 text-start d-flex align-items-center gap-2 p-2.5 rounded-3 border ${
+                    className={`btn btn-sm w-100 text-start d-flex align-items-center gap-2 p-3 rounded-3 border ${
                       ok ? 'bg-success bg-opacity-10 border-success text-success fw-semibold' : 'bg-surface border-subtle text-navy'
                     }`}
                   >

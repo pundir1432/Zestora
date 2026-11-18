@@ -226,7 +226,7 @@ export default function SubscriptionsPage() {
           className="position-fixed top-0 start-50 translate-middle-x mt-4 z-index-1080 animate__animated animate__fadeInDown"
           style={{ zIndex: 1080 }}
         >
-          <div className="alert alert-success shadow-lg border-0 d-flex align-items-center gap-2 py-2.5 px-4 rounded-pill">
+          <div className="alert alert-success shadow-lg border-0 d-flex align-items-center gap-2 py-2 px-4 rounded-pill">
             <BiCheckCircle size={20} />
             <span className="fw-semibold small">{toastMessage}</span>
           </div>
@@ -246,7 +246,7 @@ export default function SubscriptionsPage() {
           {/* Trial / Grace Policy Config Button */}
           <button
             type="button"
-            className="btn btn-outline-navy btn-sm d-flex align-items-center gap-1.5 bg-white shadow-sm fw-semibold"
+            className="btn btn-outline-navy btn-sm d-flex align-items-center gap-2 bg-white shadow-sm fw-semibold"
             onClick={() => setIsConfigModalOpen(true)}
           >
             <BiSliderAlt size={16} className="text-brand" />
@@ -303,12 +303,12 @@ export default function SubscriptionsPage() {
 
           return (
             <div key={plan.id} className="col-12 col-sm-6 col-xl-3">
-              <div className={`app-card p-3.5 h-100 d-flex flex-column justify-content-between position-relative ${
+              <div className={`app-card p-4 h-100 d-flex flex-column justify-content-between position-relative ${
                 plan.isPopular ? 'border-brand shadow-sm' : ''
               }`}>
                 {plan.isPopular && (
                   <span 
-                    className="position-absolute top-0 end-0 m-2.5 badge bg-brand text-white rounded-pill px-2.5 py-1"
+                    className="position-absolute top-0 end-0 m-3 badge bg-brand text-white rounded-pill px-3 py-1"
                     style={{ fontSize: '10px' }}
                   >
                     Most Popular
@@ -322,14 +322,14 @@ export default function SubscriptionsPage() {
                     <span className="text-muted-custom small">{cycleLabel}</span>
                   </div>
 
-                  <div className="small text-muted-custom mb-2.5 pb-2 border-bottom border-subtle" style={{ fontSize: '11px' }}>
+                  <div className="small text-muted-custom mb-3 pb-2 border-bottom border-subtle" style={{ fontSize: '11px' }}>
                     Max Outlets: <strong>{plan.maxBranches} Outlets</strong> • Max Staff: <strong>{plan.maxStaff}</strong>
                   </div>
 
-                  <ul className="list-unstyled d-flex flex-column gap-1.5 mb-3 small">
+                  <ul className="list-unstyled d-flex flex-column gap-2 mb-3 small">
                     {plan.features.slice(0, 4).map((feat, idx) => (
-                      <li key={idx} className="d-flex align-items-start gap-1.5 text-navy" style={{ fontSize: '11px' }}>
-                        <BiCheck className="text-success flex-shrink-0 mt-0.5" size={14} />
+                      <li key={idx} className="d-flex align-items-start gap-2 text-navy" style={{ fontSize: '11px' }}>
+                        <BiCheck className="text-success flex-shrink-0 mt-1" size={14} />
                         <span>{feat}</span>
                       </li>
                     ))}

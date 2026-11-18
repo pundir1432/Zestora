@@ -157,7 +157,11 @@ export default function SuperAdminReportsPage() {
               <AreaChart data={PLATFORM_REVENUE_CHART_DATA}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                 <XAxis dataKey="month" stroke="#94a3b8" />
-                <YAxis stroke="#94a3b8" />
+                <YAxis
+                  stroke="#94a3b8"
+                  tickFormatter={(v) => (v >= 100 ? `₹${parseFloat((v / 100).toFixed(2))}Cr` : `₹${v}L`)}
+                  width={62}
+                />
                 <Tooltip contentStyle={{ backgroundColor: '#18263B', color: '#fff', borderRadius: '8px' }} />
                 <Legend />
                 <Area type="monotone" dataKey="revenue" name="Total Gross Revenue (₹L)" stroke="#F47B35" fill="#F47B35" fillOpacity={0.2} strokeWidth={2.5} />

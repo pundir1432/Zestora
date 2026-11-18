@@ -219,17 +219,17 @@ export default function FrontDeskPage() {
                       return (
                         <td key={d} className="p-1 text-center">
                           {isOoo ? (
-                            <div className="rounded-2 py-1.5 px-2 bg-dark text-white" style={{ fontSize: '10px' }}>Out of Order</div>
+                            <div className="rounded-2 py-1 px-2 bg-dark text-white" style={{ fontSize: '10px' }}>Out of Order</div>
                           ) : isOccupiedCell ? (
-                            <div className="rounded-2 py-1.5 px-2 bg-brand text-white fw-semibold text-truncate" style={{ fontSize: '10px' }}>
+                            <div className="rounded-2 py-1 px-2 bg-brand text-white fw-semibold text-truncate" style={{ fontSize: '10px' }}>
                               {rm.currentGuestName || 'Occupied'}
                             </div>
                           ) : isReservedCell ? (
-                            <div className="rounded-2 py-1.5 px-2 bg-primary bg-opacity-15 text-primary fw-semibold text-truncate" style={{ fontSize: '10px' }}>
+                            <div className="rounded-2 py-1 px-2 bg-primary bg-opacity-10 text-primary fw-semibold text-truncate" style={{ fontSize: '10px' }}>
                               Reserved
                             </div>
                           ) : (
-                            <div className="rounded-2 py-1.5 px-2 bg-success bg-opacity-10 text-success" style={{ fontSize: '10px' }}>
+                            <div className="rounded-2 py-1 px-2 bg-success bg-opacity-10 text-success" style={{ fontSize: '10px' }}>
                               Open
                             </div>
                           )}

@@ -69,7 +69,7 @@ export default function RolesPermissions33Page() {
         <div className="row g-2">
           {supportRequests.map(sr => (
             <div key={sr.id} className="col-12 col-lg-6">
-              <div className="p-2.5 rounded-3 bg-surface border border-subtle d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-2">
+              <div className="p-3 rounded-3 bg-surface border border-subtle d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-2">
                 <div>
                   <div className="fw-bold text-navy small">{sr.requestedBy} <span className="badge badge-soft-warning ms-1" style={{ fontSize: '10px' }}>{sr.status}</span></div>
                   <div className="text-muted-custom" style={{ fontSize: '11px' }}>{sr.reason} &bull; {sr.scope}</div>
@@ -88,13 +88,13 @@ export default function RolesPermissions33Page() {
 
       {/* Category Filter + Search */}
       <div className="d-flex flex-column flex-lg-row align-items-start align-items-lg-center justify-content-between gap-2 mb-3">
-        <div className="d-flex gap-1.5 flex-wrap">
+        <div className="d-flex gap-2 flex-wrap">
           {CATEGORIES.map(c => (
             <button
               key={c}
               type="button"
               onClick={() => setCatFilter(c)}
-              className={`btn btn-sm rounded-pill px-2.5 ${catFilter === c ? 'btn-brand text-white fw-semibold' : 'btn-outline-secondary bg-white text-navy'}`}
+              className={`btn btn-sm rounded-pill px-3 ${catFilter === c ? 'btn-brand text-white fw-semibold' : 'btn-outline-secondary bg-white text-navy'}`}
               style={{ fontSize: '11px' }}
             >
               {c}
@@ -158,12 +158,12 @@ export default function RolesPermissions33Page() {
         {/* Selected Role Formula Inspector: Role + Scope + Limits + Plan */}
         <div className="col-12 col-xl-4">
           {selectedRole && (
-            <div className="app-card p-3.5 sticky-top" style={{ top: '86px' }}>
+            <div className="app-card p-4 sticky-top" style={{ top: '86px' }}>
               <span className="badge badge-soft-brand mb-2">{selectedRole.category}</span>
               <h5 className="fw-bold text-navy mb-0">{selectedRole.name}</h5>
               <div className="font-monospace text-muted-custom small mb-3">{selectedRole.code}</div>
 
-              <div className="p-2.5 rounded-3 bg-surface border border-subtle small mb-3">
+              <div className="p-3 rounded-3 bg-surface border border-subtle small mb-3">
                 <div className="fw-bold text-navy mb-1">Access Formula: Role + Scope + Limits + Plan</div>
                 <div><strong>Scope:</strong> {selectedRole.scope}</div>
                 <div><strong>Discount Limit:</strong> Up to {selectedRole.maxDiscountPercent}%</div>

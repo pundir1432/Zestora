@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useHospitality } from '@/context/HospitalityContext';
 import { reportService } from '@/services';
-import { formatNumber } from '@/utils/formatters';
+import { formatNumber, formatAxisCurrency } from '@/utils/formatters';
 import {
   ResponsiveContainer,
   AreaChart,
@@ -99,10 +99,10 @@ export default function HospitalityDashboardPage() {
         <div>
           <div className="d-flex align-items-center gap-2 flex-wrap mb-1">
             <h3 className="fw-bold text-navy mb-0">{activeProperty.name}</h3>
-            <span className="badge badge-soft-brand rounded-pill px-2.5 py-1">
+            <span className="badge badge-soft-brand rounded-pill px-3 py-1">
               {activeProperty.city}, {activeProperty.state}
             </span>
-            <span className="badge bg-navy text-white rounded-pill px-2.5 py-1" style={{ fontSize: '11px' }}>
+            <span className="badge bg-navy text-white rounded-pill px-3 py-1" style={{ fontSize: '11px' }}>
               {activePlanConfig.label}
             </span>
           </div>
@@ -134,28 +134,28 @@ export default function HospitalityDashboardPage() {
         <div className="row g-2 mb-4">
           {overdueFormIII > 0 && (
             <div className="col-12 col-xl-6">
-              <div className="alert alert-danger border-0 bg-danger bg-opacity-10 rounded-3 py-2.5 px-3 mb-0 d-flex align-items-center justify-content-between gap-2">
+              <div className="alert alert-danger border-0 bg-danger bg-opacity-10 rounded-3 py-2 px-3 mb-0 d-flex align-items-center justify-content-between gap-2">
                 <div className="d-flex align-items-center gap-2">
                   <BiShieldAlt2 size={20} className="text-danger flex-shrink-0" />
                   <span className="small text-danger fw-semibold">
                     <strong>FRRO Form III Alert:</strong> {overdueFormIII} foreign guest OVERDUE (&gt;24h) &bull; {pendingFormIII} total pending
                   </span>
                 </div>
-                <Link href="/owner/form-iii" className="btn btn-danger btn-sm py-1 px-2.5 fw-semibold text-nowrap" style={{ fontSize: '11px' }}>
+                <Link href="/owner/form-iii" className="btn btn-danger btn-sm py-1 px-3 fw-semibold text-nowrap" style={{ fontSize: '11px' }}>
                   Complete Form III
                 </Link>
               </div>
             </div>
           )}
           <div className="col-12 col-xl-6">
-            <div className="alert alert-warning border-0 bg-warning bg-opacity-15 rounded-3 py-2.5 px-3 mb-0 d-flex align-items-center justify-content-between gap-2">
+            <div className="alert alert-warning border-0 bg-warning bg-opacity-10 rounded-3 py-2 px-3 mb-0 d-flex align-items-center justify-content-between gap-2">
               <div className="d-flex align-items-center gap-2">
                 <BiSync size={20} className="text-warning flex-shrink-0" />
                 <span className="small text-navy fw-medium">
                   <strong>Offline-First Sync:</strong> {pendingSync} queued records (Shivpuri Camp Tablet &amp; POS) &bull; {pendingApprovals} pending approvals
                 </span>
               </div>
-              <Link href="/owner/sync-center" className="btn btn-dark btn-sm py-1 px-2.5 fw-semibold text-nowrap" style={{ fontSize: '11px' }}>
+              <Link href="/owner/sync-center" className="btn btn-dark btn-sm py-1 px-3 fw-semibold text-nowrap" style={{ fontSize: '11px' }}>
                 Sync Center
               </Link>
             </div>
@@ -166,70 +166,98 @@ export default function HospitalityDashboardPage() {
       {/* Row 1: Unified Revenue & Operations KPIs (Restaurant + Stay + Camp) */}
       <div className="row g-3 mb-4">
         <div className="col-12 col-sm-6 col-xl-3">
-          <div className="app-card p-3.5 h-100 bg-navy text-white border-0">
-            <div className="d-flex justify-content-between align-items-start mb-2">
+          <div className="app-card p-4 h-100 bg-navy text-white border-0 d-flex flex-column justify-content-between">
+            <div className="d-flex justify-content-between align-items-center mb-3">
               <span className="text-white-50 text-uppercase fw-semibold" style={{ fontSize: '11px', letterSpacing: '0.5px' }}>
                 {t('todays_revenue')}
               </span>
-              <span className="rounded-3 bg-brand bg-opacity-25 text-brand p-1.5">
-                <BiRupee size={18} />
+              <span
+                className="d-inline-flex align-items-center justify-content-center rounded-3 flex-shrink-0"
+                style={{ width: '38px', height: '38px', backgroundColor: 'rgba(244, 123, 53, 0.22)', color: '#F47B35' }}
+              >
+                <BiRupee size={20} />
               </span>
             </div>
-            <h3 className="fw-bold mb-1">₹{formatNumber(summary.todayTotalRevenue)}</h3>
-            <div className="d-flex align-items-center gap-2 mt-2">
-              <span className="badge bg-success bg-opacity-25 text-white fw-semibold" style={{ fontSize: '10px' }}>
-                <BiTrendingUp size={12} /> +16.4% vs Yesterday
-              </span>
-              <span className="text-white-50" style={{ fontSize: '11px' }}>All Streams</span>
+            <div>
+              <h3 className="fw-bold mb-2">₹{formatNumber(summary.todayTotalRevenue)}</h3>
+              <div className="d-flex align-items-center gap-2 flex-wrap">
+                <span className="badge bg-success bg-opacity-25 text-white fw-semibold px-2 py-1" style={{ fontSize: '10px' }}>
+                  <BiTrendingUp size={12} /> +16.4% vs Yesterday
+                </span>
+                <span className="text-white-50" style={{ fontSize: '11px' }}>All Streams</span>
+              </div>
             </div>
           </div>
         </div>
 
         <div className="col-12 col-sm-6 col-xl-3">
-          <div className="app-card p-3.5 h-100">
-            <div className="d-flex justify-content-between align-items-start mb-2">
-              <span className="text-muted-custom text-uppercase fw-semibold" style={{ fontSize: '11px' }}>
+          <div className="app-card p-4 h-100 d-flex flex-column justify-content-between">
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <span className="text-muted-custom text-uppercase fw-semibold" style={{ fontSize: '11px', letterSpacing: '0.4px' }}>
                 {t('restaurant_sales')}
               </span>
-              <span className="rounded-3 badge-soft-brand p-1.5"><BiStore size={18} /></span>
+              <span
+                className="d-inline-flex align-items-center justify-content-center rounded-3 badge-soft-brand flex-shrink-0"
+                style={{ width: '38px', height: '38px' }}
+              >
+                <BiStore size={19} />
+              </span>
             </div>
-            <h3 className="fw-bold text-navy mb-1">₹{formatNumber(summary.restaurantSales)}</h3>
-            <div className="d-flex align-items-center justify-content-between small mt-2">
-              <span className="text-muted-custom">{summary.totalOrders} Orders</span>
-              <span className="badge badge-soft-warning">{pendingOrders} Active</span>
-              <span className="badge badge-soft-success">{readyOrders} Ready</span>
+            <div>
+              <h3 className="fw-bold text-navy mb-2">₹{formatNumber(summary.restaurantSales)}</h3>
+              <div className="d-flex align-items-center justify-content-between gap-1 flex-wrap small">
+                <span className="text-muted-custom">{summary.totalOrders} Orders</span>
+                <div className="d-flex gap-1">
+                  <span className="badge badge-soft-warning">{pendingOrders} Active</span>
+                  <span className="badge badge-soft-success">{readyOrders} Ready</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <div className="col-12 col-sm-6 col-xl-3">
-          <div className="app-card p-3.5 h-100">
-            <div className="d-flex justify-content-between align-items-start mb-2">
-              <span className="text-muted-custom text-uppercase fw-semibold" style={{ fontSize: '11px' }}>
+          <div className="app-card p-4 h-100 d-flex flex-column justify-content-between">
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <span className="text-muted-custom text-uppercase fw-semibold" style={{ fontSize: '11px', letterSpacing: '0.4px' }}>
                 {t('room_revenue')}
               </span>
-              <span className="rounded-3 badge-soft-info p-1.5"><BiHotel size={18} /></span>
+              <span
+                className="d-inline-flex align-items-center justify-content-center rounded-3 badge-soft-info flex-shrink-0"
+                style={{ width: '38px', height: '38px' }}
+              >
+                <BiHotel size={19} />
+              </span>
             </div>
-            <h3 className="fw-bold text-navy mb-1">₹{formatNumber(summary.roomRevenue)}</h3>
-            <div className="d-flex align-items-center justify-content-between small mt-2">
-              <span className="badge badge-soft-info">{occupancyPct}% Occ.</span>
-              <span className="text-muted-custom">In: <strong>{summary.checkInsToday}</strong> / Out: <strong>{summary.checkOutsToday}</strong></span>
+            <div>
+              <h3 className="fw-bold text-navy mb-2">₹{formatNumber(summary.roomRevenue)}</h3>
+              <div className="d-flex align-items-center justify-content-between gap-2 flex-wrap small">
+                <span className="badge badge-soft-info">{occupancyPct}% Occ.</span>
+                <span className="text-muted-custom">In: <strong>{summary.checkInsToday}</strong> / Out: <strong>{summary.checkOutsToday}</strong></span>
+              </div>
             </div>
           </div>
         </div>
 
         <div className="col-12 col-sm-6 col-xl-3">
-          <div className="app-card p-3.5 h-100">
-            <div className="d-flex justify-content-between align-items-start mb-2">
-              <span className="text-muted-custom text-uppercase fw-semibold" style={{ fontSize: '11px' }}>
+          <div className="app-card p-4 h-100 d-flex flex-column justify-content-between">
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <span className="text-muted-custom text-uppercase fw-semibold" style={{ fontSize: '11px', letterSpacing: '0.4px' }}>
                 {t('camp_revenue')}
               </span>
-              <span className="rounded-3 badge-soft-success p-1.5"><TbTent size={18} /></span>
+              <span
+                className="d-inline-flex align-items-center justify-content-center rounded-3 badge-soft-success flex-shrink-0"
+                style={{ width: '38px', height: '38px' }}
+              >
+                <TbTent size={19} />
+              </span>
             </div>
-            <h3 className="fw-bold text-navy mb-1">₹{formatNumber(summary.campRevenue)}</h3>
-            <div className="d-flex align-items-center justify-content-between small mt-2">
-              <span className="text-muted-custom">4 Active Slots</span>
-              <Link href="/owner/camps" className="text-brand fw-semibold text-decoration-none">Waivers &rarr;</Link>
+            <div>
+              <h3 className="fw-bold text-navy mb-2">₹{formatNumber(summary.campRevenue)}</h3>
+              <div className="d-flex align-items-center justify-content-between gap-2 small">
+                <span className="text-muted-custom">4 Active Slots</span>
+                <Link href="/owner/camps" className="text-brand fw-semibold text-decoration-none">Waivers &rarr;</Link>
+              </div>
             </div>
           </div>
         </div>
@@ -322,7 +350,7 @@ export default function HospitalityDashboardPage() {
                 <AreaChart data={REVENUE_TREND} margin={{ top: 10, right: 12, left: -10, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#E5E9F0" />
                   <XAxis dataKey="day" tick={{ fontSize: 11, fill: '#6B7280' }} />
-                  <YAxis tick={{ fontSize: 11, fill: '#6B7280' }} />
+                  <YAxis tick={{ fontSize: 11, fill: '#6B7280' }} tickFormatter={formatAxisCurrency} width={60} />
                   <Tooltip formatter={(val: any) => `₹${formatNumber(Number(val))}`} />
                   {(chartScope === 'all' || chartScope === 'rooms') && (
                     <Area type="monotone" dataKey="rooms" name="Rooms & Dorms" stackId="1" stroke="#3478D4" fill="#3478D4" fillOpacity={0.22} />
@@ -363,7 +391,7 @@ export default function HospitalityDashboardPage() {
               {PAYMENT_SPLIT.map(p => (
                 <div key={p.name} className="col-6">
                   <div className="bg-surface rounded-3 p-2 d-flex align-items-center justify-content-between">
-                    <div className="d-flex align-items-center gap-1.5 overflow-hidden">
+                    <div className="d-flex align-items-center gap-2 overflow-hidden">
                       <span className="rounded-circle flex-shrink-0" style={{ width: '8px', height: '8px', background: p.color }} />
                       <span className="small text-muted-custom text-truncate" style={{ fontSize: '11px' }}>{p.name}</span>
                     </div>
@@ -408,7 +436,7 @@ export default function HospitalityDashboardPage() {
                   <div key={mod.href} className="col-12 col-sm-6 col-md-4">
                     <Link
                       href={mod.href}
-                      className="d-flex align-items-center gap-2.5 p-2.5 rounded-3 border border-subtle bg-surface text-decoration-none h-100"
+                      className="d-flex align-items-center gap-3 p-3 rounded-3 border border-subtle bg-surface text-decoration-none h-100"
                     >
                       <div
                         className="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
@@ -443,7 +471,7 @@ export default function HospitalityDashboardPage() {
 
             <div className="d-flex flex-column gap-2">
               {auditLogs.slice(0, 5).map(log => (
-                <div key={log.id} className="p-2.5 rounded-3 bg-surface border border-subtle">
+                <div key={log.id} className="p-3 rounded-3 bg-surface border border-subtle">
                   <div className="d-flex align-items-center justify-content-between gap-2">
                     <span className="fw-bold text-navy small text-truncate">{log.action}</span>
                     <span
@@ -462,7 +490,7 @@ export default function HospitalityDashboardPage() {
                   <div className="text-muted-custom mt-1" style={{ fontSize: '11px' }}>
                     <strong>{log.user}</strong> ({log.role}) &bull; {log.newValue}
                   </div>
-                  <div className="text-muted-custom mt-0.5" style={{ fontSize: '10px' }}>
+                  <div className="text-muted-custom mt-1" style={{ fontSize: '10px' }}>
                     {log.timestamp} &bull; {log.device}
                   </div>
                 </div>
@@ -538,7 +566,7 @@ export default function HospitalityDashboardPage() {
             </div>
             <div className="d-flex flex-column gap-2">
               {readyBoardOrders.slice(0, 5).map(ord => (
-                <div key={ord.id} className="d-flex align-items-center justify-content-between p-2.5 rounded-3 bg-surface border border-subtle">
+                <div key={ord.id} className="d-flex align-items-center justify-content-between p-3 rounded-3 bg-surface border border-subtle">
                   <div>
                     <div className="d-flex align-items-center gap-2">
                       <span className="badge bg-navy text-white fw-bold">#{ord.tokenNumber}</span>

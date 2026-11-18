@@ -84,7 +84,7 @@ export default function FormIIICompliancePage() {
       <div className="row g-3 mb-4">
         {[
           { label: 'Overdue (>24h)', count: counts.Overdue, cls: 'text-danger', bg: 'bg-danger bg-opacity-10', key: 'Overdue' as const },
-          { label: 'Due Soon (<6h)', count: counts['Due Soon'], cls: 'text-warning', bg: 'bg-warning bg-opacity-15', key: 'Due Soon' as const },
+          { label: 'Due Soon (<6h)', count: counts['Due Soon'], cls: 'text-warning', bg: 'bg-warning bg-opacity-10', key: 'Due Soon' as const },
           { label: 'Pending Prep', count: counts.Pending, cls: 'text-primary', bg: 'bg-primary bg-opacity-10', key: 'Pending' as const },
           { label: 'Submitted (Ack OK)', count: counts.Submitted, cls: 'text-success', bg: 'bg-success bg-opacity-10', key: 'Submitted' as const },
         ].map(c => (
@@ -298,7 +298,7 @@ export default function FormIIICompliancePage() {
                 ) : (
                   activeRec.documents.map((doc, idx) => (
                     <div key={idx} className="col-12 col-md-4">
-                      <div className={`p-2.5 rounded-3 border h-100 ${doc.valid ? 'border-success bg-success bg-opacity-10' : 'border-danger bg-danger bg-opacity-10'}`}>
+                      <div className={`p-3 rounded-3 border h-100 ${doc.valid ? 'border-success bg-success bg-opacity-10' : 'border-danger bg-danger bg-opacity-10'}`}>
                         <div className="d-flex align-items-center gap-2 mb-2">
                           <img src={doc.previewUrl} alt={doc.type} className="rounded-2" style={{ width: '42px', height: '42px', objectFit: 'cover' }} />
                           <div className="overflow-hidden">

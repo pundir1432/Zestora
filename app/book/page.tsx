@@ -166,7 +166,7 @@ export default function GuestDirectBookingPage() {
                   </div>
                 </div>
 
-                <button type="submit" className="btn btn-brand w-100 py-2.5 text-white fw-bold">
+                <button type="submit" className="btn btn-brand w-100 py-2 text-white fw-bold">
                   Confirm Direct Booking (30% Mock Deposit)
                 </button>
               </form>

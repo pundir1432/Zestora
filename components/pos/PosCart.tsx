@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { CartItem, OrderType, PaymentMethod, Order, SplitPaymentDetail } from '@/types/order';
@@ -265,7 +265,7 @@ export const PosCart: React.FC<PosCartProps> = ({
             {items.map((cartItem) => (
               <div
                 key={cartItem.id}
-                className="p-2 rounded-2 border border-subtle bg-white d-flex align-items-center justify-content-between shadow-2xs"
+                className="p-2 rounded-2 border border-subtle bg-white d-flex align-items-center justify-content-between shadow-sm"
               >
                 <div className="d-flex align-items-start gap-2 overflow-hidden me-2">
                   <span className={`food-type-icon mt-1 flex-shrink-0 ${cartItem.isVeg ? 'veg' : 'non-veg'}`} />
@@ -466,7 +466,7 @@ export const PosCart: React.FC<PosCartProps> = ({
           <div className="d-flex gap-2">
             <button
               type="button"
-              className="btn btn-outline-secondary btn-sm px-2.5 d-flex align-items-center justify-content-center"
+              className="btn btn-outline-secondary btn-sm px-3 d-flex align-items-center justify-content-center"
               onClick={onPrintPreview}
               title="Print Receipt"
             >

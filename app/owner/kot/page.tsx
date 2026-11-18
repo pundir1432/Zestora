@@ -81,7 +81,7 @@ export default function KotKdsPage() {
       {/* KDS Header */}
       <div className="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-3 gap-2">
         <div className="d-flex align-items-center gap-3">
-          <div className="p-2.5 rounded-3 bg-brand text-white d-flex align-items-center justify-content-center shadow-sm">
+          <div className="p-3 rounded-3 bg-brand text-white d-flex align-items-center justify-content-center shadow-sm">
             <TbToolsKitchen2 size={26} />
           </div>
           <div>
@@ -100,7 +100,7 @@ export default function KotKdsPage() {
           <button
             type="button"
             className={`btn btn-sm d-flex align-items-center gap-1 rounded-pill px-3 ${
-              soundEnabled ? 'btn-outline-brand fw-semibold shadow-2xs' : 'btn-light text-muted'
+              soundEnabled ? 'btn-outline-brand fw-semibold shadow-sm' : 'btn-light text-muted'
             }`}
             onClick={() => setSoundEnabled(!soundEnabled)}
             title="Toggle kitchen order audio alerts"
@@ -134,7 +134,7 @@ export default function KotKdsPage() {
         <div className="row g-2">
           {readyBoardOrders.filter(o => o.stage !== 'SERVED').slice(0, 4).map(rb => (
             <div key={rb.id} className="col-12 col-sm-6 col-xl-3">
-              <div className={`p-2.5 rounded-3 border h-100 d-flex flex-column justify-content-between ${rb.priority === 'Rush' ? 'border-danger bg-danger bg-opacity-10' : 'border-subtle bg-surface'}`}>
+              <div className={`p-3 rounded-3 border h-100 d-flex flex-column justify-content-between ${rb.priority === 'Rush' ? 'border-danger bg-danger bg-opacity-10' : 'border-subtle bg-surface'}`}>
                 <div>
                   <div className="d-flex justify-content-between align-items-center mb-1">
                     <span className="badge bg-navy text-white fw-bold">#{rb.tokenNumber}</span>
@@ -321,7 +321,7 @@ export default function KotKdsPage() {
                 </div>
               ) : (
                 completedOrders.map((ord) => (
-                  <div key={ord.id} className="card p-3 border-subtle rounded-3 bg-white opacity-85 shadow-2xs">
+                  <div key={ord.id} className="card p-3 border-subtle rounded-3 bg-white opacity-85 shadow-sm">
                     <div className="d-flex justify-content-between align-items-center mb-1">
                       <span className="fw-bold text-navy">#{ord.orderNumber}</span>
                       <span className="badge badge-soft-success">Served</span>

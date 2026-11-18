@@ -159,7 +159,7 @@ export default function BusinessOwnerAnalyticsPage() {
                     {hr.hour}
                   </div>
                   <div className="fw-bold text-dark" style={{ fontSize: '10px' }} suppressHydrationWarning>
-                    ₹{(hr.sales / 1000).toFixed(0)}k
+                    ₹{(hr.sales / 1000).toFixed(0)}K
                   </div>
                 </div>
               ))}

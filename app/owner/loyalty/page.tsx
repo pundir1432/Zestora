@@ -82,7 +82,7 @@ export default function BusinessOwnerLoyaltyPage() {
                 </span>
               </div>
               <h3 className="fw-bold mb-1" suppressHydrationWarning>{formatNumber(totalPointsCirculating)} pts</h3>
-              <span className="text-muted small">Worth ₹{(totalPointsCirculating / 10).toLocaleString('en-IN')} in store redemptions</span>
+              <span className="text-muted small" suppressHydrationWarning>Worth ₹{formatNumber(totalPointsCirculating / 10)} in store redemptions</span>
             </div>
           </div>
 

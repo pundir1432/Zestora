@@ -213,7 +213,7 @@ export default function BusinessOwnerProfitLossPage() {
                     onChange={(e) => setMonthlyFixedCost(Number(e.target.value))}
                   />
                 </div>
-                <div className="text-muted small mt-1">Includes Rent ₹2,20,000 + Salaries ₹1,80,000 + Electricity ₹50,000</div>
+                <div className="text-muted small mt-1">Includes Rent ₹{formatNumber(220000)} + Salaries ₹{formatNumber(180000)} + Electricity ₹{formatNumber(50000)}</div>
               </div>
 
               <div className="col-12 col-md-4">

@@ -45,7 +45,7 @@ export default function GstTaxConfigurationPage() {
 
       {/* CA Verification Notice (Section 15 & 38) */}
       <div className="alert alert-info border-0 bg-info bg-opacity-10 rounded-4 p-3 mb-4 d-flex align-items-start gap-2">
-        <BiInfoCircle size={20} className="text-primary flex-shrink-0 mt-0.5" />
+        <BiInfoCircle size={20} className="text-primary flex-shrink-0 mt-1" />
         <div className="small text-navy">
           <strong>Configuration-Driven Tax UI (Not Hard-Coded):</strong> All GST rates, effective dates, HSN/SAC mappings, and the ₹7,500 room tariff threshold are displayed from configurable mock rule definitions. Final production tax rules must be reviewed and approved by your Chartered Accountant (CA).
         </div>
@@ -111,7 +111,7 @@ export default function GstTaxConfigurationPage() {
               </div>
 
               <div className="col-12 col-md-4">
-                <div className={`p-3 rounded-3 ${isAbove7500 ? 'bg-warning bg-opacity-15 border border-warning' : 'bg-success bg-opacity-10 border border-success'}`}>
+                <div className={`p-3 rounded-3 ${isAbove7500 ? 'bg-warning bg-opacity-10 border border-warning' : 'bg-success bg-opacity-10 border border-success'}`}>
                   <div className="fw-bold text-navy small">
                     {isAbove7500 ? 'Above ₹7,500 Slab → 18% GST' : 'Up to ₹7,500 Slab → 12% GST'}
                   </div>
@@ -149,7 +149,7 @@ export default function GstTaxConfigurationPage() {
                       <td>
                         <div className="fw-bold text-navy small">{rule.slabName}</div>
                         <div className="text-muted-custom" style={{ fontSize: '11px' }}>{rule.conditionLabel}</div>
-                        <div className="text-muted-custom mt-0.5" style={{ fontSize: '10px' }}>{rule.notes}</div>
+                        <div className="text-muted-custom mt-1" style={{ fontSize: '10px' }}>{rule.notes}</div>
                       </td>
                       <td className="font-monospace small fw-bold text-navy">{rule.hsnSac}</td>
                       <td className="small">
@@ -237,7 +237,7 @@ export default function GstTaxConfigurationPage() {
             { hsn: '996331 (ECO)', desc: 'Zomato / Swiggy Sec 9(5) Supplies (Remitted by ECO)', taxable: 14060, tax: 703 },
           ].map(row => (
             <div key={row.hsn} className="col-12 col-md-6">
-              <div className="app-card p-3.5 h-100">
+              <div className="app-card p-4 h-100">
                 <div className="d-flex justify-content-between align-items-center mb-1">
                   <span className="badge bg-navy text-white font-monospace">SAC {row.hsn}</span>
                   <span className="fw-bold text-brand">Tax: ₹{formatNumber(row.tax)}</span>

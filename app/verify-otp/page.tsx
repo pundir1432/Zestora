@@ -113,7 +113,7 @@ function VerifyOtpContent() {
             </span>
           </Link>
           <div className="d-flex align-items-center gap-2">
-            <span className="badge bg-success bg-opacity-25 text-success border border-success border-opacity-50 px-3 py-1.5 rounded-pill small fw-semibold">
+            <span className="badge bg-success bg-opacity-25 text-success border border-success border-opacity-50 px-3 py-1 rounded-pill small fw-semibold">
               Step 2 of 3 • Mobile OTP
             </span>
           </div>
@@ -183,7 +183,7 @@ function VerifyOtpContent() {
 
                   <button
                     type="submit"
-                    className="btn btn-brand w-100 py-2.5 fw-semibold d-flex align-items-center justify-content-center gap-2 shadow-sm text-white mb-3"
+                    className="btn btn-brand w-100 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2 shadow-sm text-white mb-3"
                   >
                     <span>Verify & Start 7-Day Free Trial</span>
                     <BiRightArrowAlt size={20} />
@@ -219,7 +219,7 @@ function VerifyOtpContent() {
                   <div className="mt-3 pt-3 border-top d-flex align-items-center justify-content-center gap-3">
                     <button
                       type="button"
-                      className="btn btn-sm btn-outline-success rounded-pill px-3 d-flex align-items-center gap-1.5"
+                      className="btn btn-sm btn-outline-success rounded-pill px-3 d-flex align-items-center gap-2"
                       onClick={handleSendWhatsApp}
                     >
                       <BiChat size={16} />

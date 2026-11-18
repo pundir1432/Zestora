@@ -26,7 +26,7 @@ const STATUS_STYLE: Record<RoomStatus, string> = {
   Cleaning: 'badge-soft-warning',
   Clean: 'badge-soft-info',
   'Out of Order': 'bg-dark text-white',
-  Reserved: 'bg-primary bg-opacity-15 text-primary',
+  Reserved: 'bg-primary bg-opacity-10 text-primary',
 };
 
 export default function RoomsPropertyPage() {
@@ -77,7 +77,7 @@ export default function RoomsPropertyPage() {
           const highGstSlab = rm.tariffPerNight > 7500;
           return (
             <div key={rm.id} className="col-12 col-md-6 col-xl-4">
-              <div className="app-card p-3.5 h-100 d-flex flex-column justify-content-between">
+              <div className="app-card p-4 h-100 d-flex flex-column justify-content-between">
                 <div>
                   <div className="d-flex align-items-start justify-content-between gap-2 mb-2">
                     <div>
@@ -87,12 +87,12 @@ export default function RoomsPropertyPage() {
                       </div>
                       <div className="fw-semibold text-navy small">{rm.roomType}</div>
                     </div>
-                    <span className={`badge rounded-pill px-2.5 py-1 ${STATUS_STYLE[rm.status]}`}>
+                    <span className={`badge rounded-pill px-3 py-1 ${STATUS_STYLE[rm.status]}`}>
                       {rm.status}
                     </span>
                   </div>
 
-                  <div className="d-flex align-items-center justify-content-between bg-surface rounded-3 p-2.5 mb-3">
+                  <div className="d-flex align-items-center justify-content-between bg-surface rounded-3 p-3 mb-3">
                     <div>
                       <div className="fw-bold text-navy">₹{formatNumber(rm.tariffPerNight)} <span className="fw-normal text-muted-custom small">/ night</span></div>
                       <div className="text-muted-custom" style={{ fontSize: '10px' }}>Max {rm.maxGuests} Guests</div>
@@ -103,7 +103,7 @@ export default function RoomsPropertyPage() {
                   </div>
 
                   {rm.currentGuestName && (
-                    <div className="p-2.5 rounded-3 border border-subtle mb-2">
+                    <div className="p-3 rounded-3 border border-subtle mb-2">
                       <div className="d-flex align-items-center justify-content-between">
                         <span className="fw-bold text-navy small">{rm.currentGuestName}</span>
                         {rm.isForeignGuest && (
@@ -119,8 +119,8 @@ export default function RoomsPropertyPage() {
                   )}
 
                   {rm.maintenanceNote && (
-                    <div className="alert alert-dark py-2 px-2.5 small mb-2 d-flex align-items-start gap-2">
-                      <BiWrench className="flex-shrink-0 mt-0.5 text-warning" />
+                    <div className="alert alert-dark py-2 px-3 small mb-2 d-flex align-items-start gap-2">
+                      <BiWrench className="flex-shrink-0 mt-1 text-warning" />
                       <span>{rm.maintenanceNote}</span>
                     </div>
                   )}
