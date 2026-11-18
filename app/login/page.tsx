@@ -156,7 +156,7 @@ export default function LoginPage() {
 
                 <button
                   type="submit"
-                  className="btn btn-brand w-100 py-2.5 fw-semibold d-flex align-items-center justify-content-center gap-2 shadow-sm text-white"
+                  className="btn btn-brand w-100 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2 shadow-sm text-white"
                 >
                   <span>Sign In to Dashboard</span>
                   <BiRightArrowAlt size={20} />
@@ -197,7 +197,7 @@ export default function LoginPage() {
                         style={{ backgroundColor: '#FAFBFD' }}
                       >
                         <div className="d-flex align-items-start gap-2 mb-2">
-                          <div className="p-2 rounded-2 bg-white border border-subtle shadow-2xs text-brand">
+                          <div className="p-2 rounded-2 bg-white border border-subtle shadow-sm text-brand">
                             <Icon size={20} />
                           </div>
                           <div className="overflow-hidden flex-grow-1">

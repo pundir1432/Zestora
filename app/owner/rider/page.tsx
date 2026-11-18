@@ -61,7 +61,7 @@ export default function RiderAppPage() {
                 <span>{ord.deliveryAddress || ord.sourceLabel}</span>
               </div>
 
-              <div className="bg-surface rounded-3 p-2.5 small mb-3">
+              <div className="bg-surface rounded-3 p-3 small mb-3">
                 {ord.items.map((it, idx) => (
                   <div key={idx} className="text-navy">
                     {it.qty}x {it.name}

@@ -774,7 +774,7 @@ export default function OnboardingPage() {
 
                   <div className="p-3 bg-light rounded-3 border mb-4 d-flex align-items-center justify-content-between">
                     <div className="d-flex align-items-center gap-2">
-                      <span className="badge bg-brand text-white rounded-pill px-2.5 py-1 small">No Risk</span>
+                      <span className="badge bg-brand text-white rounded-pill px-3 py-1 small">No Risk</span>
                       <span className="small text-navy fw-medium">
                         No credit card required today. You will only be billed if you choose to continue after your 7-day trial.
                       </span>
@@ -813,7 +813,7 @@ export default function OnboardingPage() {
                               <p className="small text-muted mb-0" style={{ fontSize: '11px', lineHeight: '1.4' }}>{p.desc}</p>
                             </div>
                             <div className="pt-3 mt-2 border-top">
-                              <span className={`badge w-100 py-1.5 ${isSelected ? 'bg-brand text-white' : 'bg-light text-navy border'}`} style={{ fontSize: '11px' }}>
+                              <span className={`badge w-100 py-1 ${isSelected ? 'bg-brand text-white' : 'bg-light text-navy border'}`} style={{ fontSize: '11px' }}>
                                 {isSelected ? 'Selected Plan' : 'Select Plan'}
                               </span>
                             </div>

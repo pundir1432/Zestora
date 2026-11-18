@@ -123,10 +123,10 @@ export default function HostelDormBedsPage() {
                     <span
                       className={`badge rounded-pill ${
                         dorm.genderCategory === 'Female-Only Dorm'
-                          ? 'bg-danger bg-opacity-15 text-danger'
+                          ? 'bg-danger bg-opacity-10 text-danger'
                           : dorm.genderCategory === 'Male-Only Dorm'
-                          ? 'bg-primary bg-opacity-15 text-primary'
-                          : 'bg-success bg-opacity-15 text-success'
+                          ? 'bg-primary bg-opacity-10 text-primary'
+                          : 'bg-success bg-opacity-10 text-success'
                       }`}
                     >
                       {dorm.genderCategory}
@@ -175,7 +175,7 @@ export default function HostelDormBedsPage() {
                         )}
                       </div>
 
-                      <div className="d-flex gap-1.5 flex-wrap pt-2 border-top">
+                      <div className="d-flex gap-2 flex-wrap pt-2 border-top">
                         {bed.status === 'Available' && (
                           <button
                             type="button"

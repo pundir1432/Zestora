@@ -22,7 +22,7 @@ export const SyncStatusPill: React.FC = () => {
       <button
         type="button"
         onClick={toggleOfflineMode}
-        className={`btn btn-sm border-0 rounded-pill px-2.5 py-1 d-inline-flex align-items-center gap-1 fw-semibold ${badgeConfig.cls}`}
+        className={`btn btn-sm border-0 rounded-pill px-3 py-1 d-inline-flex align-items-center gap-1 fw-semibold ${badgeConfig.cls}`}
         style={{ fontSize: '11px' }}
         title="Click to simulate Weak Internet / Offline Mode"
       >

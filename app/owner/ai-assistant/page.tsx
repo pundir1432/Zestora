@@ -58,7 +58,7 @@ export default function WhatsAppAiAssistantPage() {
         dataSource: 'reportService.getDashboardSummary() • Demo Mock Data',
         suggestedAction: {
           label: 'Send Daily Sales Digest on WhatsApp',
-          description: 'Send a formatted summary of today’s ₹1,74,350 revenue to Owner & Group GM on WhatsApp (Mock).',
+          description: `Send a formatted summary of today’s ₹${formatNumber(kpi.todayTotalRevenue)} revenue to Owner & Group GM on WhatsApp (Mock).`,
         },
       };
     }
@@ -113,7 +113,7 @@ export default function WhatsAppAiAssistantPage() {
 
     if (low.includes('yesterday')) {
       return {
-        text: `Yesterday's Total Revenue (17 Nov 2026 — Demo Data): ₹1,59,500\n• Rooms & Dorms: ₹69,000\n• Restaurant & Cafe: ₹62,100\n• Camp & Adventure: ₹28,400\n• Day Close Status: Closed cleanly with ₹0 cash variance.`,
+        text: `Yesterday's Total Revenue (17 Nov 2026 — Demo Data): ₹${formatNumber(159500)}\n• Rooms & Dorms: ₹${formatNumber(69000)}\n• Restaurant & Cafe: ₹${formatNumber(62100)}\n• Camp & Adventure: ₹${formatNumber(28400)}\n• Day Close Status: Closed cleanly with ₹0 cash variance.`,
         dataSource: 'reportService Historical Snapshot • Demo Mock Data',
       };
     }
@@ -208,7 +208,7 @@ export default function WhatsAppAiAssistantPage() {
           {/* Chat Area */}
           <div className="col-12 col-lg-8">
             <div className="app-card d-flex flex-column overflow-hidden" style={{ height: '520px' }}>
-              <div className={`px-3 py-2.5 d-flex justify-content-between align-items-center text-white ${channel === 'WhatsApp Bot' ? 'bg-success' : 'bg-navy'}`}>
+              <div className={`px-3 py-2 d-flex justify-content-between align-items-center text-white ${channel === 'WhatsApp Bot' ? 'bg-success' : 'bg-navy'}`}>
                 <span className="fw-bold small d-flex align-items-center gap-2">
                   {channel === 'WhatsApp Bot' ? <BiLogoWhatsapp size={18} /> : <BiBrain size={18} />}
                   Zestora {channel} • Connected to Mock Services
@@ -220,7 +220,7 @@ export default function WhatsAppAiAssistantPage() {
                 {messages.map(m => (
                   <div key={m.id} className={`d-flex flex-column ${m.sender === 'user' ? 'align-items-end' : 'align-items-start'}`}>
                     <div
-                      className={`p-3 rounded-4 shadow-2xs ${
+                      className={`p-3 rounded-4 shadow-sm ${
                         m.sender === 'user' ? 'bg-navy text-white' : 'bg-white text-navy border border-subtle'
                       }`}
                       style={{ maxWidth: '85%', whiteSpace: 'pre-line', fontSize: '13px' }}
@@ -254,7 +254,7 @@ export default function WhatsAppAiAssistantPage() {
                   e.preventDefault();
                   askQuestion(input);
                 }}
-                className="p-2.5 bg-white border-top d-flex gap-2"
+                className="p-3 bg-white border-top d-flex gap-2"
               >
                 <input
                   className="form-control form-control-sm"
@@ -277,7 +277,7 @@ export default function WhatsAppAiAssistantPage() {
               </h6>
               <div className="d-flex flex-column gap-2">
                 {actionHistory.map(act => (
-                  <div key={act.id} className="p-2.5 rounded-3 bg-surface border border-subtle small">
+                  <div key={act.id} className="p-3 rounded-3 bg-surface border border-subtle small">
                     <div className="fw-semibold text-navy">{act.action}</div>
                     <div className="d-flex justify-content-between align-items-center mt-1" style={{ fontSize: '10px' }}>
                       <span className="text-muted-custom">{act.time}</span>

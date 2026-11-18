@@ -98,7 +98,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           {!isSuperAdmin && (
             <>
               {subscriptionStatus === 'Trial' && (
-                <div className="alert alert-warning border-0 bg-warning bg-opacity-15 px-3 py-2.5 rounded-3 mb-3 d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-2 shadow-xs">
+                <div className="alert alert-warning border-0 bg-warning bg-opacity-10 px-3 py-2 rounded-3 mb-3 d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-2 shadow-sm">
                   <div className="d-flex align-items-center gap-2">
                     <BiTimeFive size={18} className="text-warning flex-shrink-0" />
                     <span className="small text-navy">
@@ -116,7 +116,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               )}
 
               {subscriptionStatus === 'Payment Due' && (
-                <div className="alert alert-info border-0 bg-info bg-opacity-15 px-3 py-2.5 rounded-3 mb-3 d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-2 shadow-xs">
+                <div className="alert alert-info border-0 bg-info bg-opacity-10 px-3 py-2 rounded-3 mb-3 d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-2 shadow-sm">
                   <div className="d-flex align-items-center gap-2">
                     <BiError size={18} className="text-info flex-shrink-0" />
                     <span className="small text-navy">
@@ -134,7 +134,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               )}
 
               {subscriptionStatus === 'Grace Period' && (
-                <div className="alert alert-danger border-0 bg-danger bg-opacity-15 px-3 py-2.5 rounded-3 mb-3 d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-2 shadow-xs">
+                <div className="alert alert-danger border-0 bg-danger bg-opacity-10 px-3 py-2 rounded-3 mb-3 d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-2 shadow-sm">
                   <div className="d-flex align-items-center gap-2">
                     <BiErrorCircle size={18} className="text-danger flex-shrink-0" />
                     <span className="small text-danger fw-medium">
@@ -152,7 +152,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               )}
 
               {subscriptionStatus === 'Suspended' && (
-                <div className="alert alert-dark border-0 bg-dark text-white px-3 py-2.5 rounded-3 mb-3 d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-2 shadow-xs">
+                <div className="alert alert-dark border-0 bg-dark text-white px-3 py-2 rounded-3 mb-3 d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-2 shadow-sm">
                   <div className="d-flex align-items-center gap-2">
                     <BiLockAlt size={18} className="text-brand flex-shrink-0" />
                     <span className="small text-white">

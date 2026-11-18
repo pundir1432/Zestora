@@ -730,7 +730,7 @@ function PosBillingContent() {
             </div>
             <button
               type="button"
-              className="btn btn-brand btn-sm text-white fw-bold px-3 py-1.5 shadow-sm"
+              className="btn btn-brand btn-sm text-white fw-bold px-3 py-1 shadow-sm"
               onClick={() => {
                 document.getElementById('pos-cart-panel')?.scrollIntoView({ behavior: 'smooth' });
               }}

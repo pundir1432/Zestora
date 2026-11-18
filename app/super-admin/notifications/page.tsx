@@ -224,7 +224,7 @@ export default function SuperAdminNotificationsPage() {
 
                 <button
                   type="button"
-                  className="btn btn-outline-danger btn-sm p-1.5"
+                  className="btn btn-outline-danger btn-sm p-2"
                   title="Archive Notification"
                   onClick={() => handleDelete(n.id)}
                 >

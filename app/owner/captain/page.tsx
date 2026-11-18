@@ -120,7 +120,7 @@ export default function CaptainAppPage() {
                   <button
                     type="button"
                     onClick={() => setSelectedTable(tb.id)}
-                    className={`btn w-100 text-start p-2.5 rounded-3 border ${
+                    className={`btn w-100 text-start p-3 rounded-3 border ${
                       selectedTable === tb.id ? 'btn-brand text-white border-brand shadow-sm' : 'bg-surface text-navy border-subtle'
                     }`}
                   >
@@ -150,7 +150,7 @@ export default function CaptainAppPage() {
                   <button
                     type="button"
                     onClick={() => addItem(item.id, item.name, item.price)}
-                    className="btn w-100 h-100 text-start p-2.5 rounded-3 bg-surface border border-subtle"
+                    className="btn w-100 h-100 text-start p-3 rounded-3 bg-surface border border-subtle"
                   >
                     <div className="fw-semibold text-navy small text-truncate">{item.name}</div>
                     <div className="d-flex justify-content-between align-items-center mt-1">

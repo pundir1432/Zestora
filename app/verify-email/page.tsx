@@ -98,7 +98,7 @@ function VerifyEmailContent() {
 
                   <button
                     type="submit"
-                    className="btn btn-brand w-100 py-2.5 fw-semibold d-flex align-items-center justify-content-center gap-2 shadow-sm text-white mb-3"
+                    className="btn btn-brand w-100 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2 shadow-sm text-white mb-3"
                   >
                     <span>Verify & Continue Setup</span>
                     <BiRightArrowAlt size={20} />

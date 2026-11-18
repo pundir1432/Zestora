@@ -145,25 +145,25 @@ export default function UnifiedGuestFolioPage() {
             {/* Balance Equation Cards */}
             <div className="row g-2 mb-4">
               <div className="col-6 col-sm-3">
-                <div className="p-2.5 rounded-3 bg-surface">
+                <div className="p-3 rounded-3 bg-surface">
                   <div className="text-muted-custom" style={{ fontSize: '11px' }}>Taxable Charges</div>
                   <div className="fw-bold text-navy">₹{formatNumber(totals.subtotal)}</div>
                 </div>
               </div>
               <div className="col-6 col-sm-3">
-                <div className="p-2.5 rounded-3 bg-surface">
+                <div className="p-3 rounded-3 bg-surface">
                   <div className="text-muted-custom" style={{ fontSize: '11px' }}>CGST + SGST</div>
                   <div className="fw-bold text-primary">₹{formatNumber(totals.totalTax)}</div>
                 </div>
               </div>
               <div className="col-6 col-sm-3">
-                <div className="p-2.5 rounded-3 bg-surface">
+                <div className="p-3 rounded-3 bg-surface">
                   <div className="text-muted-custom" style={{ fontSize: '11px' }}>Total Paid</div>
                   <div className="fw-bold text-success">₹{formatNumber(totals.totalPaid)}</div>
                 </div>
               </div>
               <div className="col-6 col-sm-3">
-                <div className={`p-2.5 rounded-3 ${totals.balance > 0 ? 'bg-warning bg-opacity-15' : 'bg-success bg-opacity-15'}`}>
+                <div className={`p-3 rounded-3 ${totals.balance > 0 ? 'bg-warning bg-opacity-10' : 'bg-success bg-opacity-10'}`}>
                   <div className="text-muted-custom" style={{ fontSize: '11px' }}>Outstanding Balance</div>
                   <div className={`fw-bolder ${totals.balance > 0 ? 'text-danger' : 'text-success'}`}>
                     ₹{formatNumber(totals.balance)}

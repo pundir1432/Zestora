@@ -186,7 +186,7 @@ export default function AuditComplianceDayClosePage() {
           <div className="row g-3">
             {seriesChecks.map(sc => (
               <div key={sc.seriesCode} className="col-12 col-md-6">
-                <div className="app-card p-3.5 h-100">
+                <div className="app-card p-4 h-100">
                   <div className="d-flex justify-content-between align-items-center mb-2">
                     <span className="badge bg-navy text-white font-monospace fs-6 d-inline-flex align-items-center gap-1">
                       <BiListOl /> {sc.seriesCode}*
@@ -194,7 +194,7 @@ export default function AuditComplianceDayClosePage() {
                     <span className="badge badge-soft-success">{sc.integrityStatus}</span>
                   </div>
                   <div className="fw-bold text-navy small mb-2">{sc.outlet}</div>
-                  <div className="row g-2 small bg-surface rounded-3 p-2.5">
+                  <div className="row g-2 small bg-surface rounded-3 p-3">
                     <div className="col-4"><span className="text-muted-custom d-block">Start #</span><strong>{sc.startNo}</strong></div>
                     <div className="col-4"><span className="text-muted-custom d-block">Current #</span><strong>{sc.currentNo}</strong></div>
                     <div className="col-4"><span className="text-muted-custom d-block">Missing Gaps</span><strong className="text-success">{sc.missingGaps.length}</strong></div>
@@ -256,7 +256,7 @@ export default function AuditComplianceDayClosePage() {
                 </div>
 
                 {dayClose.status !== 'Closed' ? (
-                  <button type="button" onClick={handleCloseDay} className="btn btn-brand text-white fw-bold w-100 py-2.5 d-flex align-items-center justify-content-center gap-2">
+                  <button type="button" onClick={handleCloseDay} className="btn btn-brand text-white fw-bold w-100 py-2 d-flex align-items-center justify-content-center gap-2">
                     <BiLockAlt /> Reconcile &amp; Close Business Day
                   </button>
                 ) : (

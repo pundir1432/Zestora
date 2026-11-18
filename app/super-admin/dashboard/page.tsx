@@ -131,7 +131,7 @@ export default function SuperAdminDashboardPage() {
             title="Active Subscriptions (SaaS)"
             value={formatNumber(PLATFORM_OVERVIEW_STATS.activeSubscriptions)}
             change="+8.5%"
-            subtitle="MRR: ₹1.45 Cr / mo"
+            subtitle="MRR: ₹1.45Cr / mo"
             icon={BiCreditCard}
             iconColor="#3478D4"
             iconBg="rgba(52, 120, 212, 0.1)"
@@ -195,7 +195,12 @@ export default function SuperAdminDashboardPage() {
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                   <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} />
-                  <YAxis stroke="#94a3b8" fontSize={12} />
+                  <YAxis
+                    stroke="#94a3b8"
+                    fontSize={12}
+                    tickFormatter={(v) => (v >= 100 ? `₹${parseFloat((v / 100).toFixed(2))}Cr` : `₹${v}L`)}
+                    width={62}
+                  />
                   <Tooltip 
                     contentStyle={{ backgroundColor: '#18263B', color: '#fff', borderRadius: '8px', border: 'none' }}
                   />

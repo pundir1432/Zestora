@@ -108,7 +108,7 @@ export default function OwnerSubscriptionPage() {
 
         <Link
           href={`/owner/subscription/checkout?plan=${encodeURIComponent(subscriptionPlan || 'Professional')}&cycle=${billingCycle}`}
-          className="btn btn-brand text-white btn-sm d-flex align-items-center gap-1.5 shadow-sm px-3 py-2 fw-semibold"
+          className="btn btn-brand text-white btn-sm d-flex align-items-center gap-2 shadow-sm px-3 py-2 fw-semibold"
         >
           <BiCreditCard size={18} />
           <span>{subscriptionStatus === 'Trial' ? 'Upgrade to Paid Plan' : 'Renew / Change Plan'}</span>
@@ -119,7 +119,7 @@ export default function OwnerSubscriptionPage() {
       <div className="p-3 mb-4 rounded-3 border bg-white shadow-sm">
         <div className="d-flex flex-column flex-lg-row align-items-start align-items-lg-center justify-content-between gap-3">
           <div className="d-flex align-items-center gap-2">
-            <span className="badge bg-navy text-white px-2.5 py-1.5 rounded-pill small d-flex align-items-center gap-1">
+            <span className="badge bg-navy text-white px-3 py-1 rounded-pill small d-flex align-items-center gap-1">
               <BiPlay size={14} className="text-brand" /> DEMO SIMULATOR
             </span>
             <span className="small text-muted">
@@ -127,7 +127,7 @@ export default function OwnerSubscriptionPage() {
             </span>
           </div>
 
-          <div className="d-flex flex-wrap gap-1.5">
+          <div className="d-flex flex-wrap gap-2">
             <button
               type="button"
               className={`btn btn-sm ${subscriptionStatus === 'Trial' ? 'btn-warning text-dark fw-bold' : 'btn-outline-warning'}`}
@@ -169,7 +169,7 @@ export default function OwnerSubscriptionPage() {
 
       {/* CURRENT STATUS ALERT BANNER */}
       {subscriptionStatus === 'Trial' && (
-        <div className="alert alert-warning border-0 bg-warning bg-opacity-15 p-3 rounded-3 mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2">
+        <div className="alert alert-warning border-0 bg-warning bg-opacity-10 p-3 rounded-3 mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2">
           <div className="d-flex align-items-center gap-2">
             <BiTimeFive size={22} className="text-warning flex-shrink-0" />
             <div>
@@ -189,7 +189,7 @@ export default function OwnerSubscriptionPage() {
       )}
 
       {subscriptionStatus === 'Payment Due' && (
-        <div className="alert alert-info border-0 bg-info bg-opacity-15 p-3 rounded-3 mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2">
+        <div className="alert alert-info border-0 bg-info bg-opacity-10 p-3 rounded-3 mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2">
           <div className="d-flex align-items-center gap-2">
             <BiError size={22} className="text-info flex-shrink-0" />
             <div>
@@ -209,7 +209,7 @@ export default function OwnerSubscriptionPage() {
       )}
 
       {subscriptionStatus === 'Grace Period' && (
-        <div className="alert alert-danger border-0 bg-danger bg-opacity-15 p-3 rounded-3 mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2">
+        <div className="alert alert-danger border-0 bg-danger bg-opacity-10 p-3 rounded-3 mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2">
           <div className="d-flex align-items-center gap-2">
             <BiErrorCircle size={22} className="text-danger flex-shrink-0" />
             <div>
@@ -258,7 +258,7 @@ export default function OwnerSubscriptionPage() {
                   subscriptionStatus === 'Grace Period' ? 'bg-danger' :
                     subscriptionStatus === 'Payment Due' ? 'bg-info text-dark' :
                       'bg-secondary'
-                } text-uppercase px-2.5 py-1`} style={{ fontSize: '11px', letterSpacing: '0.5px' }}>
+                } text-uppercase px-3 py-1`} style={{ fontSize: '11px', letterSpacing: '0.5px' }}>
                 Status: {subscriptionStatus}
               </span>
               <span className="text-white-50 small">
@@ -310,13 +310,13 @@ export default function OwnerSubscriptionPage() {
           </div>
 
           <div className="col-12 col-lg-5">
-            <div className="p-3 rounded-3 bg-white bg-opacity-10 border border-white border-opacity-15">
+            <div className="p-3 rounded-3 bg-white bg-opacity-10 border border-white border-opacity-25">
               <h6 className="fw-bold text-white small mb-3 text-uppercase" style={{ letterSpacing: '0.5px' }}>
                 Quota & Capacity Usage
               </h6>
 
               {/* Outlet limit */}
-              <div className="mb-2.5">
+              <div className="mb-3">
                 <div className="d-flex justify-content-between text-white-50 small mb-1" style={{ fontSize: '11px' }}>
                   <span>Active Outlets</span>
                   <span>{currentRestaurant.branches.length} of 5 Outlets</span>
@@ -330,7 +330,7 @@ export default function OwnerSubscriptionPage() {
               </div>
 
               {/* Staff limit */}
-              <div className="mb-2.5">
+              <div className="mb-3">
                 <div className="d-flex justify-content-between text-white-50 small mb-1" style={{ fontSize: '11px' }}>
                   <span>Staff Logins</span>
                   <span>8 of 25 Allowed</span>
@@ -431,7 +431,7 @@ export default function OwnerSubscriptionPage() {
                   <ul className="list-unstyled d-flex flex-column gap-2 mb-4 small">
                     {plan.features.map((feat, idx) => (
                       <li key={idx} className="d-flex align-items-start gap-2 text-navy">
-                        <BiCheck className="text-brand flex-shrink-0 mt-0.5" size={18} />
+                        <BiCheck className="text-brand flex-shrink-0 mt-1" size={18} />
                         <span>{feat}</span>
                       </li>
                     ))}
@@ -462,7 +462,7 @@ export default function OwnerSubscriptionPage() {
               Download GST compliant B2B tax receipts with SAC code 998313 for monthly input credit filing
             </p>
           </div>
-          <span className="badge badge-soft-success px-3 py-1.5 rounded-pill small">
+          <span className="badge badge-soft-success px-3 py-1 rounded-pill small">
             GSTR-2B Ready
           </span>
         </div>
@@ -504,7 +504,7 @@ export default function OwnerSubscriptionPage() {
                   <td className="text-end pe-3">
                     <button
                       type="button"
-                      className="btn btn-outline-brand btn-sm py-1 px-2.5 d-inline-flex align-items-center gap-1"
+                      className="btn btn-outline-brand btn-sm py-1 px-3 d-inline-flex align-items-center gap-1"
                       onClick={() => handleViewInvoice(b)}
                     >
                       <BiReceipt size={15} /> View Tax Invoice

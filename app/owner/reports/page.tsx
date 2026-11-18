@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useHospitality } from '@/context/HospitalityContext';
 import { reportService } from '@/services';
-import { formatNumber } from '@/utils/formatters';
+import { formatNumber, formatAxisCurrency } from '@/utils/formatters';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { BiBarChartAlt2, BiDownload, BiFilterAlt } from 'react-icons/bi';
 
@@ -148,7 +148,7 @@ export default function HospitalityReportsPage() {
                 <BarChart data={CHART_DATA}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#E5E9F0" />
                   <XAxis dataKey="name" tick={{ fontSize: 11 }} />
-                  <YAxis tick={{ fontSize: 11 }} />
+                  <YAxis tick={{ fontSize: 11 }} tickFormatter={formatAxisCurrency} width={60} />
                   <Tooltip formatter={(v: any) => `₹${formatNumber(Number(v))}`} />
                   <Bar dataKey="total" fill="#F47B35" radius={[6, 6, 0, 0]} />
                 </BarChart>

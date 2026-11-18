@@ -33,7 +33,7 @@ export default function HousekeepingPage() {
         <div className="row g-2">
           {dirtyRooms.map(rm => (
             <div key={rm.id} className="col-12 col-sm-6 col-lg-4">
-              <div className="p-2.5 rounded-3 bg-surface border border-subtle d-flex align-items-center justify-content-between gap-2">
+              <div className="p-3 rounded-3 bg-surface border border-subtle d-flex align-items-center justify-content-between gap-2">
                 <div>
                   <div className="fw-bold text-navy small">Room {rm.roomNumber} • {rm.roomType}</div>
                   <div className="text-muted-custom" style={{ fontSize: '11px' }}>Status: <strong>{rm.status}</strong> &bull; {rm.housekeeperAssigned}</div>
@@ -77,7 +77,7 @@ export default function HousekeepingPage() {
       <div className="row g-3">
         {filtered.map(task => (
           <div key={task.id} className="col-12 col-md-6">
-            <div className="app-card p-3.5 h-100 d-flex flex-column justify-content-between">
+            <div className="app-card p-4 h-100 d-flex flex-column justify-content-between">
               <div>
                 <div className="d-flex justify-content-between align-items-start mb-2">
                   <div>

@@ -63,7 +63,7 @@ export default function OrderReadyBoardPage() {
                 <BiTv className="text-brand" />
                 {language === 'en' ? 'ORDER READY BOARD' : 'ऑर्डर रेडी बोर्ड'}
               </h4>
-              <span className="badge bg-success rounded-pill px-2.5 py-1" style={{ fontSize: '11px' }}>
+              <span className="badge bg-success rounded-pill px-3 py-1" style={{ fontSize: '11px' }}>
                 LIVE TV STREAM
               </span>
             </div>

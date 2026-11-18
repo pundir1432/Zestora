@@ -110,7 +110,7 @@ export default function OtaAggregatorReconciliationPage() {
                     <td>
                       <div className="text-navy fw-semibold">{t.guestOrCustomer}</div>
                       <div className="text-muted-custom" style={{ fontSize: '10px' }}>{t.date}</div>
-                      {t.notes && <div className="text-danger mt-0.5" style={{ fontSize: '10px' }}>{t.notes}</div>}
+                      {t.notes && <div className="text-danger mt-1" style={{ fontSize: '10px' }}>{t.notes}</div>}
                     </td>
                     <td className="text-end fw-semibold">₹{formatNumber(t.grossAmount)}</td>
                     <td className="text-end text-danger">

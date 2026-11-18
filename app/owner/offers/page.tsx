@@ -260,7 +260,7 @@ export default function OffersPage() {
                 <div>
                   <div className="d-flex justify-content-between align-items-start mb-2">
                     <div className="d-flex align-items-center gap-2">
-                      <div className="px-2.5 py-1 bg-surface border border-subtle rounded-2 font-monospace fw-bold text-navy fs-6">
+                      <div className="px-3 py-1 bg-surface border border-subtle rounded-2 font-monospace fw-bold text-navy fs-6">
                         {o.code}
                       </div>
                       <button
@@ -289,7 +289,7 @@ export default function OffersPage() {
                   <h6 className="fw-bold text-navy mb-1">{o.title}</h6>
                   <p className="text-muted-custom small mb-3">{o.description}</p>
 
-                  <div className="p-2.5 bg-surface rounded-3 border border-subtle mb-3 small">
+                  <div className="p-3 bg-surface rounded-3 border border-subtle mb-3 small">
                     <div className="d-flex justify-content-between mb-1">
                       <span className="text-muted-custom">Benefit:</span>
                       <strong className="text-brand">
@@ -341,7 +341,7 @@ export default function OffersPage() {
                     type="button"
                     className={`btn btn-sm ${
                       o.status === 'active' ? 'btn-outline-danger' : 'btn-outline-success'
-                    } py-1 px-2.5 d-flex align-items-center gap-1`}
+                    } py-1 px-3 d-flex align-items-center gap-1`}
                     onClick={() => handleToggleStatus(o.id)}
                   >
                     <BiPowerOff size={14} />
