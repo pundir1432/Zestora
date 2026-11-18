@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useAuth } from '@/context/AuthContext';
+import { useHospitality } from '@/context/HospitalityContext';
 import { Order, OrderStatus } from '@/types/order';
 import { KotCard } from '@/components/kot/KotCard';
 import { ReceiptModal } from '@/components/common/ReceiptModal';
@@ -14,7 +16,8 @@ import {
   BiTime, 
   BiSearch, 
   BiFilterAlt, 
-  BiTrendingUp
+  BiTrendingUp,
+  BiTv
 } from 'react-icons/bi';
 import { TbToolsKitchen2 } from 'react-icons/tb';
 
@@ -28,6 +31,7 @@ const STATIONS = [
 
 export default function KotKdsPage() {
   const { orders, updateOrderStatus, currentRestaurant, isFeatureEnabled } = useAuth();
+  const { readyBoardOrders, advanceOrderStage } = useHospitality();
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [selectedStation, setSelectedStation] = useState<string>('All Stations');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -105,10 +109,62 @@ export default function KotKdsPage() {
             <span>{soundEnabled ? 'Buzzer Active' : 'Muted'}</span>
           </button>
 
+          <Link
+            href="/ready-board"
+            className="btn btn-sm btn-success text-white fw-semibold d-flex align-items-center gap-1 rounded-pill px-3"
+          >
+            <BiTv size={16} /> Order Ready Board
+          </Link>
+
           <span className="badge badge-soft-warning py-2 px-3 rounded-pill fw-semibold d-flex align-items-center gap-1">
             <BiTrendingUp className="text-warning" size={16} />
             {prepOrders.length} Cooking Now
           </span>
+        </div>
+      </div>
+
+      {/* Live Incoming Kiosk / Guest QR / Captain / Room Service Strip */}
+      <div className="app-card p-3 mb-3">
+        <div className="d-flex justify-content-between align-items-center mb-2">
+          <span className="fw-bold text-navy small">
+            Live Kiosk, QR Web, Captain &amp; Room Service Feed ({readyBoardOrders.filter(o => o.stage !== 'SERVED').length} Active)
+          </span>
+          <span className="text-muted-custom" style={{ fontSize: '11px' }}>Touch buttons update Order Ready Board TV immediately</span>
+        </div>
+        <div className="row g-2">
+          {readyBoardOrders.filter(o => o.stage !== 'SERVED').slice(0, 4).map(rb => (
+            <div key={rb.id} className="col-12 col-sm-6 col-xl-3">
+              <div className={`p-2.5 rounded-3 border h-100 d-flex flex-column justify-content-between ${rb.priority === 'Rush' ? 'border-danger bg-danger bg-opacity-10' : 'border-subtle bg-surface'}`}>
+                <div>
+                  <div className="d-flex justify-content-between align-items-center mb-1">
+                    <span className="badge bg-navy text-white fw-bold">#{rb.tokenNumber}</span>
+                    <span className="badge badge-soft-brand" style={{ fontSize: '10px' }}>{rb.orderType}</span>
+                  </div>
+                  <div className="fw-bold text-navy small">{rb.customerShortName} • {rb.sourceLabel}</div>
+                  <div className="text-muted-custom mt-1" style={{ fontSize: '11px' }}>
+                    {rb.items.map(i => `${i.qty}x ${i.name}`).join(', ')}
+                  </div>
+                </div>
+                <div className="d-flex gap-1 mt-2 pt-2 border-top">
+                  {rb.stage === 'NEW' && (
+                    <button type="button" onClick={() => advanceOrderStage(rb.id, 'PREPARING')} className="btn btn-warning btn-sm fw-bold w-100">
+                      Start Preparing
+                    </button>
+                  )}
+                  {rb.stage === 'PREPARING' && (
+                    <button type="button" onClick={() => advanceOrderStage(rb.id, 'READY')} className="btn btn-success btn-sm text-white fw-bold w-100">
+                      Mark READY (TV)
+                    </button>
+                  )}
+                  {rb.stage === 'READY' && (
+                    <button type="button" onClick={() => advanceOrderStage(rb.id, 'SERVED')} className="btn btn-dark btn-sm text-white fw-bold w-100">
+                      Picked Up / Served
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 

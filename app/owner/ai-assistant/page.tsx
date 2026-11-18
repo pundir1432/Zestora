@@ -1,276 +1,319 @@
 'use client';
 
 import React, { useState } from 'react';
-import DashboardLayout from '@/components/layout/DashboardLayout';
-import { SAMPLE_AI_PRESET_QUESTIONS, SAMPLE_AI_CHAT_HISTORY } from '@/data/saasData';
-import { AiChatMessage } from '@/types/saas';
-import {
-  BiBrain,
-  BiSend,
-  BiStar,
-  BiTrendingUp,
-  BiDish,
-  BiDollarCircle,
-  BiCheckCircle,
-  BiUser,
-} from 'react-icons/bi';
+import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { PlanGate } from '@/components/common/PlanBadge';
+import { useHospitality } from '@/context/HospitalityContext';
+import { reportService, auditService } from '@/services';
+import { formatNumber } from '@/utils/formatters';
+import { BiBrain, BiSend, BiCheckCircle, BiData, BiHistory, BiLogoWhatsapp, BiInfoCircle } from 'react-icons/bi';
 
-export default function BusinessOwnerAiAssistantPage() {
-  const [messages, setMessages] = useState<AiChatMessage[]>(SAMPLE_AI_CHAT_HISTORY);
-  const [inputQuestion, setInputQuestion] = useState('');
-  const [isThinking, setIsThinking] = useState(false);
+interface AiChatMessage {
+  id: string;
+  sender: 'user' | 'ai';
+  channel: 'Web AI' | 'WhatsApp Bot';
+  text: string;
+  dataSource?: string;
+  suggestedAction?: { label: string; description: string };
+  timestamp: string;
+}
 
-  const handleAsk = (questionText: string) => {
-    if (!questionText.trim()) return;
+const EXAMPLE_QUESTIONS = [
+  'How much did we sell today?',
+  'Which room is vacant?',
+  'Show pending Form III.',
+  'How many orders are ready?',
+  'Which staff member gave the most discounts?',
+  "Show yesterday's revenue.",
+];
 
-    const userMsg: AiChatMessage = {
-      id: `msg-${Date.now()}`,
-      sender: 'user',
-      message: questionText,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    };
+export default function WhatsAppAiAssistantPage() {
+  const { rooms, dorms, formIIIRecords, readyBoardOrders, pushNotification } = useHospitality();
+  const [channel, setChannel] = useState<'Web AI' | 'WhatsApp Bot'>('WhatsApp Bot');
+  const [input, setInput] = useState('');
+  const [pendingAction, setPendingAction] = useState<{ label: string; description: string } | null>(null);
+  const [actionHistory, setActionHistory] = useState<{ id: string; time: string; action: string; status: string }[]>([
+    { id: 'ACT-101', time: '09:15 AM', action: 'Sent Morning Revenue & Occupancy Digest to Owner WhatsApp', status: 'Confirmed (Mock)' },
+  ]);
 
-    setMessages((prev) => [...prev, userMsg]);
-    setInputQuestion('');
-    setIsThinking(true);
+  const [messages, setMessages] = useState<AiChatMessage[]>([
+    {
+      id: 'init-1',
+      sender: 'ai',
+      channel: 'WhatsApp Bot',
+      text: 'Namaste! I am your Zestora Hospitality AI & WhatsApp Assistant. Ask me about today’s Restaurant + Room + Camp sales, vacant rooms/dorms, pending Form III deadlines, ready orders, or staff discounts.',
+      dataSource: 'Demo Mock Context (Live Local State)',
+      timestamp: 'Now',
+    },
+  ]);
 
-    setTimeout(() => {
-      let reply = '';
-      let metricsCard: AiChatMessage['metricsCard'] | undefined = undefined;
-      let suggestions: string[] = [];
+  const buildMockAnswer = (q: string): { text: string; dataSource: string; suggestedAction?: { label: string; description: string } } => {
+    const low = q.toLowerCase();
+    const kpi = reportService.getDashboardSummary();
+    const exceptions = auditService.getExceptions();
 
-      const q = questionText.toLowerCase();
-
-      if (q.includes('weekend') || q.includes('forecast') || q.includes('demand')) {
-        reply =
-          'Based on historical weekend sales, current table reservations (18 parties booked), and upcoming local events, here is your Friday - Sunday demand forecast:\n\n' +
-          '• **Projected Weekend Revenue:** ₹3,31,500 (+14% vs last weekend)\n' +
-          '• **Expected Covers / Footfall:** 780 diners\n' +
-          '• **Key Raw Material Alert:** Fresh Chicken requirement is estimated at 145 kg, but current commissary stock is only 42 kg. **Reorder 105 kg before Friday noon.**\n' +
-          '• **Peak Kitchen Rush Hours:** Saturday 08:30 PM - 10:30 PM & Sunday 01:00 PM - 03:00 PM.';
-        metricsCard = {
-          label: 'Estimated Weekend Revenue',
-          value: '₹3,31,500',
-          sublabel: '780 Projected Covers | 96% Model Confidence',
-          sentiment: 'positive',
-        };
-        suggestions = ['Generate Chicken reorder PO', 'Review staff shift allocations', 'Check table reservations'];
-      } else if (q.includes('profit') || q.includes('dip') || q.includes('loss')) {
-        reply =
-          'Analysis of Tuesday’s ledger shows a temporary dip in net operating profit from your typical 32% margin down to 24.8%. Here were the key drivers:\n\n' +
-          '1. **Higher Food Wastage:** ₹1,420 worth of gravy and dairy spoilage was logged at Indiranagar.\n' +
-          '2. **Promotion Redemptions:** Heavy redemption of WELCOME50 codes (₹4,200 discount given).\n' +
-          '3. **Low Dine-In Table Turnover:** Average table occupancy was 78 minutes compared to target 45 minutes.\n\n' +
-          '**Actionable Next Step:** Tighten afternoon gravy batch sizes and limit WELCOME50 to delivery channels only.';
-        metricsCard = {
-          label: 'Tuesday Margin Impact',
-          value: '24.8% vs 32% Avg',
-          sublabel: '₹5,620 discount & wastage drag',
-          sentiment: 'warning',
-        };
-        suggestions = ['View Food Waste log', 'Optimize coupon rules', 'Check hourly table turns'];
-      } else if (q.includes('dessert') || q.includes('beverage') || q.includes('boost')) {
-        reply =
-          'Here are 3 high-impact upsell strategies recommended for your POS and Waiter tablets:\n\n' +
-          '1. **POS Prompt Automation:** Enable automatic prompt on POS: when a customer orders Hyderabadi Biryani, prompt the cashier to ask: "Would you like our signature Masala Chaas or Gulab Jamun for ₹49?"\n' +
-          '2. **Combo Meal Bundles:** Create a "Family Feast" combo that bundles a 1-litre beverage and 4 pastries at 15% bundled savings. High beverage margin (82%) subsidizes the discount.\n' +
-          '3. **Table QR Dessert Showcase:** Move photo-rich dessert cards to the top of your digital menu after 8:30 PM.';
-        metricsCard = {
-          label: 'Upsell Revenue Potential',
-          value: '+₹42,000 / month',
-          sublabel: '82% gross margin on cold brew & desserts',
-          sentiment: 'positive',
-        };
-        suggestions = ['Create Biryani + Beverage Combo', 'Configure POS upsell prompt', 'Update digital menu layout'];
-      } else {
-        reply =
-          `I analyzed your live restaurant POS data regarding "${questionText}". Operations across Indiranagar and Koramangala branches are performing strongly with an average food cost of 29.8% and customer satisfaction rating of 4.8 / 5.0. All inventory stock thresholds are currently within safe operational buffers.`;
-        suggestions = ['Show high food cost dishes', 'Weekend demand forecast', 'Review guest reviews'];
-      }
-
-      const assistantMsg: AiChatMessage = {
-        id: `msg-${Date.now() + 1}`,
-        sender: 'assistant',
-        message: reply,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        metricsCard,
-        suggestions,
+    if (low.includes('sell today') || low.includes('sales today') || low.includes('today')) {
+      return {
+        text: `Today's Total Hospitality Revenue is ₹${formatNumber(kpi.todayTotalRevenue)} (Demo Data):\n• Restaurant & Cafe: ₹${formatNumber(kpi.restaurantSales)} (${kpi.totalOrders} orders)\n• Rooms & Hostel Dorms: ₹${formatNumber(kpi.roomRevenue)}\n• Camp & Rafting Activities: ₹${formatNumber(kpi.campRevenue)}\n• GST Collected: ₹${formatNumber(kpi.gstCollectedToday)}`,
+        dataSource: 'reportService.getDashboardSummary() • Demo Mock Data',
+        suggestedAction: {
+          label: 'Send Daily Sales Digest on WhatsApp',
+          description: 'Send a formatted summary of today’s ₹1,74,350 revenue to Owner & Group GM on WhatsApp (Mock).',
+        },
       };
+    }
 
-      setMessages((prev) => [...prev, assistantMsg]);
-      setIsThinking(false);
-    }, 800);
+    if (low.includes('vacant') || low.includes('room')) {
+      const availRooms = rooms.filter(r => r.status === 'Available' || r.status === 'Clean');
+      const availBeds = dorms.reduce((s, d) => s + d.beds.filter(b => b.status === 'Available').length, 0);
+      return {
+        text: `Currently Available Units (${availRooms.length} Rooms/Tents & ${availBeds} Hostel Dorm Beds):\n${availRooms
+          .map(r => `• Room/Tent ${r.roomNumber} (${r.roomType}) — ₹${formatNumber(r.tariffPerNight)}/night [${r.status}]`)
+          .join('\n')}\n• Plus ${availBeds} vacant bunk beds across Mixed, Female-Only & Male-Only Dorms.`,
+        dataSource: 'propertyService.getRooms() + getDorms() • Live Local State',
+      };
+    }
+
+    if (low.includes('form iii') || low.includes('foreign') || low.includes('frro')) {
+      const pending = formIIIRecords.filter(r => r.status !== 'Submitted');
+      return {
+        text: `There are ${pending.length} pending Form III foreign guest filings:\n${pending
+          .map(r => `• ${r.guestName} (${r.nationality}, ${r.unitLabel}) — Status: ${r.status} (${r.deadlineLabel})`)
+          .join('\n')}`,
+        dataSource: 'complianceService.getFormIIIRecords() • Live Local State',
+        suggestedAction: {
+          label: 'Send Urgent WhatsApp Reminder to Front Desk',
+          description: 'Alert Tapovan Front Desk & Compliance Officer to immediately clear Lukas Weber’s overdue Form III.',
+        },
+      };
+    }
+
+    if (low.includes('ready') || low.includes('order')) {
+      const ready = readyBoardOrders.filter(o => o.stage === 'READY');
+      const prep = readyBoardOrders.filter(o => o.stage === 'PREPARING');
+      return {
+        text: `Kitchen & Order Ready Board Status:\n• READY for Pickup (${ready.length}): ${ready.map(o => `#${o.tokenNumber} (${o.customerShortName})`).join(', ') || 'None'}\n• Currently Preparing: ${prep.length} orders`,
+        dataSource: 'orderService.getReadyBoardOrders() • Live Local State',
+      };
+    }
+
+    if (low.includes('discount') || low.includes('staff')) {
+      const disc = exceptions.filter(e => e.category === 'Discount' || e.category === 'Price Edit');
+      return {
+        text: `Top Staff Discount & Price Override Activity (Demo Exceptions):\n${disc
+          .map(e => `• ${e.staffName} (${e.outlet}): ₹${formatNumber(e.amountImpact)} — ${e.details} [${e.status}]`)
+          .join('\n')}`,
+        dataSource: 'auditService.getExceptions() • Demo Mock Data',
+        suggestedAction: {
+          label: 'Flag Cashier Discount Audit Task',
+          description: 'Create an audit reminder to review discounts > 10% during Day Close.',
+        },
+      };
+    }
+
+    if (low.includes('yesterday')) {
+      return {
+        text: `Yesterday's Total Revenue (17 Nov 2026 — Demo Data): ₹1,59,500\n• Rooms & Dorms: ₹69,000\n• Restaurant & Cafe: ₹62,100\n• Camp & Adventure: ₹28,400\n• Day Close Status: Closed cleanly with ₹0 cash variance.`,
+        dataSource: 'reportService Historical Snapshot • Demo Mock Data',
+      };
+    }
+
+    return {
+      text: `Mock Assistant Reply for "${q}":\nI checked your active Rishikesh property context. Try asking one of the hospitality quick prompts above (Today's sales, Vacant rooms, Pending Form III, Ready orders, Staff discounts, or Yesterday's revenue).`,
+      dataSource: 'Mock Hospitality Assistant Router',
+    };
+  };
+
+  const askQuestion = (questionText: string) => {
+    const trimmed = questionText.trim();
+    if (!trimmed) return;
+    const ans = buildMockAnswer(trimmed);
+    const nowTime = new Date().toTimeString().slice(0, 5);
+
+    setMessages(prev => [
+      ...prev,
+      { id: `u-${Date.now()}`, sender: 'user', channel, text: trimmed, timestamp: nowTime },
+      {
+        id: `a-${Date.now() + 1}`,
+        sender: 'ai',
+        channel,
+        text: ans.text,
+        dataSource: ans.dataSource,
+        suggestedAction: ans.suggestedAction,
+        timestamp: nowTime,
+      },
+    ]);
+    setInput('');
+  };
+
+  const confirmAction = () => {
+    if (!pendingAction) return;
+    const nowTime = new Date().toTimeString().slice(0, 5);
+    setActionHistory(prev => [
+      { id: `ACT-${Math.floor(110 + Math.random() * 880)}`, time: nowTime, action: pendingAction.label, status: 'Executed (Mock)' },
+      ...prev,
+    ]);
+    pushNotification({
+      category: 'New Order',
+      title: `AI Action Executed: ${pendingAction.label}`,
+      message: pendingAction.description,
+      severity: 'success',
+    });
+    setPendingAction(null);
   };
 
   return (
     <DashboardLayout allowedRoles={['restaurant_owner', 'branch_manager']}>
-      <div className="container-fluid p-0">
-        {/* Header */}
-        <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+      <PlanGate featureKey="aiWhatsappAssistant" requiredTier="G" featureTitle="WhatsApp & Hospitality AI Assistant">
+        <div className="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2 mb-3">
           <div>
-            <div className="d-flex align-items-center gap-2">
-              <span className="p-2 rounded bg-primary-subtle text-primary">
-                <BiBrain size={24} />
-              </span>
-              <h1 className="h3 fw-bold text-dark mb-0">AI Restaurant Intelligence Copilot</h1>
-              <span className="badge bg-primary-subtle text-primary border border-primary-subtle">
-                GPT-4o Deep Copilot
-              </span>
-            </div>
-            <p className="text-muted small mb-0 mt-1">
-              Ask natural language questions about your menus, supplier purchase inflation, food cost leaks, and sales forecasting.
+            <h3 className="fw-bold text-navy mb-1 d-flex align-items-center gap-2">
+              <BiBrain className="text-brand" /> WhatsApp &amp; Hospitality AI Assistant
+            </h3>
+            <p className="text-muted-custom small mb-0">
+              Ask natural questions across Restaurant POS, Hotel/Hostel Occupancy, Form III FRRO &amp; Staff Exceptions — with explicit action confirmation
             </p>
           </div>
-        </div>
-
-        {/* Preset Prompt Pills */}
-        <div className="mb-4">
-          <div className="text-muted small fw-semibold mb-2">Suggested Business Inquiries:</div>
-          <div className="d-flex flex-wrap gap-2">
-            {SAMPLE_AI_PRESET_QUESTIONS.map((q, idx) => (
-              <button
-                key={idx}
-                className="btn btn-outline-secondary btn-sm bg-white rounded-pill px-3 py-1 text-start"
-                onClick={() => handleAsk(q)}
-              >
-                <BiStar className="text-primary me-1" /> {q}
-              </button>
-            ))}
+          <div className="btn-group btn-group-sm">
+            <button type="button" onClick={() => setChannel('WhatsApp Bot')} className={`btn fw-semibold d-flex align-items-center gap-1 ${channel === 'WhatsApp Bot' ? 'btn-success text-white' : 'btn-outline-secondary bg-white text-navy'}`}>
+              <BiLogoWhatsapp size={16} /> WhatsApp UI
+            </button>
+            <button type="button" onClick={() => setChannel('Web AI')} className={`btn fw-semibold ${channel === 'Web AI' ? 'btn-brand text-white' : 'btn-outline-secondary bg-white text-navy'}`}>
+              Web Copilot
+            </button>
           </div>
         </div>
 
-        {/* Chat Feed Card */}
-        <div className="card border-0 shadow-sm rounded-3 bg-white mb-4 d-flex flex-column" style={{ minHeight: '520px' }}>
-          <div className="card-body p-4 flex-grow-1 overflow-auto" style={{ maxHeight: '520px' }}>
-            {messages.map((m) => {
-              const isUser = m.sender === 'user';
-              return (
-                <div
-                  key={m.id}
-                  className={`d-flex mb-4 ${isUser ? 'justify-content-end' : 'justify-content-start'}`}
-                >
-                  <div
-                    className={`d-flex gap-3 max-w-75 ${
-                      isUser ? 'flex-row-reverse' : 'flex-row'
-                    }`}
-                    style={{ maxWidth: '85%' }}
-                  >
+        <div className="alert alert-info border-0 bg-info bg-opacity-10 rounded-3 py-2 px-3 small mb-3 d-flex align-items-center gap-2">
+          <BiInfoCircle className="text-primary flex-shrink-0" size={18} />
+          <span><strong>Transparent Mock Mode:</strong> Responses read live local frontend mock state &amp; services. No external LLM or WhatsApp Business API is called yet.</span>
+        </div>
+
+        {/* Example Quick Prompts */}
+        <div className="d-flex gap-2 flex-wrap mb-3">
+          {EXAMPLE_QUESTIONS.map(q => (
+            <button
+              key={q}
+              type="button"
+              onClick={() => askQuestion(q)}
+              className="btn btn-sm rounded-pill bg-white border border-subtle text-navy fw-medium"
+              style={{ fontSize: '12px' }}
+            >
+              &ldquo;{q}&rdquo;
+            </button>
+          ))}
+        </div>
+
+        <div className="row g-3">
+          {/* Chat Area */}
+          <div className="col-12 col-lg-8">
+            <div className="app-card d-flex flex-column overflow-hidden" style={{ height: '520px' }}>
+              <div className={`px-3 py-2.5 d-flex justify-content-between align-items-center text-white ${channel === 'WhatsApp Bot' ? 'bg-success' : 'bg-navy'}`}>
+                <span className="fw-bold small d-flex align-items-center gap-2">
+                  {channel === 'WhatsApp Bot' ? <BiLogoWhatsapp size={18} /> : <BiBrain size={18} />}
+                  Zestora {channel} • Connected to Mock Services
+                </span>
+                <span className="badge bg-white bg-opacity-25">EN / हिंदी Ready</span>
+              </div>
+
+              <div className="flex-grow-1 p-3 overflow-y-auto d-flex flex-column gap-3" style={{ backgroundColor: channel === 'WhatsApp Bot' ? '#EFEAE2' : '#F8FAFC' }}>
+                {messages.map(m => (
+                  <div key={m.id} className={`d-flex flex-column ${m.sender === 'user' ? 'align-items-end' : 'align-items-start'}`}>
                     <div
-                      className={`p-2 rounded-circle flex-shrink-0 d-flex align-items-center justify-content-center ${
-                        isUser ? 'bg-primary text-white' : 'bg-dark text-white'
+                      className={`p-3 rounded-4 shadow-2xs ${
+                        m.sender === 'user' ? 'bg-navy text-white' : 'bg-white text-navy border border-subtle'
                       }`}
-                      style={{ width: '38px', height: '38px' }}
+                      style={{ maxWidth: '85%', whiteSpace: 'pre-line', fontSize: '13px' }}
                     >
-                      {isUser ? <BiUser size={20} /> : <BiBrain size={20} />}
-                    </div>
-
-                    <div>
-                      <div
-                        className={`p-3 rounded-3 shadow-sm ${
-                          isUser
-                            ? 'bg-primary text-white'
-                            : 'bg-light text-dark border'
-                        }`}
-                      >
-                        <div
-                          className="small"
-                          style={{ whiteSpace: 'pre-line', lineHeight: '1.6' }}
-                        >
-                          {m.message}
+                      {m.text}
+                      {m.dataSource && (
+                        <div className="mt-2 pt-2 border-top d-flex align-items-center gap-1 text-muted-custom" style={{ fontSize: '10px' }}>
+                          <BiData className="text-brand" /> Context Source: <strong>{m.dataSource}</strong>
                         </div>
-
-                        {/* Metric card preview if present */}
-                        {m.metricsCard && (
-                          <div className="mt-3 p-3 bg-white rounded-2 border text-dark">
-                            <div className="d-flex justify-content-between align-items-center">
-                              <div>
-                                <div className="text-muted" style={{ fontSize: '11px' }}>
-                                  {m.metricsCard.label}
-                                </div>
-                                <div className="fw-bold fs-5 text-primary">
-                                  {m.metricsCard.value}
-                                </div>
-                              </div>
-                              <span
-                                className={`badge ${
-                                  m.metricsCard.sentiment === 'positive'
-                                    ? 'bg-success-subtle text-success'
-                                    : 'bg-warning-subtle text-warning-emphasis'
-                                } border`}
-                              >
-                                {m.metricsCard.sublabel}
-                              </span>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
-                      <div
-                        className={`text-muted small mt-1 ${
-                          isUser ? 'text-end' : 'text-start'
-                        }`}
-                        style={{ fontSize: '11px' }}
-                      >
-                        {m.timestamp}
-                      </div>
-
-                      {/* Suggestions pills if present */}
-                      {!isUser && m.suggestions && m.suggestions.length > 0 && (
-                        <div className="d-flex flex-wrap gap-1 mt-2">
-                          {m.suggestions.map((sug, sIdx) => (
-                            <button
-                              key={sIdx}
-                              className="btn btn-xs btn-outline-primary py-0 px-2 rounded-pill"
-                              style={{ fontSize: '11px' }}
-                              onClick={() => handleAsk(sug)}
-                            >
-                              + {sug}
-                            </button>
-                          ))}
+                      )}
+                      {m.suggestedAction && (
+                        <div className="mt-2">
+                          <button
+                            type="button"
+                            onClick={() => setPendingAction(m.suggestedAction!)}
+                            className="btn btn-sm btn-brand text-white fw-semibold"
+                            style={{ fontSize: '11px' }}
+                          >
+                            {m.suggestedAction.label} &rarr;
+                          </button>
                         </div>
                       )}
                     </div>
+                    <span className="text-muted-custom mt-1 px-1" style={{ fontSize: '10px' }}>{m.timestamp}</span>
                   </div>
-                </div>
-              );
-            })}
-
-            {isThinking && (
-              <div className="d-flex align-items-center gap-2 text-muted small p-2">
-                <div className="spinner-grow spinner-grow-sm text-primary" role="status"></div>
-                <span>AI Copilot is analyzing recipe margins, POS records and inventory...</span>
+                ))}
               </div>
-            )}
+
+              <form
+                onSubmit={e => {
+                  e.preventDefault();
+                  askQuestion(input);
+                }}
+                className="p-2.5 bg-white border-top d-flex gap-2"
+              >
+                <input
+                  className="form-control form-control-sm"
+                  placeholder="Ask about sales, vacant rooms, Form III, ready orders, discounts..."
+                  value={input}
+                  onChange={e => setInput(e.target.value)}
+                />
+                <button type="submit" className="btn btn-brand btn-sm text-white fw-semibold px-3 d-flex align-items-center gap-1">
+                  <BiSend /> Send
+                </button>
+              </form>
+            </div>
           </div>
 
-          {/* Chat Input Bar */}
-          <div className="card-footer bg-white border-top p-3">
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleAsk(inputQuestion);
-              }}
-            >
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Ask anything (e.g. Which dishes have highest profit margin? Forecast raw materials for tomorrow...)"
-                  value={inputQuestion}
-                  onChange={(e) => setInputQuestion(e.target.value)}
-                />
-                <button
-                  type="submit"
-                  className="btn btn-primary px-4 d-flex align-items-center gap-2"
-                  disabled={!inputQuestion.trim() || isThinking}
-                >
-                  <BiSend size={18} /> <span className="d-none d-sm-inline">Ask AI</span>
-                </button>
+          {/* Right: Action History & Safety Guardrails */}
+          <div className="col-12 col-lg-4">
+            <div className="app-card p-3 h-100">
+              <h6 className="fw-bold text-navy small mb-3 d-flex align-items-center gap-1">
+                <BiHistory className="text-brand" /> Confirmed Action History
+              </h6>
+              <div className="d-flex flex-column gap-2">
+                {actionHistory.map(act => (
+                  <div key={act.id} className="p-2.5 rounded-3 bg-surface border border-subtle small">
+                    <div className="fw-semibold text-navy">{act.action}</div>
+                    <div className="d-flex justify-content-between align-items-center mt-1" style={{ fontSize: '10px' }}>
+                      <span className="text-muted-custom">{act.time}</span>
+                      <span className="badge badge-soft-success d-inline-flex align-items-center gap-1"><BiCheckCircle /> {act.status}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
-            </form>
+            </div>
           </div>
         </div>
-      </div>
+
+        {/* Action Confirmation Dialog */}
+        {pendingAction && (
+          <div className="modal show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.55)' }}>
+            <div className="modal-dialog modal-dialog-centered">
+              <div className="modal-content rounded-4 overflow-hidden">
+                <div className="modal-header bg-navy text-white">
+                  <h6 className="modal-title fw-bold">Confirm AI-Assisted Action</h6>
+                  <button type="button" className="btn-close btn-close-white" onClick={() => setPendingAction(null)} />
+                </div>
+                <div className="modal-body p-4">
+                  <div className="fw-bold text-navy mb-2">{pendingAction.label}</div>
+                  <p className="text-muted-custom small mb-0">{pendingAction.description}</p>
+                </div>
+                <div className="modal-footer">
+                  <button type="button" onClick={() => setPendingAction(null)} className="btn btn-outline-secondary btn-sm">Cancel</button>
+                  <button type="button" onClick={confirmAction} className="btn btn-brand btn-sm text-white fw-semibold px-4">
+                    Confirm &amp; Execute (Mock)
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </PlanGate>
     </DashboardLayout>
   );
 }

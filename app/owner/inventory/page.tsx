@@ -8,6 +8,7 @@ import { InventoryItem, StockMovement, PurchaseOrder } from '@/types/inventory';
 import { Modal } from '@/components/common/Modal';
 import { StatusBadge } from '@/components/common/StatusBadge';
 import { formatNumber } from '@/utils/formatters';
+import { inventoryService } from '@/services';
 import { 
   BiPackage, 
   BiPlus, 
@@ -25,7 +26,8 @@ import {
 
 export default function InventoryPage() {
   const { inventory, recentDeductions } = useAuth();
-  const [activeTab, setActiveTab] = useState<'stock' | 'po' | 'deductions' | 'ledger' | 'expiry'>('stock');
+  const campGear = inventoryService.getCampGearInventory();
+  const [activeTab, setActiveTab] = useState<'stock' | 'camp_gear' | 'po' | 'deductions' | 'ledger' | 'expiry'>('stock');
   const [movements, setMovements] = useState<StockMovement[]>(SAMPLE_STOCK_MOVEMENTS);
   const [purchaseOrders, setPurchaseOrders] = useState<PurchaseOrder[]>(SAMPLE_PURCHASE_ORDERS);
   const [searchTerm, setSearchTerm] = useState('');
@@ -202,6 +204,16 @@ export default function InventoryPage() {
           <button
             type="button"
             className={`btn btn-sm text-nowrap rounded-pill px-3 ${
+              activeTab === 'camp_gear' ? 'btn-brand text-white fw-bold shadow-sm' : 'btn-light text-navy'
+            }`}
+            onClick={() => setActiveTab('camp_gear')}
+          >
+            Camp &amp; Adventure Gear ({campGear.length})
+          </button>
+
+          <button
+            type="button"
+            className={`btn btn-sm text-nowrap rounded-pill px-3 ${
               activeTab === 'po' ? 'btn-brand text-white fw-bold shadow-sm' : 'btn-light text-navy'
             }`}
             onClick={() => setActiveTab('po')}
@@ -240,6 +252,55 @@ export default function InventoryPage() {
           </button>
         </div>
       </div>
+
+      {/* TAB: CAMP & ADVENTURE GEAR STOCK */}
+      {activeTab === 'camp_gear' && (
+        <div className="app-card overflow-hidden mb-4">
+          <div className="p-3 border-bottom d-flex justify-content-between align-items-center">
+            <div>
+              <h6 className="fw-bold text-navy mb-0">Camp, Rafting &amp; Trekking Gear Inventory</h6>
+              <span className="text-muted-custom small">Shivpuri Rapids Eco Camp &amp; Tapovan Trek Store</span>
+            </div>
+            <span className="badge badge-soft-brand">Live Safety Audit</span>
+          </div>
+          <div className="table-responsive">
+            <table className="table table-hover align-middle mb-0 small">
+              <thead className="table-light">
+                <tr className="text-muted-custom">
+                  <th>Gear / Equipment</th>
+                  <th>Category</th>
+                  <th className="text-center">Total Units</th>
+                  <th className="text-center">In Use</th>
+                  <th className="text-center">Damaged</th>
+                  <th className="text-center">Available</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {campGear.map(item => {
+                  const avail = item.totalUnits - item.inUseUnits - item.damagedUnits;
+                  const isLow = avail < item.minAlertUnits;
+                  return (
+                    <tr key={item.id}>
+                      <td className="fw-bold text-navy">{item.name}</td>
+                      <td><span className="badge bg-light text-navy border">{item.category}</span></td>
+                      <td className="text-center fw-semibold">{item.totalUnits}</td>
+                      <td className="text-center text-primary fw-semibold">{item.inUseUnits}</td>
+                      <td className="text-center text-danger fw-semibold">{item.damagedUnits}</td>
+                      <td className="text-center fw-bold text-navy">{avail}</td>
+                      <td>
+                        <span className={`badge rounded-pill ${isLow ? 'badge-soft-danger' : 'badge-soft-success'}`}>
+                          {isLow ? 'Low Buffer Alert' : 'Healthy Stock'}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
 
       {/* TAB 1: RAW MATERIALS STOCK */}
       {activeTab === 'stock' && (
