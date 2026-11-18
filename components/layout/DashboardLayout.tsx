@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Sidebar } from './Sidebar';
 import { Navbar } from './Navbar';
 import { useAuth } from '@/context/AuthContext';
@@ -26,10 +27,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   children, 
   allowedRoles 
 }) => {
+  const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { 
     role, 
+    isAuthenticated,
+    isAuthReady,
     switchRole,
     subscriptionStatus,
     subscriptionPlan,
@@ -38,6 +42,31 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     graceDaysRemaining,
     nextPaymentDate,
   } = useAuth();
+
+  useEffect(() => {
+    if (isAuthReady && !isAuthenticated) {
+      router.replace('/login');
+    }
+  }, [isAuthReady, isAuthenticated, router]);
+
+  if (!isAuthReady || !isAuthenticated) {
+    return (
+      <div className="min-vh-100 bg-surface d-flex flex-column align-items-center justify-content-center p-4">
+        <div
+          className="d-flex align-items-center justify-content-center rounded-3 bg-brand text-white fw-bold shadow-sm mb-3"
+          style={{ width: '48px', height: '48px', fontSize: '24px' }}
+        >
+          Z
+        </div>
+        <div className="spinner-border text-brand mb-3" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+        <p className="text-muted-custom small mb-0 fw-medium">
+          {isAuthReady ? 'Redirecting to login...' : 'Verifying session...'}
+        </p>
+      </div>
+    );
+  }
 
   const isAllowed = !allowedRoles || allowedRoles.includes(role);
   const isSuperAdmin = role === 'super_admin';

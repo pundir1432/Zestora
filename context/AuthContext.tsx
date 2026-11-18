@@ -44,6 +44,8 @@ export interface OnboardingDraftData {
 interface AuthContextType {
   user: UserProfile | null;
   role: UserRole;
+  isAuthenticated: boolean;
+  isAuthReady: boolean;
   businesses: Restaurant[];
   currentRestaurant: Restaurant;
   currentBranch: Branch | null; // null means 'All Branches'
@@ -134,22 +136,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [currentBranch, setCurrentBranch] = useState<Branch | null>(defaultRestaurant.branches[0] || null);
   const [isStoreOnline, setIsStoreOnline] = useState<boolean>(true);
 
-  // User & Role State
-  const defaultOwnerAccount = DEMO_ACCOUNTS.find(a => a.role === 'restaurant_owner')!;
+  // User & Role State (starts unauthenticated until signed in for this browser session)
   const [role, setRole] = useState<UserRole>('restaurant_owner');
-  const [user, setUser] = useState<UserProfile | null>({
-    id: 'user-owner-1',
-    name: defaultOwnerAccount.name,
-    email: defaultOwnerAccount.email,
-    role: 'restaurant_owner',
-    roleTitle: defaultOwnerAccount.roleTitle,
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80',
-    phone: '+91 98765 43210',
-    restaurantId: defaultRestaurant.id,
-    restaurantName: defaultRestaurant.name,
-    branchId: defaultRestaurant.branches[0]?.id,
-    branchName: defaultRestaurant.branches[0]?.name,
-  });
+  const [user, setUser] = useState<UserProfile | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthReady, setIsAuthReady] = useState<boolean>(false);
 
   // Live Shared State
   const [orders, setOrders] = useState<Order[]>(SAMPLE_ORDERS);
@@ -185,10 +176,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     defaultGraceDays: 7,
   });
 
-  // Hydrate from localStorage on client side
+  // Hydrate from sessionStorage (auth) and localStorage (tenant data) on client side
   useEffect(() => {
     if (typeof window !== 'undefined') {
       try {
+        const storedSession = sessionStorage.getItem('zestora_auth_session');
+        if (storedSession) {
+          const parsedSession = JSON.parse(storedSession);
+          if (parsedSession && parsedSession.user && parsedSession.role) {
+            setRole(parsedSession.role);
+            setUser(parsedSession.user);
+            setIsAuthenticated(true);
+          }
+        }
+
         const storedBusinesses = localStorage.getItem('saas_businesses');
         if (storedBusinesses) {
           const parsed = JSON.parse(storedBusinesses);
@@ -217,7 +218,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setSubPlan(storedSubPlan as any);
         }
       } catch (err) {
-        console.error('Failed to load businesses from localStorage', err);
+        console.error('Failed to load session or businesses from storage', err);
+      } finally {
+        setIsAuthReady(true);
       }
     }
   }, []);
@@ -234,12 +237,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  // Persist active auth session in sessionStorage (cleared automatically when tab/browser is closed)
+  const persistAuthSession = (nextUser: UserProfile, nextRole: UserRole) => {
+    setRole(nextRole);
+    setUser(nextUser);
+    setIsAuthenticated(true);
+    if (typeof window !== 'undefined') {
+      try {
+        sessionStorage.setItem('zestora_auth_session', JSON.stringify({ user: nextUser, role: nextRole }));
+      } catch (err) {
+        console.error('Failed to persist auth session', err);
+      }
+    }
+  };
+
   // Quick switch role
   const switchRole = (newRole: UserRole) => {
-    setRole(newRole);
     const demo = DEMO_ACCOUNTS.find(a => a.role === newRole);
     if (demo) {
-      setUser({
+      const nextUser: UserProfile = {
         id: `user-${newRole}`,
         name: demo.name,
         email: demo.email,
@@ -261,7 +277,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         restaurantName: currentRestaurant.name,
         branchId: currentBranch?.id,
         branchName: currentBranch?.name,
-      });
+      };
+      persistAuthSession(nextUser, newRole);
 
       // Role specific redirects
       if (newRole === 'super_admin') {
@@ -297,6 +314,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = () => {
     setUser(null);
+    setIsAuthenticated(false);
+    if (typeof window !== 'undefined') {
+      try {
+        sessionStorage.removeItem('zestora_auth_session');
+      } catch (err) {
+        console.error('Failed to clear auth session', err);
+      }
+    }
     router.push('/login');
   };
 
@@ -306,13 +331,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCurrentRestaurant(found);
       setCurrentBranch(found.branches.length > 0 ? found.branches[0] : null);
       if (user) {
-        setUser({
+        const updatedUser: UserProfile = {
           ...user,
           restaurantId: found.id,
           restaurantName: found.name,
           branchId: found.branches[0]?.id,
           branchName: found.branches[0]?.name,
-        });
+        };
+        persistAuthSession(updatedUser, role);
       }
     }
   };
@@ -325,11 +351,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (found) {
         setCurrentBranch(found);
         if (user) {
-          setUser({
+          const updatedUser: UserProfile = {
             ...user,
             branchId: found.id,
             branchName: found.name,
-          });
+          };
+          persistAuthSession(updatedUser, role);
         }
       }
     }
@@ -467,7 +494,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     }
 
-    setUser({
+    const newOwnerUser: UserProfile = {
       id: `user-${newBusiness.ownerId}`,
       name: data.ownerName,
       email: data.ownerEmail,
@@ -479,7 +506,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       restaurantName: newBusiness.name,
       branchId: firstBranch.id,
       branchName: firstBranch.name,
-    });
+    };
+    persistAuthSession(newOwnerUser, 'restaurant_owner');
 
     return newBusiness;
   };
@@ -868,6 +896,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       value={{
         user,
         role,
+        isAuthenticated,
+        isAuthReady,
         businesses,
         currentRestaurant,
         currentBranch,

@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
+import { useHospitality } from '@/context/HospitalityContext';
 import { SAMPLE_STORE_BRANDING, SAMPLE_MENU_ITEMS } from '@/data/saasData';
 import { formatCurrency, formatNumber } from '@/utils/formatters';
 import {
@@ -30,6 +31,7 @@ interface CartItem {
 }
 
 export default function CustomerOrderDemoPage() {
+  const { addLiveOrder } = useHospitality();
   const [store] = useState(SAMPLE_STORE_BRANDING);
   const [menuItems] = useState(SAMPLE_MENU_ITEMS);
 
@@ -126,8 +128,10 @@ export default function CustomerOrderDemoPage() {
 
   const handlePlaceOrder = (e: React.FormEvent) => {
     e.preventDefault();
+    const tokenNum = `QR-${Math.floor(10 + Math.random() * 89)}`;
+    const ordNum = `ORD-${Math.floor(1000 + Math.random() * 9000)}`;
     const orderData = {
-      orderNumber: `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
+      orderNumber: ordNum,
       guestName,
       guestPhone,
       fulfillmentMode,
@@ -137,6 +141,17 @@ export default function CustomerOrderDemoPage() {
       paymentMethod,
       time: 'Just now',
     };
+    addLiveOrder({
+      tokenNumber: tokenNum,
+      orderNumber: ordNum,
+      customerShortName: guestName || 'QR Guest',
+      orderType: 'QR Web',
+      sourceLabel: fulfillmentMode === 'Dine In' ? `QR ${tableNumber}` : `QR ${fulfillmentMode}`,
+      stage: 'NEW',
+      priority: 'Normal',
+      items: cart.map(c => ({ name: c.name, qty: c.quantity })),
+      totalAmount: grandTotal,
+    });
     setConfirmedOrder(orderData);
     setShowCheckoutModal(false);
     setCart([]);

@@ -4,16 +4,17 @@ import React, { useRef, useEffect, useLayoutEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import { 
-  BiSolidDashboard, 
-  BiFoodMenu, 
-  BiStore, 
-  BiReceipt, 
-  BiGroup, 
-  BiBarChartAlt2, 
-  BiCog, 
-  BiLogOut, 
-  BiBuilding, 
+import { useHospitality } from '@/context/HospitalityContext';
+import {
+  BiSolidDashboard,
+  BiFoodMenu,
+  BiStore,
+  BiReceipt,
+  BiGroup,
+  BiBarChartAlt2,
+  BiCog,
+  BiLogOut,
+  BiBuilding,
   BiCreditCard,
   BiShieldQuarter,
   BiPackage,
@@ -42,9 +43,24 @@ import {
   BiShoppingBag,
   BiPurchaseTag,
   BiX,
+  BiBed,
+  BiHotel,
+  BiCompass,
+  BiShieldAlt2,
+  BiFile,
+  BiCheckShield,
+  BiDevices,
+  BiSync,
+  BiTv,
+  BiMobileAlt,
+  BiCycling,
+  BiUserCheck,
+  BiWrench,
+  BiBriefcase,
+  BiBookOpen,
 } from 'react-icons/bi';
-import { MdOutlinePointOfSale, MdTableRestaurant } from 'react-icons/md';
-import { TbToolsKitchen2, TbFileInvoice } from 'react-icons/tb';
+import { MdOutlinePointOfSale, MdTableRestaurant, MdOutlineCleaningServices, MdOutlineMonitor } from 'react-icons/md';
+import { TbToolsKitchen2, TbFileInvoice, TbTent } from 'react-icons/tb';
 import { FiUsers } from 'react-icons/fi';
 import { BusinessFeatures } from '@/types/restaurant';
 
@@ -58,6 +74,7 @@ interface NavItem {
   badge?: string;
   badgeColor?: string;
   highlight?: boolean;
+  external?: boolean;
 }
 
 interface SidebarProps {
@@ -80,21 +97,35 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onCloseMobile,
 }) => {
   const pathname = usePathname();
-  const { role, user, logout, isFeatureEnabled, currentRestaurant } = useAuth();
+  const { role, user, logout } = useAuth();
+  const {
+    t,
+    activeProperty,
+    activePlanTier,
+    readyBoardOrders,
+    formIIIRecords,
+    approvals,
+    syncQueue,
+    notifications,
+  } = useHospitality();
 
   const isSuperAdmin = role === 'super_admin';
+
+  const readyCount = readyBoardOrders.filter(o => o.stage === 'READY').length;
+  const pendingFormIIICount = formIIIRecords.filter(r => r.status !== 'Submitted').length;
+  const pendingApprovalCount = approvals.filter(a => a.status === 'Pending').length;
+  const pendingSyncCount = syncQueue.filter(s => s.status !== 'Synced').length;
+  const unreadNotifCount = notifications.filter(n => !n.read).length;
 
   const navScrollRef = useRef<HTMLDivElement>(null);
   const activeLinkRef = useRef<HTMLAnchorElement>(null);
 
-  // Restore and maintain sidebar scroll position on navigation
   useIsomorphicLayoutEffect(() => {
     const container = navScrollRef.current;
     if (!container) return;
 
     const storageKey = isSuperAdmin ? 'zestora_sidebar_scroll_admin' : 'zestora_sidebar_scroll_owner';
 
-    // 1. Restore scroll position from in-memory module cache or sessionStorage
     let targetScroll = isSuperAdmin ? cachedAdminScroll : cachedOwnerScroll;
     if (targetScroll <= 0 && typeof window !== 'undefined') {
       const saved = sessionStorage.getItem(storageKey);
@@ -107,9 +138,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
       container.scrollTop = targetScroll;
     }
 
-    // 2. Ensure the active link is visible in the container
-    // If the active item is out of view (e.g. initial load or direct navigation),
-    // scroll the active link into view so top links don't hide the active bottom link
     const rafId = requestAnimationFrame(() => {
       if (activeLinkRef.current && container) {
         const containerRect = container.getBoundingClientRect();
@@ -134,21 +162,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   const handleNavScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const currentScroll = e.currentTarget.scrollTop;
-    if (isSuperAdmin) {
-      cachedAdminScroll = currentScroll;
-    } else {
-      cachedOwnerScroll = currentScroll;
-    }
+    if (isSuperAdmin) cachedAdminScroll = currentScroll;
+    else cachedOwnerScroll = currentScroll;
   };
 
   const handleLinkClick = () => {
     if (navScrollRef.current) {
       const currentScroll = navScrollRef.current.scrollTop;
-      if (isSuperAdmin) {
-        cachedAdminScroll = currentScroll;
-      } else {
-        cachedOwnerScroll = currentScroll;
-      }
+      if (isSuperAdmin) cachedAdminScroll = currentScroll;
+      else cachedOwnerScroll = currentScroll;
       if (typeof window !== 'undefined') {
         const storageKey = isSuperAdmin ? 'zestora_sidebar_scroll_admin' : 'zestora_sidebar_scroll_owner';
         sessionStorage.setItem(storageKey, currentScroll.toString());
@@ -158,77 +180,97 @@ export const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const superAdminLinks: NavItem[] = [
-    { section: 'Core Platform', label: 'Platform Dashboard', href: '/super-admin/dashboard', icon: BiSolidDashboard },
-    { section: 'Core Platform', label: 'Business Management', href: '/super-admin/restaurants', icon: BiStore },
-    { section: 'Core Platform', label: 'Owner Management', href: '/super-admin/owners', icon: BiShieldQuarter },
-    { section: 'Core Platform', label: 'Branch Management', href: '/super-admin/branches', icon: BiBuilding },
-    { section: 'Monetization', label: 'Subscription Plans', href: '/super-admin/subscriptions', icon: BiCreditCard },
-    { section: 'Monetization', label: 'Gateways & Settlements', href: '/super-admin/payments', icon: BiCreditCard },
-    { section: 'Monetization', label: 'Platform Invoices', href: '/super-admin/invoices', icon: TbFileInvoice },
-    { section: 'Monetization', label: 'Feature Marketplace', href: '/super-admin/marketplace', icon: BiShoppingBag },
-    { section: 'Monetization', label: 'SaaS Coupons', href: '/super-admin/coupons', icon: BiPurchaseTag },
-    { section: 'Intelligence & Care', label: 'Revenue Reports', href: '/super-admin/reports', icon: BiBarChartAlt2 },
-    { section: 'Intelligence & Care', label: 'Support Tickets', href: '/super-admin/tickets', icon: BiSupport, badge: '4', badgeColor: 'bg-danger text-white' },
-    { section: 'Intelligence & Care', label: 'Notifications', href: '/super-admin/notifications', icon: BiBell },
-    { section: 'Intelligence & Care', label: 'Platform Settings', href: '/super-admin/settings', icon: BiCog },
+    { section: 'Platform Console', label: 'Platform Dashboard', href: '/super-admin/dashboard', icon: BiSolidDashboard },
+    { section: 'Platform Console', label: 'Tenants & Properties', href: '/super-admin/restaurants', icon: BiStore },
+    { section: 'Platform Console', label: 'Owner Management', href: '/super-admin/owners', icon: BiShieldQuarter },
+    { section: 'Platform Console', label: 'Outlets & Branches', href: '/super-admin/branches', icon: BiBuilding },
+    { section: 'Plans & Monetization', label: 'Plan Tiers (S / G / E)', href: '/super-admin/subscriptions', icon: BiCreditCard },
+    { section: 'Plans & Monetization', label: 'Gateways & Settlements', href: '/super-admin/payments', icon: BiWallet },
+    { section: 'Plans & Monetization', label: 'Platform Invoices', href: '/super-admin/invoices', icon: TbFileInvoice },
+    { section: 'Plans & Monetization', label: 'Feature Marketplace', href: '/super-admin/marketplace', icon: BiShoppingBag },
+    { section: 'Plans & Monetization', label: 'SaaS Coupons', href: '/super-admin/coupons', icon: BiPurchaseTag },
+    { section: 'Governance & Care', label: 'Revenue Reports', href: '/super-admin/reports', icon: BiBarChartAlt2 },
+    { section: 'Governance & Care', label: 'Support Access & Tickets', href: '/super-admin/tickets', icon: BiSupport, badge: '4', badgeColor: 'bg-danger text-white' },
+    { section: 'Governance & Care', label: 'Notifications', href: '/super-admin/notifications', icon: BiBell },
+    { section: 'Governance & Care', label: 'Platform Settings', href: '/super-admin/settings', icon: BiCog },
   ];
 
   const ownerAllLinks: NavItem[] = [
-    // OVERVIEW
-    { section: 'Overview', label: 'Dashboard', href: '/owner/dashboard', icon: BiSolidDashboard, roles: ['restaurant_owner', 'branch_manager', 'cashier', 'waiter', 'kitchen_staff', 'accountant'] },
+    // 1. EXECUTIVE & OVERVIEW
+    { section: t('nav_executive'), label: t('dashboard'), href: '/owner/dashboard', icon: BiSolidDashboard, roles: ['restaurant_owner', 'branch_manager', 'cashier', 'waiter', 'kitchen_staff', 'accountant'] },
+    { section: t('nav_executive'), label: t('owner_app'), href: '/owner/owner-app', icon: BiMobileAlt, roles: ['restaurant_owner', 'branch_manager'], badge: 'Mobile', badgeColor: 'bg-brand text-white' },
+    { section: t('nav_executive'), label: t('notifications'), href: '/owner/notifications', icon: BiBell, roles: ['restaurant_owner', 'branch_manager', 'cashier', 'waiter', 'kitchen_staff', 'accountant'], badge: unreadNotifCount > 0 ? String(unreadNotifCount) : undefined, badgeColor: 'bg-danger text-white' },
+    { section: t('nav_executive'), label: t('sync_center'), href: '/owner/sync-center', icon: BiSync, roles: ['restaurant_owner', 'branch_manager', 'cashier'], badge: pendingSyncCount > 0 ? `${pendingSyncCount}` : undefined, badgeColor: 'bg-warning text-dark' },
 
-    // SALES
-    { section: 'Sales', label: 'POS / Billing', href: '/owner/pos', icon: MdOutlinePointOfSale, roles: ['restaurant_owner', 'branch_manager', 'cashier', 'waiter'], highlight: true },
-    { section: 'Sales', label: 'Orders', href: '/owner/orders', icon: BiReceipt, roles: ['restaurant_owner', 'branch_manager', 'cashier', 'waiter'], badge: '8' },
-    { section: 'Sales', label: 'Tables', href: '/owner/tables', icon: MdTableRestaurant, roles: ['restaurant_owner', 'branch_manager', 'waiter'], featureKey: 'tableManagement', badge: 'Live', badgeColor: 'bg-info text-white' },
-    { section: 'Sales', label: 'Reservations', href: '/owner/reservations', icon: BiCalendar, roles: ['restaurant_owner', 'branch_manager', 'waiter'], featureKey: 'reservations' },
-    { section: 'Sales', label: 'Online Store & QR', href: '/owner/online-ordering', icon: BiGlobe, roles: ['restaurant_owner', 'branch_manager'] },
+    // 2. RESTAURANT & ORDERING
+    { section: t('nav_restaurant'), label: t('pos_billing'), href: '/owner/pos', icon: MdOutlinePointOfSale, roles: ['restaurant_owner', 'branch_manager', 'cashier', 'waiter'], highlight: true },
+    { section: t('nav_restaurant'), label: t('captain_app'), href: '/owner/captain', icon: BiUserCheck, roles: ['restaurant_owner', 'branch_manager', 'waiter'] },
+    { section: t('nav_restaurant'), label: t('kds_kot'), href: '/owner/kot', icon: TbToolsKitchen2, roles: ['restaurant_owner', 'branch_manager', 'kitchen_staff'], badge: 'Live', badgeColor: 'bg-warning text-dark' },
+    { section: t('nav_restaurant'), label: t('ready_board'), href: '/ready-board', icon: BiTv, roles: ['restaurant_owner', 'branch_manager', 'cashier', 'waiter', 'kitchen_staff'], badge: readyCount > 0 ? `${readyCount} Ready` : undefined, badgeColor: 'bg-success text-white' },
+    { section: t('nav_restaurant'), label: t('self_kiosk'), href: '/kiosk', icon: MdOutlineMonitor, roles: ['restaurant_owner', 'branch_manager', 'cashier'] },
+    { section: t('nav_restaurant'), label: t('qr_ordering'), href: '/order/demo', icon: BiGlobe, roles: ['restaurant_owner', 'branch_manager', 'waiter'] },
+    { section: t('nav_restaurant'), label: t('orders'), href: '/owner/orders', icon: BiReceipt, roles: ['restaurant_owner', 'branch_manager', 'cashier', 'waiter'] },
+    { section: t('nav_restaurant'), label: t('tables'), href: '/owner/tables', icon: MdTableRestaurant, roles: ['restaurant_owner', 'branch_manager', 'waiter'] },
+    { section: t('nav_restaurant'), label: t('rider_app'), href: '/owner/rider', icon: BiCycling, roles: ['restaurant_owner', 'branch_manager', 'cashier'] },
 
-    // OPERATIONS
-    { section: 'Operations', label: 'Menu Management', href: '/owner/menu', icon: BiFoodMenu, roles: ['restaurant_owner', 'branch_manager'] },
-    { section: 'Operations', label: 'Kitchen / KOT', href: '/owner/kot', icon: TbToolsKitchen2, roles: ['restaurant_owner', 'branch_manager', 'kitchen_staff'], featureKey: 'kitchenKot', badge: '3', badgeColor: 'bg-warning text-dark' },
-    { section: 'Operations', label: 'Inventory', href: '/owner/inventory', icon: BiPackage, roles: ['restaurant_owner', 'branch_manager'], featureKey: 'inventory', badge: '2 Low', badgeColor: 'bg-danger' },
-    { section: 'Operations', label: 'Suppliers', href: '/owner/suppliers', icon: BiStore, roles: ['restaurant_owner', 'branch_manager'], featureKey: 'inventory' },
-    { section: 'Operations', label: 'Purchase Orders', href: '/owner/purchase-orders', icon: BiCart, roles: ['restaurant_owner', 'branch_manager', 'accountant'] },
-    { section: 'Operations', label: 'Recipe & Costing', href: '/owner/recipes', icon: BiDish, roles: ['restaurant_owner', 'branch_manager', 'kitchen_staff'] },
-    { section: 'Operations', label: 'Waste Management', href: '/owner/waste', icon: BiTrash, roles: ['restaurant_owner', 'branch_manager', 'kitchen_staff'] },
+    // 3. HOTEL, HOSTEL & FRONT DESK
+    { section: t('nav_stay'), label: t('front_desk'), href: '/owner/front-desk', icon: BiHotel, roles: ['restaurant_owner', 'branch_manager', 'cashier'] },
+    { section: t('nav_stay'), label: t('rooms'), href: '/owner/rooms', icon: BiBuilding, roles: ['restaurant_owner', 'branch_manager'] },
+    { section: t('nav_stay'), label: t('dorms'), href: '/owner/dorms', icon: BiBed, roles: ['restaurant_owner', 'branch_manager'], badge: 'Hostel', badgeColor: 'bg-info text-white' },
+    { section: t('nav_stay'), label: t('guest_folio'), href: '/owner/folio', icon: TbFileInvoice, roles: ['restaurant_owner', 'branch_manager', 'cashier', 'accountant'] },
+    { section: t('nav_stay'), label: t('housekeeping'), href: '/owner/housekeeping', icon: MdOutlineCleaningServices, roles: ['restaurant_owner', 'branch_manager'] },
+    { section: t('nav_stay'), label: t('guest_booking'), href: '/book', icon: BiBookOpen, roles: ['restaurant_owner', 'branch_manager'] },
+    { section: t('nav_stay'), label: 'Table Reservations', href: '/owner/reservations', icon: BiCalendar, roles: ['restaurant_owner', 'branch_manager', 'waiter'] },
 
-    // CUSTOMER MANAGEMENT
-    { section: 'Customer Management', label: 'Customers', href: '/owner/customers', icon: FiUsers, roles: ['restaurant_owner', 'branch_manager', 'cashier'], featureKey: 'customerCrm' },
-    { section: 'Customer Management', label: 'Loyalty & Rewards', href: '/owner/loyalty', icon: BiGift, roles: ['restaurant_owner', 'branch_manager', 'cashier'] },
-    { section: 'Customer Management', label: 'Customer Feedback', href: '/owner/feedback', icon: BiStar, roles: ['restaurant_owner', 'branch_manager'] },
-    { section: 'Customer Management', label: 'Marketing Campaigns', href: '/owner/campaigns', icon: BiBroadcast, roles: ['restaurant_owner', 'branch_manager'] },
+    // 4. CAMP & ADVENTURE
+    { section: t('nav_camp'), label: t('camps_adventure'), href: '/owner/camps', icon: TbTent, roles: ['restaurant_owner', 'branch_manager'] },
+    { section: t('nav_camp'), label: t('camp_guide'), href: '/owner/camp-guide', icon: BiCompass, roles: ['restaurant_owner', 'branch_manager'] },
 
-    // TEAM MANAGEMENT
-    { section: 'Team Management', label: 'Staff Directory', href: '/owner/staff', icon: BiGroup, roles: ['restaurant_owner', 'branch_manager'], featureKey: 'staffManagement' },
-    { section: 'Team Management', label: 'Staff Attendance', href: '/owner/attendance', icon: BiCalendarCheck, roles: ['restaurant_owner', 'branch_manager'] },
-    { section: 'Team Management', label: 'Shifts & Roster', href: '/owner/shifts', icon: BiTimeFive, roles: ['restaurant_owner', 'branch_manager'] },
-    { section: 'Team Management', label: 'Roles & Permissions', href: '/owner/roles', icon: BiShieldQuarter, roles: ['restaurant_owner', 'branch_manager'] },
+    // 5. COMPLIANCE, GST & AUDIT
+    { section: t('nav_compliance'), label: t('form_iii'), href: '/owner/form-iii', icon: BiShieldAlt2, roles: ['restaurant_owner', 'branch_manager'], badge: pendingFormIIICount > 0 ? `${pendingFormIIICount} Due` : undefined, badgeColor: 'bg-danger text-white' },
+    { section: t('nav_compliance'), label: t('gst_tax'), href: '/owner/gst', icon: BiFile, roles: ['restaurant_owner', 'branch_manager', 'accountant'] },
+    { section: t('nav_compliance'), label: t('audit_dayclose'), href: '/owner/audit', icon: BiCheckShield, roles: ['restaurant_owner', 'branch_manager', 'accountant'] },
+    { section: t('nav_compliance'), label: t('ota_channels'), href: '/owner/ota', icon: BiNetworkChart, roles: ['restaurant_owner', 'branch_manager', 'accountant'] },
+    { section: t('nav_compliance'), label: t('reports'), href: '/owner/reports', icon: BiBarChartAlt2, roles: ['restaurant_owner', 'branch_manager', 'accountant'] },
+    { section: t('nav_compliance'), label: 'Profit & Loss (P&L)', href: '/owner/profit-loss', icon: BiPieChartAlt2, roles: ['restaurant_owner', 'accountant'] },
 
-    // BUSINESS MANAGEMENT
-    { section: 'Business Management', label: 'Branches', href: '/owner/branches', icon: BiBuilding, roles: ['restaurant_owner'] },
-    { section: 'Business Management', label: 'Expenses', href: '/owner/expenses', icon: BiWallet, roles: ['restaurant_owner', 'branch_manager', 'accountant'] },
-    { section: 'Business Management', label: 'Discounts & Offers', href: '/owner/offers', icon: BiSolidDiscount, roles: ['restaurant_owner', 'branch_manager'], featureKey: 'offersDiscounts' },
-    { section: 'Business Management', label: 'Franchise Network', href: '/owner/franchise', icon: BiNetworkChart, roles: ['restaurant_owner'] },
+    // 6. INVENTORY & OPERATIONS
+    { section: t('nav_operations'), label: 'Menu Management', href: '/owner/menu', icon: BiFoodMenu, roles: ['restaurant_owner', 'branch_manager', 'kitchen_staff'] },
+    { section: t('nav_operations'), label: 'Inventory & Camp Gear', href: '/owner/inventory', icon: BiPackage, roles: ['restaurant_owner', 'branch_manager'], badge: 'Low', badgeColor: 'bg-danger text-white' },
+    { section: t('nav_operations'), label: 'Purchase Orders & GRN', href: '/owner/purchase-orders', icon: BiCart, roles: ['restaurant_owner', 'branch_manager'] },
+    { section: t('nav_operations'), label: 'Vendors & Suppliers', href: '/owner/suppliers', icon: BiStore, roles: ['restaurant_owner', 'branch_manager'] },
+    { section: t('nav_operations'), label: 'Recipes & Costing', href: '/owner/recipes', icon: BiDish, roles: ['restaurant_owner', 'branch_manager', 'kitchen_staff'] },
+    { section: t('nav_operations'), label: 'Wastage & Adjustments', href: '/owner/waste', icon: BiTrash, roles: ['restaurant_owner', 'branch_manager', 'kitchen_staff'] },
+    { section: t('nav_operations'), label: 'Expenses', href: '/owner/expenses', icon: BiWallet, roles: ['restaurant_owner', 'branch_manager', 'accountant'] },
 
-    // INTELLIGENCE
-    { section: 'Intelligence', label: 'AI Copilot Assistant', href: '/owner/ai-assistant', icon: BiBrain, roles: ['restaurant_owner', 'branch_manager'], badge: 'AI', badgeColor: 'bg-primary text-white' },
-    { section: 'Intelligence', label: 'AI Demand Forecast', href: '/owner/ai-forecasting', icon: BiTrendingUp, roles: ['restaurant_owner', 'branch_manager', 'kitchen_staff'] },
-    { section: 'Intelligence', label: 'Profit & Loss (P&L)', href: '/owner/profit-loss', icon: BiPieChartAlt2, roles: ['restaurant_owner', 'accountant'] },
-    { section: 'Intelligence', label: 'Business Analytics', href: '/owner/analytics', icon: BiBarChartAlt2, roles: ['restaurant_owner', 'branch_manager', 'accountant'], featureKey: 'reportsAnalytics' },
-    { section: 'Intelligence', label: 'Fraud Detection Audit', href: '/owner/fraud-detection', icon: BiError, roles: ['restaurant_owner', 'branch_manager'], badge: 'Alerts', badgeColor: 'bg-danger text-white' },
+    // 7. GUESTS & GROWTH
+    { section: t('nav_crm'), label: 'Guest Profiles', href: '/owner/customers', icon: BiGroup, roles: ['restaurant_owner', 'branch_manager'] },
+    { section: t('nav_crm'), label: 'Loyalty & Rewards', href: '/owner/loyalty', icon: BiGift, roles: ['restaurant_owner', 'branch_manager', 'cashier'] },
+    { section: t('nav_crm'), label: 'Guest Feedback', href: '/owner/feedback', icon: BiStar, roles: ['restaurant_owner', 'branch_manager'] },
+    { section: t('nav_crm'), label: 'Discounts & Offers', href: '/owner/offers', icon: BiSolidDiscount, roles: ['restaurant_owner', 'branch_manager'] },
+    { section: t('nav_crm'), label: 'Marketing Campaigns', href: '/owner/campaigns', icon: BiBroadcast, roles: ['restaurant_owner', 'branch_manager'] },
 
-    // ACCOUNT
-    { section: 'Account', label: 'Subscription & Billing', href: '/owner/subscription', icon: BiCreditCard, roles: ['restaurant_owner', 'accountant'] },
-    { section: 'Account', label: 'Feature Marketplace', href: '/owner/marketplace', icon: BiShoppingBag, roles: ['restaurant_owner'] },
-    { section: 'Account', label: 'Integrations Hub', href: '/owner/integrations', icon: BiPlug, roles: ['restaurant_owner', 'branch_manager'] },
-    { section: 'Account', label: 'Settings', href: '/owner/settings', icon: BiCog, roles: ['restaurant_owner'] },
+    // 8. USERS, ROLES & DEVICES
+    { section: t('nav_platform'), label: t('approvals'), href: '/owner/approvals', icon: BiShieldQuarter, roles: ['restaurant_owner', 'branch_manager'], badge: pendingApprovalCount > 0 ? String(pendingApprovalCount) : undefined, badgeColor: 'bg-warning text-dark' },
+    { section: t('nav_platform'), label: t('roles_33'), href: '/owner/roles', icon: BiShieldQuarter, roles: ['restaurant_owner'] },
+    { section: t('nav_platform'), label: 'Users & Staff Directory', href: '/owner/staff', icon: FiUsers, roles: ['restaurant_owner', 'branch_manager'] },
+    { section: t('nav_platform'), label: 'Attendance & Shifts', href: '/owner/shifts', icon: BiTimeFive, roles: ['restaurant_owner', 'branch_manager'] },
+    { section: t('nav_platform'), label: t('devices'), href: '/owner/devices', icon: BiDevices, roles: ['restaurant_owner', 'branch_manager'] },
+    { section: t('nav_platform'), label: 'Properties & Outlets', href: '/owner/branches', icon: BiBuilding, roles: ['restaurant_owner'] },
+    { section: t('nav_platform'), label: 'Subscription & Plan (S/G/E)', href: '/owner/subscription', icon: BiCreditCard, roles: ['restaurant_owner', 'accountant'] },
+
+    // 9. AI, OTA & ECOSYSTEM
+    { section: t('nav_ai_integrations'), label: t('whatsapp_ai'), href: '/owner/ai-assistant', icon: BiBrain, roles: ['restaurant_owner', 'branch_manager'], badge: 'AI', badgeColor: 'bg-primary text-white' },
+    { section: t('nav_ai_integrations'), label: 'AI Demand Forecast', href: '/owner/ai-forecasting', icon: BiTrendingUp, roles: ['restaurant_owner', 'branch_manager', 'kitchen_staff'] },
+    { section: t('nav_ai_integrations'), label: 'Fraud & Exception Radar', href: '/owner/fraud-detection', icon: BiError, roles: ['restaurant_owner', 'branch_manager'] },
+    { section: t('nav_ai_integrations'), label: t('partner_portal'), href: '/owner/partner-portal', icon: BiBriefcase, roles: ['restaurant_owner', 'branch_manager'] },
+    { section: t('nav_ai_integrations'), label: t('local_helper'), href: '/owner/local-helper', icon: BiWrench, roles: ['restaurant_owner', 'branch_manager', 'cashier'] },
+    { section: t('nav_ai_integrations'), label: 'Integrations (Tally/ERP)', href: '/owner/integrations', icon: BiPlug, roles: ['restaurant_owner', 'branch_manager'] },
+    { section: t('nav_ai_integrations'), label: 'Settings', href: '/owner/settings', icon: BiCog, roles: ['restaurant_owner'] },
   ];
 
-  // Filter links by role and by active business features
   const filteredOwnerLinks = ownerAllLinks.filter(item => {
     if (item.roles && !item.roles.includes(role)) return false;
-    if (item.featureKey && !isFeatureEnabled(item.featureKey)) return false;
     return true;
   });
 
@@ -236,10 +278,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <>
-      {/* Mobile Backdrop */}
       {mobileOpen && (
-        <div 
-          className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-lg-none" 
+        <div
+          className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-lg-none"
           style={{ zIndex: 1040 }}
           onClick={onCloseMobile}
         />
@@ -264,23 +305,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
         }}
       >
         {/* Brand Header */}
-        <div 
-          className={`d-flex align-items-center ${collapsed ? 'justify-content-center' : 'justify-content-between'} px-3`} 
+        <div
+          className={`d-flex align-items-center ${collapsed ? 'justify-content-center' : 'justify-content-between'} px-3`}
           style={{ height: '70px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}
         >
-          <Link 
-            href={isSuperAdmin ? '/super-admin/dashboard' : '/owner/dashboard'} 
+          <Link
+            href={isSuperAdmin ? '/super-admin/dashboard' : '/owner/dashboard'}
             className="d-flex align-items-center text-decoration-none text-white overflow-hidden gap-2"
           >
-            <div 
+            <div
               className="d-flex align-items-center justify-content-center rounded-3 bg-brand text-white fw-bold flex-shrink-0 shadow-sm"
               style={{ width: '38px', height: '38px', fontSize: '20px', lineHeight: 1 }}
             >
               Z
             </div>
             {!collapsed && (
-              <span 
-                className="fw-bold fs-4 text-white tracking-wide d-inline-flex align-items-center" 
+              <span
+                className="fw-bold fs-4 text-white tracking-wide d-inline-flex align-items-center"
                 style={{ letterSpacing: '0.8px', lineHeight: 1, height: '38px' }}
               >
                 ZEST<span className="text-brand">ORA</span>
@@ -288,10 +329,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
             )}
           </Link>
 
-          {/* Desktop collapse toggle button */}
-          <button 
-            type="button" 
-            onClick={onToggleCollapse} 
+          <button
+            type="button"
+            onClick={onToggleCollapse}
             className="btn btn-sm btn-link text-white-50 p-1 d-none d-lg-flex align-items-center justify-content-center text-decoration-none hover-light"
             style={{ width: '32px', height: '32px' }}
             title={collapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
@@ -299,7 +339,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
             {collapsed ? <BiChevronRight size={20} /> : <BiChevronLeft size={20} />}
           </button>
 
-          {/* Mobile close button */}
           <button
             type="button"
             onClick={onCloseMobile}
@@ -311,23 +350,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </button>
         </div>
 
-        {/* Role & Business Type Tag */}
+        {/* Role, Property & Plan Tag */}
         {!collapsed && (
-          <div 
+          <div
             className="px-3 py-2 bg-black bg-opacity-25 d-flex flex-column gap-1"
             style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}
           >
             <div className="d-flex align-items-center justify-content-between">
-              <span className="text-white-50 small" style={{ fontSize: '11px' }}>Role:</span>
+              <span className="text-white-50" style={{ fontSize: '11px' }}>Role:</span>
               <span className="badge rounded-pill bg-brand text-uppercase" style={{ fontSize: '10px' }}>
                 {role.replace('_', ' ')}
               </span>
             </div>
-            {!isSuperAdmin && currentRestaurant && (
+            {!isSuperAdmin && (
               <div className="d-flex align-items-center justify-content-between mt-1">
-                <span className="text-white-50 small" style={{ fontSize: '11px' }}>Type:</span>
-                <span className="badge bg-secondary bg-opacity-50 text-white text-truncate max-w-100" style={{ fontSize: '10px', maxWidth: '140px' }} title={currentRestaurant.businessType}>
-                  {currentRestaurant.businessType}
+                <span className="text-white-50" style={{ fontSize: '11px' }}>Market / Plan:</span>
+                <span className="badge bg-secondary bg-opacity-50 text-white" style={{ fontSize: '10px' }}>
+                  {activeProperty.city} • Tier {activePlanTier}
                 </span>
               </div>
             )}
@@ -335,7 +374,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         )}
 
         {/* Navigation Menu */}
-        <div 
+        <div
           ref={navScrollRef}
           onScroll={handleNavScroll}
           className="sidebar-scroll flex-grow-1 overflow-y-auto py-2 px-2"
@@ -346,15 +385,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
               const Icon = item.icon;
               const isActive = pathname === item.href;
               const isPos = 'highlight' in item && item.highlight;
-
-              // Check if we need to display a section header
               const prevItem = activeLinks[idx - 1];
               const showSectionHeader = !collapsed && item.section && (!prevItem || prevItem.section !== item.section);
 
               return (
-                <React.Fragment key={idx}>
+                <React.Fragment key={item.href + idx}>
                   {showSectionHeader && (
-                    <li className="nav-header text-uppercase text-white-50 px-3 pt-3 pb-1" style={{ fontSize: '11px', letterSpacing: '0.8px', fontWeight: 600 }}>
+                    <li
+                      className="nav-header text-uppercase text-white-50 px-3 pt-3 pb-1"
+                      style={{ fontSize: '10px', letterSpacing: '0.9px', fontWeight: 700 }}
+                    >
                       {item.section}
                     </li>
                   )}
@@ -377,14 +417,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       }}
                       title={collapsed ? item.label : undefined}
                     >
-                      <Icon size={20} className={`flex-shrink-0 ${isActive ? 'text-white' : isPos ? 'text-brand' : 'text-white-50'}`} />
+                      <Icon
+                        size={18}
+                        className={`flex-shrink-0 ${isActive ? 'text-white' : isPos ? 'text-brand' : 'text-white-50'}`}
+                      />
                       {!collapsed && (
-                        <span className="ms-3 flex-grow-1 text-truncate" style={{ fontSize: '14px' }}>
+                        <span className="ms-3 flex-grow-1 text-truncate" style={{ fontSize: '13px' }}>
                           {item.label}
                         </span>
                       )}
                       {!collapsed && item.badge && (
-                        <span className={`badge rounded-pill ms-2 ${item.badgeColor || 'bg-brand text-white'}`} style={{ fontSize: '10px' }}>
+                        <span
+                          className={`badge rounded-pill ms-1 ${item.badgeColor || 'bg-brand text-white'}`}
+                          style={{ fontSize: '9px' }}
+                        >
                           {item.badge}
                         </span>
                       )}
@@ -397,8 +443,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* User Footer & Logout */}
-        <div 
-          className="p-3 bg-black bg-opacity-20 border-0" 
+        <div
+          className="p-3 bg-black bg-opacity-20 border-0"
           style={{ border: 'none', borderTop: 'none', borderBottom: 'none' }}
         >
           <div className="d-flex align-items-center justify-content-between">
@@ -407,7 +453,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 src={user?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&h=80&q=80'}
                 alt={user?.name || 'User'}
                 className="rounded-circle flex-shrink-0 border border-brand"
-                style={{ width: '38px', height: '38px', objectFit: 'cover' }}
+                style={{ width: '36px', height: '36px', objectFit: 'cover' }}
               />
               {!collapsed && (
                 <div className="ms-2 overflow-hidden">
@@ -426,7 +472,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 type="button"
                 onClick={logout}
                 className="btn btn-sm btn-link text-white-50 hover-danger p-1 text-decoration-none"
-                title="Logout"
+                title={t('logout')}
               >
                 <BiLogOut size={20} />
               </button>

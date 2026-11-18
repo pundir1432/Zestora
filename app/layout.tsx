@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { AuthProvider } from '@/context/AuthContext';
+import { HospitalityProvider } from '@/context/HospitalityContext';
 
 export const metadata: Metadata = {
-  title: 'Zestora - Restaurant Management SaaS Platform',
-  description: 'Enterprise Cloud POS, Multi-Branch Billing, Kitchen Display System & Restaurant Analytics',
+  title: 'Zestora — Unified Hospitality SaaS (Restaurant, Hotel, Hostel, Camp & Compliance)',
+  description: 'All-in-one Hospitality Cloud OS for Restaurants, Cafes, Hotels, Homestays, Hostels, Adventure Camps, Form III FRRO & GST Compliance.',
 };
 
 export default function RootLayout({
@@ -24,7 +25,9 @@ export default function RootLayout({
       </head>
       <body style={{ fontFamily: "'Inter', sans-serif" }}>
         <AuthProvider>
-          {children}
+          <HospitalityProvider>
+            {children}
+          </HospitalityProvider>
         </AuthProvider>
       </body>
     </html>
