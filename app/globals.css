@@ -1,49 +1,69 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --primary-orange: #F47B35;
-  --primary-orange-hover: #e06822;
-  --dark-navy: #18263B;
-  --navy-light: #22344d;
-  --main-bg: #F5F7FA;
+  /* RestroPro / Restaurant Theme (Appetite Red / Crimson) */
+  --primary-red: #E63946;
+  --primary-red-hover: #D62839;
+  --primary-red-soft: #FFF0F3;
+  --primary-red-border: #FFD1D8;
+  --primary-red-gradient: linear-gradient(135deg, #E63946 0%, #FF6B6B 100%);
+  
+  /* Brand color aliases - aligned to Restaurant Red */
+  --primary-orange: #E63946;
+  --primary-orange-hover: #D62839;
+  --brand: #E63946;
+  --brand-hover: #D62839;
+
+  /* Modern Dark Sidebar & Shell (Image 6 RestroPro palette) */
+  --dark-navy: #161922;
+  --navy-light: #202433;
+  --navy-sidebar: #1A1D29;
+  --navy-sidebar-hover: #252A3A;
+
+  --main-bg: #F8FAFC;
   --white: #FFFFFF;
-  --text-primary: #253247;
-  --text-secondary: #7B8494;
-  --border-color: #E8ECF1;
+  --text-primary: #1E293B;
+  --text-secondary: #64748B;
+  --border-color: #E2E8F0;
+  
   --color-success: #16A36A;
   --color-warning: #EAA12D;
-  --color-danger: #E34B4B;
+  --color-danger: #E63946;
   --color-info: #3478D4;
+
+  --font-family-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
   background-color: var(--main-bg);
   color: var(--text-primary);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-family-sans);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom utility colors (honoring Bootstrap --bs-bg-opacity) */
+/* Custom utility colors */
 .bg-brand {
   --bs-bg-opacity: 1;
-  background-color: rgba(244, 123, 53, var(--bs-bg-opacity)) !important;
+  background-color: rgba(230, 57, 70, var(--bs-bg-opacity)) !important;
 }
 
 .text-brand {
-  color: var(--primary-orange) !important;
+  color: #E63946 !important;
 }
 
 .border-brand {
-  border-color: var(--primary-orange) !important;
+  border-color: #E63946 !important;
 }
 
 .bg-navy {
   --bs-bg-opacity: 1;
-  background-color: rgba(24, 38, 59, var(--bs-bg-opacity)) !important;
+  background-color: rgba(26, 29, 41, var(--bs-bg-opacity)) !important;
 }
 
 .text-navy {
-  color: var(--dark-navy) !important;
+  color: #1E293B !important;
 }
 
 .bg-surface {
@@ -58,55 +78,215 @@ body {
   color: var(--text-secondary) !important;
 }
 
-/* Buttons */
-.btn-brand {
-  background-color: var(--primary-orange);
-  border-color: var(--primary-orange);
-  color: #ffffff;
-  font-weight: 500;
-  border-radius: 8px;
-  transition: all 0.2s ease-in-out;
+/* ==========================================================================
+   BUTTON VARIANTS (Matching Design Sheet: Primary, Outline, Soft, Ghost, Gradient)
+   ========================================================================== */
+
+/* 1. Primary Button */
+.btn-brand,
+.btn-primary-red {
+  background-color: #E63946 !important;
+  border-color: #E63946 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 8px 18px;
+  box-shadow: 0 4px 12px rgba(230, 57, 70, 0.25);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 
 .btn-brand:hover,
 .btn-brand:focus,
-.btn-brand:active {
-  background-color: var(--primary-orange-hover) !important;
-  border-color: var(--primary-orange-hover) !important;
+.btn-primary-red:hover,
+.btn-primary-red:focus {
+  background-color: #D62839 !important;
+  border-color: #D62839 !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 12px rgba(244, 123, 53, 0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(230, 57, 70, 0.35);
 }
 
-.btn-outline-brand {
-  border-color: var(--primary-orange);
-  color: var(--primary-orange);
-  background: transparent;
-  font-weight: 500;
-  border-radius: 8px;
+.btn-brand:active,
+.btn-primary-red:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(230, 57, 70, 0.2);
+}
+
+/* 2. Secondary / Outline Button */
+.btn-outline-brand,
+.btn-outline-red {
+  border: 1.5px solid #E63946 !important;
+  color: #E63946 !important;
+  background: transparent !important;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 8px 18px;
   transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 
 .btn-outline-brand:hover,
 .btn-outline-brand:focus,
-.btn-outline-brand:active {
-  background-color: var(--primary-orange) !important;
-  border-color: var(--primary-orange) !important;
+.btn-outline-red:hover,
+.btn-outline-red:focus {
+  background-color: #E63946 !important;
+  border-color: #E63946 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(230, 57, 70, 0.2);
+}
+
+/* 3. Soft Button */
+.btn-soft-red,
+.btn-soft-brand {
+  background-color: #FFF0F3 !important;
+  color: #E63946 !important;
+  border: 1px solid rgba(230, 57, 70, 0.18) !important;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 8px 16px;
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-soft-red:hover,
+.btn-soft-brand:hover {
+  background-color: #FFE2E7 !important;
+  color: #D62839 !important;
+}
+
+/* 4. Ghost Button */
+.btn-ghost {
+  background: transparent !important;
+  border: none !important;
+  color: #475569 !important;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 8px 14px;
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-ghost:hover {
+  background-color: #FFF0F3 !important;
+  color: #E63946 !important;
+}
+
+/* 5. Gradient Button */
+.btn-gradient-red {
+  background: linear-gradient(135deg, #E63946 0%, #FF6B6B 100%) !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 8px 20px;
+  box-shadow: 0 4px 14px rgba(230, 57, 70, 0.3);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-gradient-red:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(230, 57, 70, 0.4);
   color: #ffffff !important;
 }
 
-/* Custom cards */
+/* Button Sizes (from Image 5) */
+.btn-xs {
+  height: 28px !important;
+  padding: 2px 10px !important;
+  font-size: 11px !important;
+  border-radius: 6px !important;
+}
+
+.btn-sm-custom {
+  height: 32px !important;
+  padding: 4px 12px !important;
+  font-size: 12px !important;
+  border-radius: 8px !important;
+}
+
+.btn-md-custom {
+  height: 40px !important;
+  padding: 8px 18px !important;
+  font-size: 14px !important;
+  border-radius: 10px !important;
+}
+
+.btn-lg-custom {
+  height: 48px !important;
+  padding: 10px 24px !important;
+  font-size: 15px !important;
+  border-radius: 12px !important;
+}
+
+/* Icon Buttons with badge */
+.btn-icon {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #E2E8F0;
+  color: #475569;
+  position: relative;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-icon:hover {
+  background: #FFF0F3;
+  border-color: #FFD1D8;
+  color: #E63946;
+}
+
+.btn-icon-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #E63946;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ffffff;
+  line-height: 1;
+}
+
+/* Custom cards (Rounded 16px, subtle border & shadow) */
 .app-card {
   background: #ffffff;
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 0 4px 8px rgba(0, 0, 0, 0.02);
+  border: 1px solid #F1F4F9;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .app-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
 }
-
 /* Badges */
 .badge-soft-success {
   background-color: rgba(22, 163, 106, 0.12) !important;
@@ -121,9 +301,9 @@ body {
 }
 
 .badge-soft-danger {
-  background-color: rgba(227, 75, 75, 0.12) !important;
-  color: #E34B4B !important;
-  border: 1px solid rgba(227, 75, 75, 0.2);
+  background-color: #FFF0F3 !important;
+  color: #E63946 !important;
+  border: 1px solid #FFD1D8 !important;
 }
 
 .badge-soft-info {
@@ -133,9 +313,9 @@ body {
 }
 
 .badge-soft-brand {
-  background-color: rgba(244, 123, 53, 0.12) !important;
-  color: #F47B35 !important;
-  border: 1px solid rgba(244, 123, 53, 0.25);
+  background-color: #FFF0F3 !important;
+  color: #E63946 !important;
+  border: 1px solid #FFD1D8 !important;
 }
 
 .badge-soft-secondary {
@@ -523,4 +703,436 @@ body {
 .badge {
   padding: 0.38em 0.68em;
   line-height: 1.2;
+}
+
+/* ==========================================================================
+   RESTAURANT SAAS WEBSITE: DARK FOOD LUXURY & BUTTON SYSTEM
+   ========================================================================== */
+
+:root {
+  --food-primary: #E63946;
+  --food-primary-hover: #C92F3B;
+  --food-dark: #17120F;
+  --food-dark-secondary: #241B17;
+  --food-background: #FFF9F4;
+  --food-card-bg: #FFFFFF;
+  --food-text: #211A17;
+  --food-muted-text: #766E69;
+  --food-border: #E8DED6;
+  --food-success: #16845B;
+  --food-soft-bg: #FFE5E7;
+}
+
+/* Background utilities */
+.bg-food-dark {
+  background-color: #17120F !important;
+}
+
+.bg-food-dark-secondary {
+  background-color: #241B17 !important;
+}
+
+.bg-food-cream {
+  background-color: #FFF9F4 !important;
+}
+
+.text-food-dark {
+  color: #17120F !important;
+}
+
+.text-food-primary {
+  color: #E63946 !important;
+}
+
+.text-food-muted {
+  color: #766E69 !important;
+}
+
+.border-food {
+  border-color: #E8DED6 !important;
+}
+
+/* Shine sweep animation keyframes */
+@keyframes btnShineSweep {
+  0% {
+    transform: translateX(-150%) skewX(-20deg);
+  }
+  100% {
+    transform: translateX(250%) skewX(-20deg);
+  }
+}
+
+/* 1. Primary CTA — Premium Red with Shine Hover */
+.btn-primary-cta {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--food-primary) !important;
+  border: 1px solid var(--food-primary) !important;
+  color: #ffffff !important;
+  font-family: var(--font-family-sans);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(230, 57, 70, 0.28);
+  transition: transform 200ms ease-out, background-color 200ms ease-out, box-shadow 200ms ease-out;
+  text-decoration: none;
+}
+
+.btn-primary-cta .btn-shine-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: translateX(-180%) skewX(-20deg);
+  pointer-events: none;
+}
+
+.btn-primary-cta:hover {
+  background-color: var(--food-primary-hover) !important;
+  border-color: var(--food-primary-hover) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(230, 57, 70, 0.38);
+  color: #ffffff !important;
+}
+
+.btn-primary-cta:hover .btn-shine-bar {
+  animation: btnShineSweep 0.75s ease-out;
+}
+
+.btn-primary-cta .btn-arrow {
+  transition: transform 200ms ease-out;
+  display: inline-block;
+}
+
+.btn-primary-cta:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+.btn-primary-cta:active {
+  transform: scale(0.97) translateY(0);
+  box-shadow: 0 2px 6px rgba(230, 57, 70, 0.25);
+  transition: transform 100ms ease;
+}
+
+.btn-primary-cta:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.3) !important;
+}
+
+/* 2. Book Table Button — Red Gradient with Calendar & Arrow */
+.btn-book-table {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #E63946 0%, #F05252 100%) !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-family: var(--font-family-sans);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  height: 48px;
+  padding: 0 22px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(230, 57, 70, 0.3);
+  transition: transform 200ms ease-out, box-shadow 200ms ease-out, filter 200ms ease-out;
+  text-decoration: none;
+}
+
+.btn-book-table:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 26px rgba(230, 57, 70, 0.45);
+  filter: brightness(1.05);
+  color: #ffffff !important;
+}
+
+.btn-book-table .btn-arrow {
+  transition: transform 200ms ease-out;
+}
+
+.btn-book-table:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+.btn-book-table:active {
+  transform: scale(0.97) translateY(0);
+  transition: transform 100ms ease;
+}
+
+.btn-book-table:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.3) !important;
+}
+
+/* 3. Outline Button */
+.btn-outline-luxury {
+  background: transparent !important;
+  border: 1.5px solid var(--food-primary) !important;
+  color: var(--food-primary) !important;
+  font-family: var(--font-family-sans);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  height: 48px;
+  padding: 0 22px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 200ms ease-out, background-color 200ms ease-out, color 200ms ease-out, box-shadow 200ms ease-out;
+  text-decoration: none;
+}
+
+.btn-outline-luxury:hover {
+  background-color: var(--food-primary) !important;
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(230, 57, 70, 0.25);
+}
+
+.btn-outline-luxury:active {
+  transform: scale(0.97) translateY(0);
+  transition: transform 100ms ease;
+}
+
+.btn-outline-luxury:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.3) !important;
+}
+
+/* 4. Soft Button */
+.btn-soft-luxury {
+  background-color: var(--food-soft-bg) !important;
+  border: 1px solid rgba(230, 57, 70, 0.15) !important;
+  color: var(--food-primary) !important;
+  font-family: var(--font-family-sans);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: transform 180ms ease-out, background-color 180ms ease-out;
+  text-decoration: none;
+}
+
+.btn-soft-luxury:hover {
+  background-color: #FFD2D7 !important;
+  color: var(--food-primary-hover) !important;
+  transform: translateY(-2px);
+}
+
+.btn-soft-luxury:active {
+  transform: scale(0.97) translateY(0);
+}
+
+/* 5. Ghost Button */
+.btn-ghost-luxury {
+  background: transparent !important;
+  border: none !important;
+  color: var(--food-text) !important;
+  font-family: var(--font-family-sans);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  padding: 8px 16px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background-color 180ms ease-out, color 180ms ease-out;
+  text-decoration: none;
+}
+
+.btn-ghost-luxury:hover {
+  background-color: var(--food-soft-bg) !important;
+  color: var(--food-primary) !important;
+}
+
+.btn-ghost-luxury .btn-arrow {
+  transition: transform 180ms ease-out;
+}
+
+.btn-ghost-luxury:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+.btn-ghost-luxury:active {
+  transform: scale(0.97);
+}
+
+/* 6. Circular Menu Add Button */
+.btn-menu-add {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 50%;
+  background-color: var(--food-primary);
+  border: none;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(230, 57, 70, 0.32);
+  transition: transform 180ms cubic-bezier(0.4, 0, 0.2, 1), background-color 180ms ease-out, box-shadow 180ms ease-out;
+}
+
+.btn-menu-add:hover {
+  transform: scale(1.08);
+  background-color: var(--food-primary-hover);
+  box-shadow: 0 6px 16px rgba(230, 57, 70, 0.45);
+}
+
+.btn-menu-add:active {
+  transform: scale(0.94);
+  box-shadow: 0 2px 6px rgba(230, 57, 70, 0.2);
+}
+
+/* 7. Icon Button */
+.btn-icon-luxury {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  border: 1px solid var(--food-border);
+  color: var(--food-text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 180ms ease-out, background-color 180ms ease-out, color 180ms ease-out, border-color 180ms ease-out;
+}
+
+.btn-icon-luxury:hover {
+  transform: scale(1.05);
+  background-color: var(--food-soft-bg);
+  border-color: #FFD1D8;
+  color: var(--food-primary);
+}
+
+.btn-icon-luxury:active {
+  transform: scale(0.95);
+}
+
+/* 8. Success Button */
+.btn-success-luxury {
+  background-color: var(--food-success) !important;
+  border: 1px solid var(--food-success) !important;
+  color: #ffffff !important;
+  font-family: var(--font-family-sans);
+  font-weight: 600;
+  height: 48px;
+  padding: 0 22px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(22, 132, 91, 0.3);
+  transition: all 180ms ease-out;
+}
+
+.btn-success-luxury:hover {
+  background-color: #126D4B !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(22, 132, 91, 0.4);
+}
+
+/* Luxury Cards */
+.food-card {
+  background: #ffffff;
+  border: 1px solid #E8DED6;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(23, 18, 15, 0.04);
+  transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 220ms cubic-bezier(0.4, 0, 0.2, 1), border-color 220ms ease;
+}
+
+.food-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(23, 18, 15, 0.1);
+  border-color: #D6C7BC;
+}
+
+.food-card .card-img-zoom {
+  transition: transform 300ms ease-out;
+  overflow: hidden;
+}
+
+.food-card:hover .card-img-zoom img {
+  transform: scale(1.04);
+}
+
+/* Sticky Blurred Glass Navbar */
+.restaurant-navbar-glass {
+  background: rgba(23, 18, 15, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 250ms ease;
+}
+
+.restaurant-navbar-transparent {
+  background: linear-gradient(180deg, rgba(23, 18, 15, 0.92) 0%, rgba(23, 18, 15, 0.5) 75%, transparent 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 250ms ease;
+}
+
+/* Feature horizontal strip */
+.feature-strip-bar {
+  background-color: #17120F;
+  border-top: 1px solid rgba(232, 222, 214, 0.12);
+  border-bottom: 1px solid rgba(232, 222, 214, 0.12);
+}
+
+/* Category chip */
+.category-chip {
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #E8DED6;
+  background-color: #ffffff;
+  color: #211A17;
+  transition: all 180ms ease;
+  white-space: nowrap;
+}
+
+.category-chip:hover {
+  border-color: var(--food-primary);
+  color: var(--food-primary);
+  background-color: #FFF9F4;
+}
+
+.category-chip.active {
+  background-color: var(--food-primary);
+  border-color: var(--food-primary);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(230, 57, 70, 0.28);
 }
